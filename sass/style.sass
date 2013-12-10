@@ -1,8 +1,10 @@
 @import "bourbon/bourbon"
+@import "neat/neat"
 
 // Variables
 
 $bg: #1D1D1D
+$accent: #ef4136
 
 //! normalize.css v2.1.3 | MIT License | git.io/normalize
 
@@ -48,9 +50,9 @@ template
 
 html
 	background-color: $bg
-	font-family: sans-serif // 1 //
-	-ms-text-size-adjust: 100% // 2 //
-	-webkit-text-size-adjust: 100% // 2 //
+	font-family: sans-serif // 1
+	-ms-text-size-adjust: 100% // 2
+	-webkit-text-size-adjust: 100% // 2
 
 // Remove default margin.
 
@@ -61,6 +63,7 @@ body
 
 a
 	background: transparent
+	color: $accent
 
 // Address `outline` inconsistency between Chrome and other browsers.
 
@@ -273,21 +276,22 @@ table
 
 html,
 body
+	color: #FFF
 	height: 100%
 
 section,
-header
+body > header
 	min-height: 100%
 	padding: 5em 0
-	text-align: center
 
-header
+body > header
 	display: flex
 	align-items: center
 	justify-content: center
 
 	figure
 		border: 5px solid #000
+		color: #000
 		display: inline-block
 		font-family: "ProximaNova-Extrabld", sans-serif
 		font-size: 3em
@@ -315,7 +319,7 @@ header
 			font-weight: 700
 
 			&:last-of-type
-				color: #ef4136
+				color: $accent
 				font-size: 1.1em
 
 nav
@@ -346,7 +350,7 @@ nav
 		&:hover,
 		&:focus,
 		&:active
-			background: #ef4136
+			background: $accent
 			outline: none
 
 		&#btt
@@ -370,13 +374,72 @@ nav
 section
 
 	&:nth-of-type(1)
-		background: lighten($bg, 5%)
+		background: lighten($bg, 2%)
 
 	&:nth-of-type(2)
-		background: lighten($bg, 10%)
+		background: lighten($bg, 4%)
 
 	&:nth-of-type(3)
-		background: lighten($bg, 15%)
+		background: lighten($bg, 6%)
 
 	&:nth-of-type(4)
-		background: lighten($bg, 20%)
+		background: lighten($bg, 8%)
+
+	h2
+		margin: 0
+		padding: 0
+		text-transform: uppercase
+		text-align: left
+
+form
+
+	input, textarea
+		background: $bg
+		border: none
+		border-bottom: 1px solid transparent
+		color: #DDD
+		outline: none
+		padding: 0.75em
+		@include transition(border-color 200ms ease-in-out, color 200ms ease-in-out)
+		width: 100%
+
+		&:hover, &:focus, &:active
+			border-bottom: 1px solid $accent
+			color: #FFF
+
+		&::-webkit-input-placeholder
+			color: #555
+
+	label
+		color: #999
+		display: block
+		font-weight: 700
+		margin-bottom: 0.5em
+		text-transform: uppercase
+
+// Global classes
+
+.grid
+	@include outer-container
+	margin-bottom: 1.5em
+
+	&:last-child
+		margin-bottom: 0
+
+	@for $i from 1 through 12
+
+		&.block-#{$i}
+
+			.block
+				@include span-columns(12/$i)
+				@include omega($i + 'n')
+				margin-bottom: 1.5em
+
+		.cols-#{$i}
+			@include span-columns($i)
+
+		.offset-#{$i}
+			@include shift($i)
+
+.pushdown
+	margin-top: em(150)
