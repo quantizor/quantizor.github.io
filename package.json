@@ -1,0 +1,19 @@
+{
+	"name": "Evoked(dot)us",
+	"description": "The personal website of Evan Jacobs of Boston, MA.",
+	"version": "1.0.0",
+	"private": true,
+	"contributors": [
+		{
+			"name": "Evan Jacobs",
+			"email": "evan.jacobs@beamland.com"
+		}
+	],
+	"dependencies": {
+		"grunt": "~0.4.2",
+		"grunt-contrib-sass": "~0.5.1",
+		"grunt-contrib-watch": "~0.5.3",
+		"grunt-contrib-connect": "~0.5.0",
+		"grunt-open": "0.2.*"
+	}
+}
