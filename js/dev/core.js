@@ -46,7 +46,8 @@
 
 		var nav = document.querySelector('nav'),
 			header = document.querySelector('header'),
-			min;
+			ogHeight = window.innerHeight,
+			min = header.offsetTop + header.clientHeight - nav.clientHeight;
 
 		var throttle = false;
 
@@ -58,12 +59,14 @@
 
 				min = min || calcY();
 
-				if( window.scrollY >= min && nav.className.indexOf('stuck') === -1 ){
-					nav.className += ' stuck';
+				if( window.scrollY >= min ){
+
+					if( nav.className.indexOf('stuck') === -1 ) nav.className += ' stuck';
 				}
 
-				else if( window.scrollY < min && nav.className.indexOf('stuck') !== -1 ){
-					nav.className = nav.className.replace(' stuck', '');
+				else {
+
+					if( nav.className.indexOf('stuck') !== -1 ) nav.className = nav.className.replace(' stuck', '');
 				}
 
 				throttle = false;
@@ -72,9 +75,16 @@
 
 		}
 
-		window.addEventListener( 'scroll', locker, false );
+		function calcY(){
 
-		function calcY(){ min = header.offsetTop + header.clientHeight - nav.clientHeight; }
+			// Chrome fires resize on scroll, so this short circuits that if the height hasn't actually changed.
+
+			if( window.innerHeight !== ogHeight ){
+				min = header.offsetTop + header.clientHeight - nav.clientHeight;
+			}
+		}
+
+		window.addEventListener( 'scroll', locker, false );
 		window.addEventListener( 'resize', calcY, false );
 
 
