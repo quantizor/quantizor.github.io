@@ -219,3 +219,5 @@ node_modules/
 
 #SASS
 .sass_cache/
+*.scssc
+*.sassc
