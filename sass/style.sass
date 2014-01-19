@@ -419,6 +419,9 @@ form
 
 // Global classes
 
+.accent
+	color: $accent
+
 .grid
 	@include outer-container
 	margin-bottom: 1.5em
@@ -441,5 +444,58 @@ form
 		.offset-#{$i}
 			@include shift($i)
 
+	.block .fa
+		text-decoration: none
+
 .pushdown
 	margin-top: em(150)
+
+.t-right
+	text-align: right
+
+.t-left
+	text-align: left
+
+.t-center
+	text-align: center
+
+.table
+	border-collapse: collapse
+	display: table
+	width: 100%
+
+	& > *
+		display: table-cell
+
+	.cell
+		display: table-cell
+		vertical-align: top
+
+	.row
+		display: table-row
+
+
+
+// Social Icons (last pane)
+
+.socializing
+
+	a, h2
+		display: inline-block
+
+	a
+		font-size: 175%
+		margin-left: 0.25em
+		margin-right: 0.25em
+		text-decoration: none
+		vertical-align: middle
+		@include transition(color 300ms ease)
+
+		&:hover
+			color: #FFF
+
+		&:last-of-type
+			margin-right: 0
+
+	h2
+		white-space: nowrap

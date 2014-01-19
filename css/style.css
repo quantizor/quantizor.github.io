@@ -357,6 +357,10 @@ form label {
   text-transform: uppercase;
 }
 
+.accent {
+  color: #ef4136;
+}
+
 .grid {
   *zoom: 1;
   max-width: 68em;
@@ -674,7 +678,61 @@ form label {
 .grid .offset-12 {
   margin-left: 102.35765%;
 }
+.grid .block .fa {
+  text-decoration: none;
+}
 
 .pushdown {
   margin-top: 9.375em;
+}
+
+.t-right {
+  text-align: right;
+}
+
+.t-left {
+  text-align: left;
+}
+
+.t-center {
+  text-align: center;
+}
+
+.table {
+  border-collapse: collapse;
+  display: table;
+  width: 100%;
+}
+.table > * {
+  display: table-cell;
+}
+.table .cell {
+  display: table-cell;
+  vertical-align: top;
+}
+.table .row {
+  display: table-row;
+}
+
+.socializing a, .socializing h2 {
+  display: inline-block;
+}
+.socializing a {
+  font-size: 175%;
+  margin-left: 0.25em;
+  margin-right: 0.25em;
+  text-decoration: none;
+  vertical-align: middle;
+  -webkit-transition: color 300ms ease;
+  -moz-transition: color 300ms ease;
+  transition: color 300ms ease;
+}
+.socializing a:hover {
+  color: white;
+}
+.socializing a:last-of-type {
+  margin-right: 0;
+}
+.socializing h2 {
+  white-space: nowrap;
 }
