@@ -97,7 +97,7 @@
 				event.preventDefault();
 
 				var target = document.querySelector( node.getAttribute('href') );
-				smoothScrollTo( target.offsetTop, 200 );
+				smoothScrollTo( target.offsetTop - nav.clientHeight , 200 );
 
 			});
 

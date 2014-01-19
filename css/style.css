@@ -330,6 +330,22 @@ section h2 {
   text-align: left;
 }
 
+form button[type="submit"] {
+  background: none;
+  border: 2px solid white;
+  color: white;
+  cursor: pointer;
+  margin-top: 1.5em;
+  padding: 0.75em 1.5em;
+  text-transform: uppercase;
+  -webkit-transition: border-color 300ms ease, color 300ms ease;
+  -moz-transition: border-color 300ms ease, color 300ms ease;
+  transition: border-color 300ms ease, color 300ms ease;
+}
+form button[type="submit"]:hover, form button[type="submit"]:focus, form button[type="submit"]:active {
+  border-color: #ef4136;
+  color: #ef4136;
+}
 form input, form textarea {
   background: #1d1d1d;
   border: none;
@@ -337,9 +353,9 @@ form input, form textarea {
   color: #dddddd;
   outline: none;
   padding: 0.75em;
-  -webkit-transition: border-color 200ms ease-in-out, color 200ms ease-in-out;
-  -moz-transition: border-color 200ms ease-in-out, color 200ms ease-in-out;
-  transition: border-color 200ms ease-in-out, color 200ms ease-in-out;
+  -webkit-transition: border-color 300ms ease-in-out, color 300ms ease-in-out;
+  -moz-transition: border-color 300ms ease-in-out, color 300ms ease-in-out;
+  transition: border-color 300ms ease-in-out, color 300ms ease-in-out;
   width: 100%;
 }
 form input:hover, form input:focus, form input:active, form textarea:hover, form textarea:focus, form textarea:active {
@@ -683,7 +699,7 @@ form label {
 }
 
 .pushdown {
-  margin-top: 9.375em;
+  margin-top: 6.25em;
 }
 
 .t-right {
