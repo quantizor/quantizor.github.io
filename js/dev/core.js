@@ -103,6 +103,65 @@
 
 		});
 
+		// Handle contact form submit
+
+		var form = document.getElementById('contact');
+
+		form.addEventListener('submit', function( event ){
+
+			event.preventDefault();
+
+
+			// Get form fields
+
+			var fields = form.querySelectorAll('input, textarea');
+
+
+			// Serialize field data
+
+			var data = 'idstamp=pwa/kwhHIw32zcD08ajI3h6Pks83ImMIPJ1ef6tJmoc=',
+				n = fields.length - 1;
+
+			while( n > -1 ){
+				data += '&' + fields[n].id + '=' + encodeURIComponent(fields[n].value);
+				n--;
+			}
+
+
+			// Send form info to Wufoo for processing
+			// Transmission is simulated by creating an iframe with a copy of the form inside and submitting that
+
+			var iframe = document.querySelector('iframe');
+
+			// Clear out an existing iframe (there shouldn't be one - just a precaution)
+			if( iframe ) iframe.parentNode.removeChild(iframe);
+
+			iframe = document.createElement('iframe');
+			iframe.setAttribute('name', 'foo');
+			iframe.setAttribute('aria-hidden', 'true');
+			iframe = document.body.appendChild(iframe);
+
+			var inner = (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
+
+			iframe.onload = function showThankYou(){
+
+				// When the inner iframe's src changes, the post is complete and the "thanks message" should be shown
+
+				form.querySelector('form').setAttribute('aria-hidden', 'true');
+				form.querySelector('#contact-thanks').removeAttribute('aria-hidden');
+
+			};
+
+			if( inner.document ){
+
+				inner = inner.document.open();
+
+				var facsimile = inner.appendChild( form.querySelector('form').cloneNode(true) );
+				facsimile.submit();
+			}
+
+		});
+
 	}
 
 })();

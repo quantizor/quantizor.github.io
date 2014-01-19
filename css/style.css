@@ -2091,6 +2091,7 @@ form button[type="submit"] {
   color: white;
   cursor: pointer;
   margin-top: 1.5em;
+  outline: none;
   padding: 0.75em 1.5em;
   text-transform: uppercase;
   -webkit-transition: border-color 300ms ease, color 300ms ease;
@@ -2126,6 +2127,10 @@ form label {
   font-weight: 700;
   margin-bottom: 0.5em;
   text-transform: uppercase;
+}
+
+[aria-hidden] {
+  display: none;
 }
 
 .accent {

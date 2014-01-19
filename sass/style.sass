@@ -403,6 +403,7 @@ form
 		color: #FFF
 		cursor: pointer
 		margin-top: 1.5em
+		outline: none
 		padding: 0.75em 1.5em
 		text-transform: uppercase
 		@include transition( border-color 300ms ease, color 300ms ease )
@@ -435,7 +436,10 @@ form
 		margin-bottom: 0.5em
 		text-transform: uppercase
 
-// Global classes
+// Global classes + helpers
+
+[aria-hidden]
+	display: none
 
 .accent
 	color: $accent
