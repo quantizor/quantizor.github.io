@@ -1,5 +1,6 @@
 @import "bourbon/bourbon"
 @import "neat/neat"
+@import "fontawesome/font-awesome"
 
 // Variables
 
@@ -373,17 +374,13 @@ nav
 
 section
 
-	&:nth-of-type(1)
-		background: lighten($bg, 2%)
+	@for $i from 1 through 4
 
-	&:nth-of-type(2)
-		background: lighten($bg, 4%)
+		&:nth-of-type(#{$i})
+			background: lighten( $bg, $i*2% )
 
-	&:nth-of-type(3)
-		background: lighten($bg, 6%)
-
-	&:nth-of-type(4)
-		background: lighten($bg, 8%)
+			.match-bg
+				color: lighten( $bg, $i*2% )
 
 	h2
 		margin: 0
