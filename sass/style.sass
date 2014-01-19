@@ -1,11 +1,16 @@
-@import "bourbon/bourbon"
-@import "neat/neat"
-@import "fontawesome/font-awesome"
 
 // Variables
 
-$bg: #1D1D1D
-$accent: #ef4136
+$bg: 				#1D1D1D
+$accent: 			#ef4136
+$fa-font-path: 		'../../fonts'
+$fa-li-width:		3.5em
+
+// Imports
+
+@import "bourbon/bourbon"
+@import "neat/neat"
+@import "fontawesome/font-awesome"
 
 //! normalize.css v2.1.3 | MIT License | git.io/normalize
 
@@ -277,8 +282,9 @@ table
 
 html,
 body
-	color: #FFF
-	height: 100%
+	color: darken(#FFF, 25%)
+	line-height: 1.3
+	height: 100%	
 
 section,
 body > header
@@ -383,6 +389,7 @@ section
 				color: lighten( $bg, $i*2% )
 
 	h2
+		color: darken(#FFF, 70%)
 		margin: 0
 		padding: 0
 		text-transform: uppercase
@@ -510,3 +517,50 @@ form
 
 	h2
 		white-space: nowrap
+
+// Resume overrides
+
+#resume
+
+	article
+		font-size: 0.85em
+
+	h3, h4, h5
+		margin: 0
+
+	h3
+		color: #FFF
+		font-weight: 400
+
+	h4
+		margin: 0.25em 0 0.75em
+		text-transform: uppercase
+
+		a
+			text-decoration: none
+
+		small
+			color: #555
+			display: block
+			font-size: 0.7em
+
+	h5
+		color: #555
+		font-style: italic
+
+	li
+		margin: 0 0 1.5em
+
+	strong
+		color: #FFF
+
+	.grid
+		margin-top: 3em
+
+		&:first-child
+			margin-top: 0
+
+	.intro
+		background: rgba($accent, 0.1)
+		margin: -1em 0 1.5em
+		padding: 1.5em

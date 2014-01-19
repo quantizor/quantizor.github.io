@@ -58,7 +58,7 @@
 
 .fa-ul {
   padding-left: 0;
-  margin-left: 2.14286em;
+  margin-left: 3.5em;
   list-style-type: none;
 }
 .fa-ul > li {
@@ -67,13 +67,13 @@
 
 .fa-li {
   position: absolute;
-  left: -2.14286em;
-  width: 2.14286em;
+  left: -3.5em;
+  width: 3.5em;
   top: 0.14286em;
   text-align: center;
 }
 .fa-li.fa-lg {
-  left: -1.85714em;
+  left: -3.21429em;
 }
 
 .fa-border {
@@ -1954,7 +1954,8 @@ table {
 
 html,
 body {
-  color: white;
+  color: #bfbfbf;
+  line-height: 1.3;
   height: 100%;
 }
 
@@ -2077,6 +2078,7 @@ section:nth-of-type(4) .match-bg {
   color: #313131;
 }
 section h2 {
+  color: #4d4d4d;
   margin: 0;
   padding: 0;
   text-transform: uppercase;
@@ -2504,4 +2506,48 @@ form label {
 }
 .socializing h2 {
   white-space: nowrap;
+}
+
+#resume article {
+  font-size: 0.85em;
+}
+#resume h3, #resume h4, #resume h5 {
+  margin: 0;
+}
+#resume h3 {
+  color: white;
+  font-weight: 400;
+}
+#resume h4 {
+  margin: 0.25em 0 0.75em;
+  text-transform: uppercase;
+}
+#resume h4 a {
+  text-decoration: none;
+}
+#resume h4 small {
+  color: #555555;
+  display: block;
+  font-size: 0.7em;
+}
+#resume h5 {
+  color: #555555;
+  font-style: italic;
+}
+#resume li {
+  margin: 0 0 1.5em;
+}
+#resume strong {
+  color: white;
+}
+#resume .grid {
+  margin-top: 3em;
+}
+#resume .grid:first-child {
+  margin-top: 0;
+}
+#resume .intro {
+  background: rgba(239, 65, 54, 0.1);
+  margin: -1em 0 1.5em;
+  padding: 1.5em;
 }
