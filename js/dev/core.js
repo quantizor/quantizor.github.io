@@ -88,6 +88,24 @@
 		window.addEventListener( 'resize', calcY, false );
 
 
+		// Mobile nav menu
+
+		nav.addEventListener( 'touchend', addMobileClass, true );
+		nav.addEventListener( 'click', addMobileClass, false );
+
+		function addMobileClass(){
+
+			if( this.className.indexOf('open') === -1 ){
+				this.className += ' open';
+			}
+
+			else {
+				this.className = this.className.replace(' open', '');
+			}
+
+		}
+
+
 		// Smooth-scrolling nav links
 
 		[].forEach.call( nav.childNodes, function( node ){
@@ -95,6 +113,7 @@
 			node.addEventListener('click', function( event ){
 
 				event.preventDefault();
+				event.stopPropagation();
 
 				var target = document.querySelector( node.getAttribute('href') );
 				smoothScrollTo( target.offsetTop - nav.clientHeight , 200 );
