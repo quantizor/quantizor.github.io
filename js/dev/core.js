@@ -14,6 +14,27 @@
 
 	(function(){if(typeof window.performance==="undefined"){window.performance={}}if(!window.performance.now){var e=Date.now();if(performance.timing&&performance.timing.navigationStart){e=performance.timing.navigationStart}window.performance.now=function(){return Date.now()-e}}})();
 
+	function addClass( node, className ){
+		if( node.className.indexOf(className) === -1 ){
+			node.className += ' ' + className;
+		}
+	}
+
+	function removeClass( node, className ){
+		node.className = node.className.replace(' ' + className, '');
+	}
+
+	function toggleClass( node, className ){
+
+		if( node.className.indexOf(className) === -1 ){
+			addClass( node, className );
+		}
+
+		else {
+			removeClass( node, className );
+		}
+	}
+
 	function smoothScrollTo( to, duration ){
 
 		var start = performance.now(),
@@ -61,12 +82,12 @@
 
 				if( window.scrollY >= min ){
 
-					if( nav.className.indexOf('stuck') === -1 ) nav.className += ' stuck';
+					addClass( nav, 'stuck' );
 				}
 
 				else {
 
-					if( nav.className.indexOf('stuck') !== -1 ) nav.className = nav.className.replace(' stuck', '');
+					removeClass( nav, 'stuck' );
 				}
 
 				throttle = false;
@@ -94,15 +115,7 @@
 		nav.addEventListener( 'click', addMobileClass, false );
 
 		function addMobileClass(){
-
-			if( this.className.indexOf('open') === -1 ){
-				this.className += ' open';
-			}
-
-			else {
-				this.className = this.className.replace(' open', '');
-			}
-
+			toggleClass( this, 'open' );
 		}
 
 
@@ -116,7 +129,15 @@
 				event.stopPropagation();
 
 				var target = document.querySelector( node.getAttribute('href') );
-				smoothScrollTo( target.offsetTop - nav.clientHeight , 200 );
+
+				if( window.innerWidth > 800 ){
+					smoothScrollTo( target.offsetTop - nav.clientHeight, 200 );
+				}
+
+				else {
+					smoothScrollTo( target.offsetTop, 200 );
+					removeClass( nav, 'open' );
+				}
 
 			});
 
