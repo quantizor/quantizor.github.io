@@ -111,10 +111,11 @@
 
 		// Mobile nav menu
 
-		nav.addEventListener( 'touchend', addMobileClass, true );
-		nav.addEventListener( 'click', addMobileClass, false );
+		nav.addEventListener( 'touchend', addMobileClass );
+		nav.addEventListener( 'click', addMobileClass );
 
-		function addMobileClass(){
+		function addMobileClass( event ){
+			event.preventDefault();
 			toggleClass( this, 'open' );
 		}
 
