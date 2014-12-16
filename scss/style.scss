@@ -1,9 +1,10 @@
 // Variables
 
 $bg: #1d1d1d;
-$accent: #ef4136;
+$accent: #CDEF1A;
 $fa-font-path: "../../fonts";
 $fa-li-width: 3.5em;
+$font-stack: Clear, Helvetica, sans-serif;
 
 // Imports
 
@@ -59,7 +60,7 @@ template {
 
 html {
     background-color: $bg;
-    font-family: sans-serif;
+    font-family: $font-stack;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
 }
@@ -310,6 +311,10 @@ table {
 
 // THIS IS REAL LYFE //
 
+@include font-face(Clear, '/fonts/ClearSans-Regular');
+@include font-face(Clear, '/fonts/ClearSans-Italic', normal, italic);
+@include font-face(Clear, '/fonts/ClearSans-Bold', bold);
+
 *,
 *:before,
 *:after {
@@ -338,7 +343,7 @@ body > header {
         border: 5px solid black;
         color: black;
         display: inline-block;
-        font-family: "ProximaNova-Extrabld", sans-serif;
+        font-family: $font-stack;
         font-size: 3em;
         line-height: 0.9;
         padding: 0.25em;
@@ -352,7 +357,7 @@ body > header {
             margin-bottom: -0.65em;
             position: absolute;
             bottom: 100%;
-            right: -1.2em;
+            right: -100%;
             z-index: -1;
         }
 
@@ -390,20 +395,20 @@ nav {
     }
 
     a {
+        border-bottom: 1px solid transparent;
         color: white;
         display: inline-block;
-        font-family: "ProximaNova-Regular", sans-serif;
+        font-family: $font-stack;
         font-size: 0.9rem;
+        outline: none;
         padding: 0.75em 1em;
         text-decoration: none;
         text-transform: uppercase;
-        @include transition(background-color 300ms ease-in-out);
+        @include transition(border 300ms ease-in-out);
 
         &:hover,
-        &:focus,
         &:active {
-            background: $accent;
-            outline: none;
+            border-bottom-color: $accent;
         }
 
         &#btt {

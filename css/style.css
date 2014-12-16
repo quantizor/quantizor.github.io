@@ -816,11 +816,11 @@ audio:not([controls]) { display: none; height: 0; }
 
 [hidden], template { display: none; }
 
-html { background-color: #1d1d1d; font-family: sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
+html { background-color: #1d1d1d; font-family: Clear, Helvetica, sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
 
 body { margin: 0; }
 
-a { background: transparent; color: #ef4136; }
+a { background: transparent; color: #CDEF1A; }
 
 h1 { font-size: 2em; margin: 0.67em 0; }
 
@@ -880,6 +880,9 @@ textarea { overflow: auto; vertical-align: top; }
 
 table { border-collapse: collapse; border-spacing: 0; }
 
+@font-face { font-family: Clear; font-weight: normal; font-style: normal; src: url("/fonts/ClearSans-Regular.eot"); src: url("/fonts/ClearSans-Regular.eot?#iefix") format("embedded-opentype"), url("/fonts/ClearSans-Regular.woff") format("woff"), url("/fonts/ClearSans-Regular.ttf") format("truetype"), url("/fonts/ClearSans-Regular.svg#Clear") format("svg"); }
+@font-face { font-family: Clear; font-weight: normal; font-style: italic; src: url("/fonts/ClearSans-Italic.eot"); src: url("/fonts/ClearSans-Italic.eot?#iefix") format("embedded-opentype"), url("/fonts/ClearSans-Italic.woff") format("woff"), url("/fonts/ClearSans-Italic.ttf") format("truetype"), url("/fonts/ClearSans-Italic.svg#Clear") format("svg"); }
+@font-face { font-family: Clear; font-weight: bold; font-style: normal; src: url("/fonts/ClearSans-Bold.eot"); src: url("/fonts/ClearSans-Bold.eot?#iefix") format("embedded-opentype"), url("/fonts/ClearSans-Bold.woff") format("woff"), url("/fonts/ClearSans-Bold.ttf") format("truetype"), url("/fonts/ClearSans-Bold.svg#Clear") format("svg"); }
 *, *:before, *:after { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 
 html, body { color: #bfbfbf; line-height: 1.3; height: 100%; }
@@ -887,16 +890,16 @@ html, body { color: #bfbfbf; line-height: 1.3; height: 100%; }
 section, body > header { min-height: 100%; padding: 5em 0; }
 
 body > header { display: flex; align-items: center; justify-content: center; }
-body > header figure { border: 5px solid black; color: black; display: inline-block; font-family: "ProximaNova-Extrabld", sans-serif; font-size: 3em; line-height: 0.9; padding: 0.25em; position: relative; text-align: left; text-transform: uppercase; }
-body > header figure:before, body > header figure:after { content: url("/img/corgi-nt.svg"); margin-bottom: -0.65em; position: absolute; bottom: 100%; right: -1.2em; z-index: -1; }
+body > header figure { border: 5px solid black; color: black; display: inline-block; font-family: Clear, Helvetica, sans-serif; font-size: 3em; line-height: 0.9; padding: 0.25em; position: relative; text-align: left; text-transform: uppercase; }
+body > header figure:before, body > header figure:after { content: url("/img/corgi-nt.svg"); margin-bottom: -0.65em; position: absolute; bottom: 100%; right: -100%; z-index: -1; }
 body > header figure:after { content: url("/img/corgi-t.svg"); z-index: 1; }
 body > header figure span { display: block; font-weight: 700; }
-body > header figure span:last-of-type { color: #ef4136; font-size: 1.1em; }
+body > header figure span:last-of-type { color: #CDEF1A; font-size: 1.1em; }
 
 nav { background: #111111; font-size: 0.1px; position: absolute; left: 0; bottom: 0; text-align: center; z-index: 2; width: 100%; }
 nav.stuck { position: fixed; top: 0; bottom: auto; }
-nav a { color: white; display: inline-block; font-family: "ProximaNova-Regular", sans-serif; font-size: 0.9rem; padding: 0.75em 1em; text-decoration: none; text-transform: uppercase; -webkit-transition: background-color 300ms ease-in-out; -moz-transition: background-color 300ms ease-in-out; transition: background-color 300ms ease-in-out; }
-nav a:hover, nav a:focus, nav a:active { background: #ef4136; outline: none; }
+nav a { border-bottom: 1px solid transparent; color: white; display: inline-block; font-family: Clear, Helvetica, sans-serif; font-size: 0.9rem; outline: none; padding: 0.75em 1em; text-decoration: none; text-transform: uppercase; -webkit-transition: border 300ms ease-in-out; -moz-transition: border 300ms ease-in-out; transition: border 300ms ease-in-out; }
+nav a:hover, nav a:active { border-bottom-color: #CDEF1A; }
 nav a#btt { margin-top: -1.3em; padding: 1.3em 1.75em; position: absolute; top: 50%; right: 0; }
 nav a#btt:before { border-bottom: 10px solid white; border-left: 7px solid transparent; border-right: 7px solid transparent; content: ""; margin-top: -5px; margin-right: -7px; position: absolute; top: 50%; right: 50%; }
 
@@ -911,15 +914,15 @@ section:nth-of-type(4) .match-bg { color: #313131; }
 section h2 { color: #4d4d4d; margin: 0; padding: 0; text-transform: uppercase; text-align: left; }
 
 form button[type="submit"] { background: none; border: 2px solid white; color: white; cursor: pointer; margin-top: 1.5em; outline: none; padding: 0.75em 1.5em; text-transform: uppercase; -webkit-transition: border-color 300ms ease, color 300ms ease; -moz-transition: border-color 300ms ease, color 300ms ease; transition: border-color 300ms ease, color 300ms ease; }
-form button[type="submit"]:hover, form button[type="submit"]:focus, form button[type="submit"]:active { border-color: #ef4136; color: #ef4136; }
+form button[type="submit"]:hover, form button[type="submit"]:focus, form button[type="submit"]:active { border-color: #CDEF1A; color: #CDEF1A; }
 form input, form textarea { background: #1d1d1d; border: none; border-bottom: 1px solid transparent; color: #dddddd; outline: none; padding: 0.75em; -webkit-transition: border-color 300ms ease-in-out, color 300ms ease-in-out; -moz-transition: border-color 300ms ease-in-out, color 300ms ease-in-out; transition: border-color 300ms ease-in-out, color 300ms ease-in-out; width: 100%; }
-form input:hover, form input:focus, form input:active, form textarea:hover, form textarea:focus, form textarea:active { border-bottom: 1px solid #ef4136; color: white; }
+form input:hover, form input:focus, form input:active, form textarea:hover, form textarea:focus, form textarea:active { border-bottom: 1px solid #CDEF1A; color: white; }
 form input::-webkit-input-placeholder, form textarea::-webkit-input-placeholder { color: #555555; }
 form label { color: #999999; display: block; font-weight: 700; margin-bottom: 0.5em; text-transform: uppercase; }
 
 [aria-hidden] { display: none; }
 
-.accent { color: #ef4136; }
+.accent { color: #CDEF1A; }
 
 .grid { *zoom: 1; max-width: 68em; margin-left: auto; margin-right: auto; margin-bottom: 1.5em; }
 .grid:before, .grid:after { content: " "; display: table; }
@@ -1029,7 +1032,7 @@ form label { color: #999999; display: block; font-weight: 700; margin-bottom: 0.
 #resume strong { color: white; }
 #resume .grid { margin-top: 3em; }
 #resume .grid:first-child { margin-top: 0; }
-#resume .intro { background: rgba(239, 65, 54, 0.1); margin: -1em 0 1.5em; padding: 1.5em; }
+#resume .intro { background: rgba(205, 239, 26, 0.1); margin: -1em 0 1.5em; padding: 1.5em; }
 
 @media all and (max-width: 960px) { .grid { max-width: 768px; } }
 @media all and (max-width: 800px) { form button[type="submit"] { width: 100%; }
