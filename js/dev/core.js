@@ -1,208 +1,132 @@
 
 (function(){
 
-	'use strict';
+    'use strict';
 
-	/*
-		Polyfills for rAF and performance.now() -- thanks Paul!
+    /*
+        Polyfills for rAF and performance.now() -- thanks Paul!
 
-		http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
-		https://gist.github.com/paulirish/5438650
-	*/
+        http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
+        https://gist.github.com/paulirish/5438650
+    */
 
-	(function(){var e=0;var t=["webkit","moz"];for(var n=0;n<t.length&&!window.requestAnimationFrame;++n){window.requestAnimationFrame=window[t[n]+"RequestAnimationFrame"];window.cancelAnimationFrame=window[t[n]+"CancelAnimationFrame"]||window[t[n]+"CancelRequestAnimationFrame"]}if(!window.requestAnimationFrame)window.requestAnimationFrame=function(t,n){var r=(new Date).getTime();var i=Math.max(0,16-(r-e));var s=window.setTimeout(function(){t(r+i)},i);e=r+i;return s};if(!window.cancelAnimationFrame)window.cancelAnimationFrame=function(e){clearTimeout(e)}})();
+    (function(){var e=0;var t=["webkit","moz"];for(var n=0;n<t.length&&!window.requestAnimationFrame;++n){window.requestAnimationFrame=window[t[n]+"RequestAnimationFrame"];window.cancelAnimationFrame=window[t[n]+"CancelAnimationFrame"]||window[t[n]+"CancelRequestAnimationFrame"]}if(!window.requestAnimationFrame)window.requestAnimationFrame=function(t,n){var r=(new Date).getTime();var i=Math.max(0,16-(r-e));var s=window.setTimeout(function(){t(r+i)},i);e=r+i;return s};if(!window.cancelAnimationFrame)window.cancelAnimationFrame=function(e){clearTimeout(e)}})();
 
-	(function(){if(typeof window.performance==="undefined"){window.performance={}}if(!window.performance.now){var e=Date.now();if(performance.timing&&performance.timing.navigationStart){e=performance.timing.navigationStart}window.performance.now=function(){return Date.now()-e}}})();
+    (function(){if(typeof window.performance==="undefined"){window.performance={}}if(!window.performance.now){var e=Date.now();if(performance.timing&&performance.timing.navigationStart){e=performance.timing.navigationStart}window.performance.now=function(){return Date.now()-e}}})();
 
-	function addClass( node, className ){
-		if( node.className.indexOf(className) === -1 ){
-			node.className += ' ' + className;
-		}
-	}
+    HTMLElement.prototype.addClass = function(className) {
+        if (this.className.indexOf(className) === -1) {
+            this.className += ' ' + className;
+        }
+    };
 
-	function removeClass( node, className ){
-		node.className = node.className.replace(' ' + className, '');
-	}
+    HTMLElement.prototype.removeClass = function(className) {
+        this.className = this.className.replace(' ' + className, '');
+    };
 
-	function toggleClass( node, className ){
+    HTMLElement.prototype.toggleClass = function(className) {
 
-		if( node.className.indexOf(className) === -1 ){
-			addClass( node, className );
-		}
+        if (this.className.indexOf(className) === -1){
+            this.addClass(className);
+        } else {
+            this.removeClass(className);
+        }
+    };
 
-		else {
-			removeClass( node, className );
-		}
-	}
+    function smoothScrollTo(to, duration) {
+        var start = performance.now(),
+            from = window.scrollY,
+            delta = to - from;
 
-	function smoothScrollTo( to, duration ){
+        function step(ts) {
+            var left = ts - start,
+                amount;
 
-		var start = performance.now(),
-			from = window.scrollY,
-			delta = to - from;
+            if (left >= duration) {
+                window.scroll(0, to);
 
-		function step( ts ) {
+            } else {
+                amount = from + (left / duration * delta);
 
-			var left = ts - start;
+                window.scroll(0, amount);
+                requestAnimationFrame(step);
+            }
+        }
 
-			if( left >= duration ) window.scroll(0, to);
-			
-			else {
+        requestAnimationFrame(step);
+    }
 
-				var amount = from + ( left / duration * delta );
-				window.scroll(0, amount);
+    window.onload = function() {
 
-				requestAnimationFrame(step);
-			}
+        // Lock nav on scroll
 
-		}
+        var nav = document.querySelector('nav'),
+            header = document.querySelector('header'),
+            ogHeight = window.innerHeight,
+            min = header.offsetTop + header.clientHeight - nav.clientHeight;
 
-		requestAnimationFrame(step);
-	}
+        var throttle = false;
 
+        function locker() {
 
-	window.onload = function(){
+            if (!throttle) {
+                throttle = true;
 
-		// Lock nav on scroll
+                min = min || calcY();
 
-		var nav = document.querySelector('nav'),
-			header = document.querySelector('header'),
-			ogHeight = window.innerHeight,
-			min = header.offsetTop + header.clientHeight - nav.clientHeight;
+                if (window.scrollY >= min) {
+                    nav.addClass('stuck');
+                } else {
+                    nav.removeClass('stuck');
+                }
 
-		var throttle = false;
+                throttle = false;
+            }
+        }
 
-		function locker(){
+        function calcY() {
 
-			if( !throttle ){
+            // Chrome fires resize on scroll, so this short circuits that if the height hasn't actually changed.
 
-				throttle = true;
+            if (window.innerHeight !== ogHeight) {
+                return header.offsetTop + header.clientHeight - nav.clientHeight;
+            }
+        }
 
-				min = min || calcY();
+        window.addEventListener('scroll', locker, false);
+        window.addEventListener('resize', calcY, false);
 
-				if( window.scrollY >= min ){
 
-					addClass( nav, 'stuck' );
-				}
+        // Mobile nav menu
 
-				else {
+        nav.addEventListener('touchend', addMobileClass);
+        nav.addEventListener('click', addMobileClass);
 
-					removeClass( nav, 'stuck' );
-				}
+        function addMobileClass(event) {
+            event.preventDefault();
+            this.toggleClass('open');
+        }
 
-				throttle = false;
 
-			}
+        // Smooth-scrolling nav links
 
-		}
+        [].forEach.call(nav.childNodes, function(node) {
+            node.addEventListener('click', function(event) {
+                var target;
 
-		function calcY(){
+                event.preventDefault();
+                event.stopPropagation();
 
-			// Chrome fires resize on scroll, so this short circuits that if the height hasn't actually changed.
+                target = document.querySelector(node.getAttribute('href'));
 
-			if( window.innerHeight !== ogHeight ){
-				min = header.offsetTop + header.clientHeight - nav.clientHeight;
-			}
-		}
-
-		window.addEventListener( 'scroll', locker, false );
-		window.addEventListener( 'resize', calcY, false );
-
-
-		// Mobile nav menu
-
-		nav.addEventListener( 'touchend', addMobileClass );
-		nav.addEventListener( 'click', addMobileClass );
-
-		function addMobileClass( event ){
-			event.preventDefault();
-			toggleClass( this, 'open' );
-		}
-
-
-		// Smooth-scrolling nav links
-
-		[].forEach.call( nav.childNodes, function( node ){
-
-			node.addEventListener('click', function( event ){
-
-				event.preventDefault();
-				event.stopPropagation();
-
-				var target = document.querySelector( node.getAttribute('href') );
-
-				if( window.innerWidth > 800 ){
-					smoothScrollTo( target.offsetTop - nav.clientHeight, 200 );
-				}
-
-				else {
-					smoothScrollTo( target.offsetTop, 200 );
-					removeClass( nav, 'open' );
-				}
-
-			});
-
-		});
-
-		// Handle contact form submit
-
-		var form = document.getElementById('contact');
-
-		form.addEventListener('submit', function( event ){
-
-			event.preventDefault();
-
-
-			// Get form fields
-
-			var fields = form.querySelectorAll('input, textarea');
-
-
-			// Serialize field data
-
-			var data = 'idstamp=pwa/kwhHIw32zcD08ajI3h6Pks83ImMIPJ1ef6tJmoc=',
-				n = fields.length - 1;
-
-			while( n > -1 ){
-				data += '&' + fields[n].id + '=' + encodeURIComponent(fields[n].value);
-				n--;
-			}
-
-
-			// Send form info to Wufoo for processing
-			// Transmission is simulated by creating an iframe with a copy of the form inside and submitting that
-
-			var iframe = document.querySelector('iframe');
-
-			// Clear out an existing iframe (there shouldn't be one - just a precaution)
-			if( iframe ) iframe.parentNode.removeChild(iframe);
-
-			iframe = document.createElement('iframe');
-			iframe.setAttribute('name', 'foo');
-			iframe.setAttribute('aria-hidden', 'true');
-			iframe = document.body.appendChild(iframe);
-
-			var inner = (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
-
-			iframe.onload = function showThankYou(){
-
-				// When the inner iframe's src changes, the post is complete and the "thanks message" should be shown
-
-				form.querySelector('form').setAttribute('aria-hidden', 'true');
-				form.querySelector('#contact-thanks').removeAttribute('aria-hidden');
-
-			};
-
-			if( inner.document ){
-
-				inner = inner.document.open();
-
-				var facsimile = inner.appendChild( form.querySelector('form').cloneNode(true) );
-				facsimile.submit();
-			}
-
-		});
-
-	}
+                if (window.innerWidth > 800){
+                    smoothScrollTo(target.offsetTop - nav.clientHeight, 200);
+                } else {
+                    smoothScrollTo(target.offsetTop, 200);
+                    nav.removeClass('open');
+                }
+            });
+        });
+    }
 
 })();

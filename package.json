@@ -1,12 +1,12 @@
 {
-  "name": "Evoked(dot)us",
-  "description": "The personal website of Evan Jacobs of Boston, MA.",
+  "name": "yaycmyk(dot)com",
+  "description": "Source for yaycmyk.com",
   "version": "1.0.0",
   "private": true,
   "contributors": [
     {
       "name": "Evan Jacobs",
-      "email": "evan.jacobs@beamland.com"
+      "email": "evan@yaycmyk.com"
     }
   ],
   "devDependencies": {

@@ -5,7 +5,6 @@ module.exports = function(grunt) {
 	// Project configuration.
 
 	grunt.initConfig({
-
 		pkg: grunt.file.readJSON('package.json'),
 
 		connect: {
@@ -22,11 +21,11 @@ module.exports = function(grunt) {
 		sass: {
 			dist: {
 				options: {
-					style: 'expanded'
+					style: 'compact'
 				},
 				files: {
 					// 'destination': 'source'
-					'css/style.css': 'sass/style.sass'
+					'css/style.css': 'scss/style.scss'
 				}
 			}
 		},
@@ -36,6 +35,7 @@ module.exports = function(grunt) {
 				livereload: true,
 				preserveComments: false
 			},
+
 			core: {
 				files: [{
 					expand: true,
@@ -47,7 +47,6 @@ module.exports = function(grunt) {
 		},
 
 		watch: {
-
 			options: {
 				livereload: true
 			},
@@ -60,7 +59,7 @@ module.exports = function(grunt) {
 				options: {
 					livereload: false
 				},
-				files: ['sass/**/*.sass', 'sass/**/*.scss'],
+				files: ['scss/**/*.scss'],
 				tasks: ['sass']
 			},
 
@@ -76,7 +75,6 @@ module.exports = function(grunt) {
 			json: {
 				files: ['json/**/*.json']
 			}
-
 		},
 
 		open: {
@@ -85,7 +83,6 @@ module.exports = function(grunt) {
 				app: 'Google Chrome'
 			}
 		}
-
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-sass');
@@ -96,5 +93,4 @@ module.exports = function(grunt) {
 
 	// Default task(s).
 	grunt.registerTask('default', ['connect', 'sass', 'uglify', 'open', 'watch']);
-
 };
