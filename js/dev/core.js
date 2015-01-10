@@ -94,7 +94,7 @@
         }
 
         window.addEventListener('scroll', locker, false);
-        window.addEventListener('resize', calcY, false);
+        window.addEventListener('resize', locker, false);
 
 
         // Mobile nav menu

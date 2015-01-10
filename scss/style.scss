@@ -1,10 +1,12 @@
 // Variables
 
 $bg: #1d1d1d;
-$accent: #CDEF1A;
+$accent: #ef4136;
 $fa-font-path: "../../fonts";
 $fa-li-width: 3.5em;
 $font-stack: Clear, Helvetica, sans-serif;
+
+$section-y-padding: 5em;
 
 // Imports
 
@@ -316,8 +318,8 @@ table {
 @include font-face(Clear, '/fonts/ClearSans-Bold', bold);
 
 *,
-*:before,
-*:after {
+*::before,
+*::after {
     @include box-sizing(border-box);
 }
 
@@ -326,12 +328,18 @@ body {
     color: darken(white, 25%);
     line-height: 1.3;
     height: 100%;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-section,
 body > header {
     min-height: 100%;
-    padding: 5em 0;
+    overflow: hidden;
+}
+
+section {
+    padding: $section-y-padding 0;
 }
 
 body > header {
@@ -340,30 +348,10 @@ body > header {
     justify-content: center;
 
     figure {
-        border: 5px solid black;
-        color: black;
-        display: inline-block;
-        font-family: $font-stack;
-        font-size: 3em;
-        line-height: 0.9;
-        padding: 0.25em;
-        position: relative;
-        text-align: left;
-        text-transform: uppercase;
+        transform: scale(2);
 
-        &:before,
-        &:after {
+        &::before {
             content: url("/img/corgi-nt.svg");
-            margin-bottom: -0.65em;
-            position: absolute;
-            bottom: 100%;
-            right: -100%;
-            z-index: -1;
-        }
-
-        &:after {
-            content: url("/img/corgi-t.svg");
-            z-index: 1;
         }
 
         span {
@@ -418,7 +406,7 @@ nav {
             top: 50%;
             right: 0;
 
-            &:before {
+            &::before {
                 border-bottom: 10px solid white;
                 border-left: 7px solid transparent;
                 border-right: 7px solid transparent;
@@ -446,61 +434,24 @@ section {
 
     h2 {
         color: darken(white, 70%);
-        margin: 0;
+        margin: 0 0 40px;
         padding: 0;
+        position: relative;
         text-transform: uppercase;
-        text-align: left;
-    }
-}
 
-form {
-    button[type="submit"] {
-        background: none;
-        border: 2px solid white;
-        color: white;
-        cursor: pointer;
-        margin-top: 1.5em;
-        outline: none;
-        padding: 0.75em 1.5em;
-        text-transform: uppercase;
-        @include transition(border-color 300ms ease, color 300ms ease);
-
-        &:hover,
-        &:focus,
-        &:active {
-            border-color: $accent;
-            color: $accent;
+        &::after {
+            background: $accent;
+            content: '';
+            height: 1px;
+            width: 30px;
+            position: absolute;
+            left: 0;
+            bottom: -20px;
         }
     }
 
-    input, textarea {
-        background: $bg;
-        border: none;
-        border-bottom: 1px solid transparent;
-        color: #dddddd;
-        outline: none;
-        padding: 0.75em;
-        @include transition(border-color 300ms ease-in-out, color 300ms ease-in-out);
-        width: 100%;
-
-        &:hover,
-        &:focus,
-        &:active {
-            border-bottom: 1px solid $accent;
-            color: white;
-        }
-
-        &::-webkit-input-placeholder {
-            color: #555555;
-        }
-    }
-
-    label {
-        color: #999999;
-        display: block;
-        font-weight: 700;
-        margin-bottom: 0.5em;
-        text-transform: uppercase;
+    p:last-child {
+        margin-bottom: 0;
     }
 }
 
@@ -514,69 +465,36 @@ form {
     color: $accent;
 }
 
-.grid {
-    @include outer-container;
-    margin-bottom: 1.5em;
-
-    &:last-child {
-        margin-bottom: 0;
-    }
-
-    @for $i from 1 through 12 {
-        &.block-#{$i} {
-            .block {
-                @include span-columns(12 / $i);
-                @include omega($i + "n");
-                margin-bottom: 1.5em;
-            }
-        }
-
-        .cols-#{$i} {
-            @include span-columns($i);
-        }
-
-        .offset-#{$i} {
-            @include shift($i);
-        }
-    }
-
-    .block .fa {
-        text-decoration: none;
-    }
+.fluid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.pushdown {
-    margin-top: em(100);
-}
-
-.t-right {
-    text-align: right;
-}
-
-.t-left {
-    text-align: left;
-}
-
-.t-center {
+.centered {
     text-align: center;
 }
 
-.table {
-    border-collapse: collapse;
-    display: table;
-    width: 100%;
+.full-bleed {
+    margin: -$section-y-padding 0;
+}
 
-    > * {
-        display: table-cell;
+#about-me {
+    article,
+    figure {
+        width: 50%;
     }
 
-    .cell {
-        display: table-cell;
-        vertical-align: top;
+    figure {
+        align-self: stretch;
+        background: $accent url('/img/crazyeyes.jpg') no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-blend-mode: multiply;
     }
 
-    .row {
-        display: table-row;
+    article {
+        padding: 0 5%;
     }
 }
 
@@ -611,67 +529,6 @@ form {
     }
 }
 
-// Resume overrides
-
-#resume {
-    article {
-        font-size: 0.85em;
-    }
-
-    h3,
-    h4,
-    h5 {
-        margin: 0;
-    }
-
-    h3 {
-        color: white;
-        font-weight: 400;
-    }
-
-    h4 {
-        margin: 0.25em 0 0.75em;
-        text-transform: uppercase;
-
-        a {
-            text-decoration: none;
-        }
-
-        small {
-            color: #555555;
-            display: block;
-            font-size: 0.7em;
-        }
-    }
-
-    h5 {
-        color: #555555;
-        font-style: italic;
-    }
-
-    li {
-        margin: 0 0 1.5em;
-    }
-
-    strong {
-        color: white;
-    }
-
-    .grid {
-        margin-top: 3em;
-
-        &:first-child {
-            margin-top: 0;
-        }
-    }
-
-    .intro {
-        background: rgba($accent, 0.1);
-        margin: -1em 0 1.5em;
-        padding: 1.5em;
-    }
-}
-
 // Media queries
 
 @media all and (max-width: 960px) {
@@ -681,12 +538,6 @@ form {
 }
 
 @media all and (max-width: 800px) {
-    form {
-        button[type="submit"] {
-            width: 100%;
-        }
-    }
-
     nav {
         color: white;
         font-size: initial;
@@ -698,7 +549,7 @@ form {
         width: auto;
         @include transition(all 300ms ease);
 
-        &:before {
+        &::before {
             content: $fa-var-bars;
             font-family: "Fontawesome";
         }
@@ -707,7 +558,7 @@ form {
             padding: 0;
             text-align: right;
 
-            &:before {
+            &::before {
                 display: block;
                 margin-bottom: 0.5em;
                 padding: 1em 1.5em 0;
@@ -730,27 +581,6 @@ form {
         }
     }
 
-    section {
-        aside, h2 {
-            text-align: center;
-        }
-    }
-
-    .grid {
-        max-width: 480px;
-
-        [class*="cols"] {
-            display: block;
-            float: none;
-            margin: 0 0 1.5em;
-            width: 100%;
-        }
-    }
-
-    .pushdown {
-        margin: 1em auto;
-    }
-
     .socializing {
         display: block;
 
@@ -770,36 +600,33 @@ form {
             }
         }
     }
-
-    .t-right {
-        text-align: center;
-    }
-
-    #resume {
-        .intro {
-            margin-top: 0;
-        }
-    }
 }
 
-@media all and (max-width: 520px) {
-    .grid {
-        max-width: 280px;
-    }
-}
-
-@media all and (max-height: 500px) {
+@media all and (max-width: 650px) {
     #logo {
-        width: 75%;
+        transform: scale(1);
+    }
 
-        &:before, &:after {
-            margin: -104px 0 0 0;
-            top: 50%;
-            left: 50%;
-            bottom: auto;
-            right: auto;
-            @include transform(scale(0.65));
-            z-index: 1;
+    .full-bleed {
+        margin: -$section-y-padding 0 0;
+    }
+
+    .fluid {
+        flex-direction: column;
+    }
+
+    #about-me {
+        article,
+        figure {
+            width: 100%;
+        }
+
+        article {
+            padding: 10% 15% 0;
+        }
+
+        figure {
+            height: 300px;
         }
     }
 }
