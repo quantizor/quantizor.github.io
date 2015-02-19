@@ -54,10 +54,14 @@ module.exports = function(grunt) {
             }
         },
 
+        jshint: {
+            dist: ['src/js/**/*.js']
+        },
+
         uglify: {
             options: {
                 livereload: true,
-                preserveComments: false
+                preserveComments: 'some'
             },
 
             core: {
@@ -93,8 +97,8 @@ module.exports = function(grunt) {
             },
 
             js: {
-                files: ['dist/js/dev/**/*.js'],
-                tasks: ['uglify']
+                files: ['src/js/**/*.js'],
+                tasks: ['jshint', 'uglify']
             }
         },
 
@@ -110,14 +114,16 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-postcss');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-open');
 
     // Default task(s).
     grunt.registerTask('default', [
+        'jshint',
+        'uglify',
         'sass:dist',
-        'postcss',
-        'uglify'
+        'postcss'
     ]);
 
     grunt.registerTask('dev', [

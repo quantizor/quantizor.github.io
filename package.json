@@ -13,6 +13,7 @@
     "autoprefixer-core": "^5.1.5",
     "grunt": "*",
     "grunt-contrib-connect": "*",
+    "grunt-contrib-jshint": "^0.11.0",
     "grunt-contrib-sass": "*",
     "grunt-contrib-uglify": "*",
     "grunt-contrib-watch": "*",
