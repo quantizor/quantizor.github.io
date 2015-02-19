@@ -1,96 +1,131 @@
 'use strict';
 
 module.exports = function(grunt) {
+    require('time-grunt')(grunt);
 
-	// Project configuration.
+    // Project configuration.
 
-	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json'),
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
 
-		connect: {
-			server: {
-				options: {
-					hostname: '0.0.0.0',
-					logger: 'dev',
-					livereload: true,
-					port: 9000
-				}
-			}
-		},
+        connect: {
+            server: {
+                options: {
+                    hostname: '0.0.0.0',
+                    logger: 'dev',
+                    livereload: true,
+                    port: 9000
+                }
+            }
+        },
 
-		sass: {
-			dist: {
-				options: {
-					style: 'compact'
-				},
-				files: {
-					// 'destination': 'source'
-					'css/style.css': 'scss/style.scss'
-				}
-			}
-		},
+        sass: {
+            dev: {
+                options: {
+                    style: 'compact'
+                },
+                files: {
+                    // 'destination': 'source'
+                    'dist/css/style.css': 'src/scss/style.scss'
+                }
+            },
+            dist: {
+                options: {
+                    style: 'compressed'
+                },
+                files: {
+                    // 'destination': 'source'
+                    'dist/css/style.css': 'src/scss/style.scss'
+                }
+            }
+        },
 
-		uglify: {
-			options: {
-				livereload: true,
-				preserveComments: false
-			},
+        postcss: {
+            options: {
+                map: true,
+                processors: [
+                    require('autoprefixer-core')({
+                        browsers: 'last 3 versions'
+                    }).postcss
+                ]
+            },
+            dist: {
+                src: 'dist/css/style.css'
+            }
+        },
 
-			core: {
-				files: [{
-					expand: true,
-					cwd: 'js/dev',
-					src: '**/*.js',
-					dest: 'js/src'
-				}]
-			}
-		},
+        uglify: {
+            options: {
+                livereload: true,
+                preserveComments: false
+            },
 
-		watch: {
-			options: {
-				livereload: true
-			},
+            core: {
+                files: [{
+                    expand: true,
+                    cwd: 'src/js',
+                    src: '**/*.js',
+                    dest: 'dist/js'
+                }]
+            }
+        },
 
-			html: {
-				files: ['**/*.html']
-			},
+        watch: {
+            options: {
+                livereload: true
+            },
 
-			sass: {
-				options: {
-					livereload: false
-				},
-				files: ['scss/**/*.scss'],
-				tasks: ['sass']
-			},
+            html: {
+                files: ['**/*.html']
+            },
 
-			css: {
-				files: ['css/style.css']
-			},
+            sass: {
+                options: {
+                    livereload: false
+                },
+                files: ['src/scss/style.scss'],
+                tasks: ['sass']
+            },
 
-			js: {
-				files: ['js/dev/**/*.js'],
-				tasks: ['uglify']
-			},
+            css: {
+                files: ['dist/css/style.css'],
+                tasks: ['postcss']
+            },
 
-			json: {
-				files: ['json/**/*.json']
-			}
-		},
+            js: {
+                files: ['dist/js/dev/**/*.js'],
+                tasks: ['uglify']
+            }
+        },
 
-		open: {
-			server: {
-				path: 'http://localhost:9000/',
-				app: 'Google Chrome'
-			}
-		}
-	});
+        open: {
+            server: {
+                path: 'http://localhost:9000/',
+                app: 'Google Chrome'
+            }
+        }
+    });
 
-	grunt.loadNpmTasks('grunt-contrib-sass');
-	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-connect');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-open');
+    grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-postcss');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-open');
 
-	// Default task(s).
-	grunt.registerTask('default', ['connect', 'sass', 'uglify', 'open', 'watch']);
+    // Default task(s).
+    grunt.registerTask('default', [
+        'sass:dist',
+        'postcss',
+        'uglify'
+    ]);
+
+    grunt.registerTask('dev', [
+        'connect',
+        'sass:dev',
+        'postcss',
+        'uglify',
+        'open',
+        'watch'
+    ]);
 };

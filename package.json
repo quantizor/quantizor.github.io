@@ -10,11 +10,14 @@
     }
   ],
   "devDependencies": {
+    "autoprefixer-core": "^5.1.5",
     "grunt": "*",
-    "grunt-contrib-sass": "*",
-    "grunt-contrib-watch": "*",
     "grunt-contrib-connect": "*",
+    "grunt-contrib-sass": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
     "grunt-open": "*",
-    "grunt-contrib-uglify": "*"
+    "grunt-postcss": "^0.3.0",
+    "time-grunt": "^1.0.0"
   }
 }
