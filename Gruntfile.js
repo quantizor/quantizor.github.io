@@ -42,7 +42,6 @@ module.exports = function(grunt) {
 
         postcss: {
             options: {
-                map: true,
                 processors: [
                     require('autoprefixer-core')({
                         browsers: 'last 3 versions'
@@ -88,12 +87,11 @@ module.exports = function(grunt) {
                     livereload: false
                 },
                 files: ['src/scss/style.scss'],
-                tasks: ['sass']
+                tasks: ['sass', 'postcss']
             },
 
             css: {
-                files: ['dist/css/style.css'],
-                tasks: ['postcss']
+                files: ['dist/css/style.css']
             },
 
             js: {

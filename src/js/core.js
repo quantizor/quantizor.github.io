@@ -1,35 +1,39 @@
+/*!
+    Includes polyfills for rAF and performance.now() -- thanks Paul!
+
+    http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
+    https://gist.github.com/paulirish/5438650
+*/
 
 (function(){
 
     'use strict';
 
-    /*
-        Polyfills for rAF and performance.now() -- thanks Paul!
+    (function(){var e=0;var t=["webkit","moz"];for(var n=0;n<t.length&&!window.requestAnimationFrame;++n){window.requestAnimationFrame=window[t[n]+"RequestAnimationFrame"];window.cancelAnimationFrame=window[t[n]+"CancelAnimationFrame"]||window[t[n]+"CancelRequestAnimationFrame"]}if(!window.requestAnimationFrame)window.requestAnimationFrame=function(t,n){var r=(new Date).getTime();var i=Math.max(0,16-(r-e));var s=window.setTimeout(function(){t(r+i)},i);e=r+i;return s};if(!window.cancelAnimationFrame)window.cancelAnimationFrame=function(e){clearTimeout(e)}})(); // jshint ignore:line
 
-        http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
-        https://gist.github.com/paulirish/5438650
-    */
-
-    (function(){var e=0;var t=["webkit","moz"];for(var n=0;n<t.length&&!window.requestAnimationFrame;++n){window.requestAnimationFrame=window[t[n]+"RequestAnimationFrame"];window.cancelAnimationFrame=window[t[n]+"CancelAnimationFrame"]||window[t[n]+"CancelRequestAnimationFrame"]}if(!window.requestAnimationFrame)window.requestAnimationFrame=function(t,n){var r=(new Date).getTime();var i=Math.max(0,16-(r-e));var s=window.setTimeout(function(){t(r+i)},i);e=r+i;return s};if(!window.cancelAnimationFrame)window.cancelAnimationFrame=function(e){clearTimeout(e)}})();
-
-    (function(){if(typeof window.performance==="undefined"){window.performance={}}if(!window.performance.now){var e=Date.now();if(performance.timing&&performance.timing.navigationStart){e=performance.timing.navigationStart}window.performance.now=function(){return Date.now()-e}}})();
+    (function(){if(typeof window.performance==="undefined"){window.performance={}}if(!window.performance.now){var e=Date.now();if(performance.timing&&performance.timing.navigationStart){e=performance.timing.navigationStart}window.performance.now=function(){return Date.now()-e}}})(); // jshint ignore:line
 
     HTMLElement.prototype.addClass = function(className) {
-        if (this.className.indexOf(className) === -1) {
-            this.className += ' ' + className;
+        var self = this;
+
+        if (self.className.indexOf(className) === -1) {
+            self.className += ' ' + className;
         }
     };
 
     HTMLElement.prototype.removeClass = function(className) {
-        this.className = this.className.replace(' ' + className, '');
+        var self = this;
+
+        self.className = self.className.replace(' ' + className, '');
     };
 
     HTMLElement.prototype.toggleClass = function(className) {
+        var self = this;
 
-        if (this.className.indexOf(className) === -1){
-            this.addClass(className);
+        if (self.className.indexOf(className) === -1){
+            self.addClass(className);
         } else {
-            this.removeClass(className);
+            self.removeClass(className);
         }
     };
 
@@ -104,7 +108,7 @@
 
         function addMobileClass(event) {
             event.preventDefault();
-            this.toggleClass('open');
+            event.target.toggleClass('open');
         }
 
 
@@ -127,6 +131,6 @@
                 }
             });
         });
-    }
+    };
 
 })();

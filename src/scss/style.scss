@@ -2,6 +2,8 @@
 
 $bg: #1d1d1d;
 $accent: #ef4136;
+$text: #FFF;
+
 $fa-font-path: "/dist/fonts";
 $fa-li-width: 3.5em;
 $font-stack: Clear, Helvetica, sans-serif;
@@ -246,7 +248,6 @@ select {
 
 button,
 html input[type="button"], // 1 {}
-
 input[type="reset"],
 input[type="submit"] {
     -webkit-appearance: button;
@@ -350,7 +351,7 @@ table {
 
 html,
 body {
-    color: darken(white, 25%);
+    color: darken($text, 25%);
     line-height: 1.3;
     height: 100%;
 
@@ -361,10 +362,6 @@ body {
 body > header {
     min-height: 100%;
     overflow: hidden;
-}
-
-section {
-    padding: $section-y-padding 0;
 }
 
 body > header {
@@ -409,7 +406,7 @@ nav {
 
     a {
         border-bottom: 1px solid transparent;
-        color: white;
+        color: $text;
         display: inline-block;
         font-family: $font-stack;
         font-size: 0.9rem;
@@ -432,7 +429,7 @@ nav {
             right: 0;
 
             &::before {
-                border-bottom: 10px solid white;
+                border-bottom: 10px solid $text;
                 border-left: 7px solid transparent;
                 border-right: 7px solid transparent;
                 content: "";
@@ -447,6 +444,16 @@ nav {
 }
 
 section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+
+    > * {
+        flex: 1 0 33vw;
+        padding: $section-y-padding 5%;
+    }
+
     @for $i from 1 through 4 {
         &:nth-of-type(#{$i}) {
             background: lighten($bg, $i * 2%);
@@ -457,26 +464,70 @@ section {
         }
     }
 
+    a {
+        transition: color 300ms ease;
+
+        &:hover {
+            color: $text;
+        }
+
+        &:last-of-type {
+            margin-right: 0;
+        }
+    }
+
     h2 {
-        color: darken(white, 70%);
+        color: darken($text, 70%);
+        flex-basis: auto;
         margin: 0 0 40px;
-        padding: 0;
+        padding: 0 5%;
         position: relative;
         text-transform: uppercase;
+        white-space: nowrap;
 
-        &::after {
-            background: $accent;
-            content: '';
-            height: 1px;
-            width: 30px;
-            position: absolute;
-            left: 0;
-            bottom: -20px;
+        span {
+            position: relative;
+
+            &::after {
+                background: $accent;
+                content: '';
+                height: 1px;
+                width: 30px;
+                position: absolute;
+                left: 0;
+                bottom: -20px;
+            }
         }
+    }
+
+    article h2 {
+        flex: none;
+        padding: 0;
     }
 
     p:last-child {
         margin-bottom: 0;
+    }
+}
+
+blockquote {
+    margin: 0;
+    align-self: stretch;
+
+    cite {
+        color: $text;
+        font-style: normal;
+        margin-right: 0.5em;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    @for $i from 0 through 4 {
+        &:nth-child(#{$i+1}) {
+            background: rgba($accent, $i * 0.035);
+        }
     }
 }
 
@@ -490,43 +541,21 @@ section {
     color: $accent;
 }
 
-.fluid {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .centered {
     text-align: center;
 }
 
-.full-bleed {
-    margin: -$section-y-padding 0;
-}
-
-#about-me {
-    article,
-    figure {
-        width: 50%;
-    }
-
-    figure {
-        align-self: stretch;
-        background: $accent url('/dist/img/crazyeyes.jpg') no-repeat;
-        background-position: center;
-        background-size: cover;
-        background-blend-mode: multiply;
-    }
-
-    article {
-        padding: 0 5%;
-    }
+#about-me figure {
+    align-self: stretch;
+    background: $accent url('/dist/img/crazyeyes.jpg') no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-blend-mode: multiply;
 }
 
 // Social Icons (last pane)
 
 .socializing {
-
     a,
     h2 {
         display: inline-block;
@@ -538,33 +567,18 @@ section {
         margin-right: 0.25em;
         text-decoration: none;
         vertical-align: middle;
-        transition: color 300ms ease;
-
-        &:hover {
-            color: white;
-        }
-
-        &:last-of-type {
-            margin-right: 0;
-        }
     }
+}
 
-    h2 {
-        white-space: nowrap;
-    }
+.flow-x {
+    overflow-x: auto;
 }
 
 // Media queries
 
-@media all and (max-width: 960px) {
-    .grid {
-        max-width: 768px;
-    }
-}
-
 @media all and (max-width: 800px) {
     nav {
-        color: white;
+        color: $text;
         font-size: initial;
         padding: 0.75em;
         text-align: center;
@@ -611,7 +625,6 @@ section {
 
         > * {
             display: block;
-            margin: 1em auto;
             text-align: center;
         }
 
@@ -632,26 +645,29 @@ section {
         transform: scale(1);
     }
 
-    .full-bleed {
-        margin: -$section-y-padding 0 0;
-    }
-
-    .fluid {
+    section {
         flex-direction: column;
+
+        > * {
+            flex-basis: auto;
+            padding: 10% 15%;
+        }
+
+        h2 {
+            flex-basis: auto !important;
+            padding: 0 10%;
+        }
     }
 
-    #about-me {
-        article,
-        figure {
-            width: 100%;
-        }
+    #about-me figure {
+        height: 300px;
+    }
 
-        article {
-            padding: 10% 15% 0;
-        }
+    .flow-x {
+        flex-direction: row;
 
-        figure {
-            height: 300px;
+        > * {
+            flex-basis: 100vw;
         }
     }
 }
