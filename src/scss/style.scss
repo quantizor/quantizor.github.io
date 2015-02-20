@@ -354,20 +354,18 @@ body {
     color: darken($text, 25%);
     line-height: 1.3;
     height: 100%;
+    overflow-x: hidden;
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 body > header {
-    min-height: 100%;
-    overflow: hidden;
-}
-
-body > header {
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 100%;
+    overflow: hidden;
 
     figure {
         transform: scale(2);
@@ -526,7 +524,7 @@ blockquote {
 
     @for $i from 0 through 4 {
         &:nth-child(#{$i+1}) {
-            background: rgba($accent, $i * 0.035);
+            background: rgba($accent, $i * 0.075);
         }
     }
 }
@@ -551,6 +549,12 @@ blockquote {
     background-position: center;
     background-size: cover;
     background-blend-mode: multiply;
+}
+
+#testimonials h2 .fa {
+    color: $text;
+    display: none;
+    padding-top: 40px;
 }
 
 // Social Icons (last pane)
@@ -661,6 +665,10 @@ blockquote {
 
     #about-me figure {
         height: 300px;
+    }
+
+    #testimonials h2 .fa {
+        display: block;
     }
 
     .flow-x {
