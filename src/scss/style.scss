@@ -10,10 +10,6 @@ $font-stack: Clear, Helvetica, sans-serif;
 
 $section-y-padding: 5em;
 
-// Imports
-
-@import "fontawesome/font-awesome";
-
 //! normalize.css v2.1.3 | MIT License | git.io/normalize
 
 // Correct `block` display not defined in IE 8/9.
@@ -447,13 +443,19 @@ section {
     h2 {
         color: darken($text, 70%);
         flex-basis: auto;
-        margin: 0 0 40px;
+        margin: 0 0 1em;
         padding: 0 5%;
         position: relative;
         text-transform: uppercase;
         white-space: nowrap;
 
+        &:last-child {
+            margin: 0;
+        }
+
         span {
+            display: block;
+            margin-bottom: 40px;
             position: relative;
 
             &::after {
@@ -471,6 +473,10 @@ section {
     article h2 {
         flex: none;
         padding: 0;
+    }
+
+    .fa + h2 {
+        margin-top: 1em;
     }
 
     p:last-child {
@@ -519,6 +525,14 @@ blockquote {
     transform: scale3d(1);
 }
 
+#deets {
+    align-items: flex-start;
+
+    i {
+        color: $text;
+    }
+}
+
 #about-me figure {
     align-self: stretch;
     background: $accent url('/dist/img/crazyeyes.jpg') no-repeat;
@@ -527,7 +541,7 @@ blockquote {
     background-blend-mode: multiply;
 }
 
-#testimonials h2 .fa {
+#testimonials h2 i {
     color: $text;
     display: none;
     padding-top: 40px;
@@ -543,8 +557,8 @@ blockquote {
 
     a {
         font-size: 175%;
-        margin-left: 0.25em;
-        margin-right: 0.25em;
+        margin-left: 0.5em;
+        margin-right: 0.5em;
         text-decoration: none;
         vertical-align: middle;
     }
@@ -552,6 +566,10 @@ blockquote {
 
 .flow-x {
     overflow-x: auto;
+}
+
+.fs-5x {
+    font-size: 500%;
 }
 
 // Media queries
@@ -593,7 +611,15 @@ blockquote {
 
         > * {
             flex-basis: auto;
-            padding: 10% 15%;
+            padding: 5% 15%;
+
+            &:first-child {
+                padding-top: 10%;
+            }
+
+            &:last-child {
+                padding-bottom: 10%;
+            }
         }
 
         h2 {
@@ -602,11 +628,17 @@ blockquote {
         }
     }
 
-    #about-me figure {
-        height: 300px;
+    #about-me {
+        figure {
+            height: 300px;
+        }
+
+        article {
+            padding-top: 10%;
+        }
     }
 
-    #testimonials h2 .fa {
+    #testimonials h2 i {
         display: block;
     }
 
