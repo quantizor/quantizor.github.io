@@ -345,15 +345,15 @@ table {
     }
 
     25% {
-        transform: scale3d(1.01, 1.01, 1.01) translate3d(0, 2px, 0) rotate(0.33deg);
+        transform: scale3d(1.01, 1.01, 1) translate3d(0, 2px, 0) rotate(0.33deg);
     }
 
     50% {
-        transform: scale3d(1.015, 1.015, 1.015) translate3d(0, 4px, 0) rotate(0.66deg);
+        transform: scale3d(1.015, 1.015, 1) translate3d(0, 4px, 0) rotate(0.66deg);
     }
 
     75% {
-        transform: scale3d(1.01, 1.01, 1.01) translate3d(0, 2px, 0) rotate(0.33deg);
+        transform: scale3d(1.01, 1.01, 1) translate3d(0, 2px, 0) rotate(0.33deg);
     }
 
     100% {
@@ -520,9 +520,9 @@ blockquote {
 }
 
 #logo {
-    animation: puppy 1s linear 0 infinite;
+    animation: puppy 1s linear 0s infinite;
     backface-visibility: hidden;
-    transform: scale3d(1);
+    transform: scale3d(1, 1, 1);
 }
 
 #deets {
