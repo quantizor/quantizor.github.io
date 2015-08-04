@@ -310,33 +310,33 @@ table {
     font-family: Clear;
     font-weight: normal;
     font-style: normal;
-    src:    url("/dist/fonts/ClearSans-Regular.eot");
-    src:    url("/dist/fonts/ClearSans-Regular.eot?#iefix") format("embedded-opentype"),
-            url("/dist/fonts/ClearSans-Regular.woff") format("woff"),
-            url("/dist/fonts/ClearSans-Regular.ttf") format("truetype"),
-            url("/dist/fonts/ClearSans-Regular.svg#Clear") format("svg");
+    src:    url("../../dist/fonts/ClearSans-Regular.eot");
+    src:    url("../../dist/fonts/ClearSans-Regular.eot?#iefix") format("embedded-opentype"),
+            url("../../dist/fonts/ClearSans-Regular.woff") format("woff"),
+            url("../../dist/fonts/ClearSans-Regular.ttf") format("truetype"),
+            url("../../dist/fonts/ClearSans-Regular.svg#Clear") format("svg");
 }
 
 @font-face {
     font-family: Clear;
     font-weight: normal;
     font-style: italic;
-    src:    url("/dist/fonts/ClearSans-Italic.eot");
-    src:    url("/dist/fonts/ClearSans-Italic.eot?#iefix") format("embedded-opentype"),
-            url("/dist/fonts/ClearSans-Italic.woff") format("woff"),
-            url("/dist/fonts/ClearSans-Italic.ttf") format("truetype"),
-            url("/dist/fonts/ClearSans-Italic.svg#Clear") format("svg");
+    src:    url("../../dist/fonts/ClearSans-Italic.eot");
+    src:    url("../../dist/fonts/ClearSans-Italic.eot?#iefix") format("embedded-opentype"),
+            url("../../dist/fonts/ClearSans-Italic.woff") format("woff"),
+            url("../../dist/fonts/ClearSans-Italic.ttf") format("truetype"),
+            url("../../dist/fonts/ClearSans-Italic.svg#Clear") format("svg");
 }
 
 @font-face {
     font-family: Clear;
     font-weight: bold;
     font-style: normal;
-    src:    url("/dist/fonts/ClearSans-Bold.eot");
-    src:    url("/dist/fonts/ClearSans-Bold.eot?#iefix") format("embedded-opentype"),
-            url("/dist/fonts/ClearSans-Bold.woff") format("woff"),
-            url("/dist/fonts/ClearSans-Bold.ttf") format("truetype"),
-            url("/dist/fonts/ClearSans-Bold.svg#Clear") format("svg");
+    src:    url("../..//dist/fonts/ClearSans-Bold.eot");
+    src:    url("../..//dist/fonts/ClearSans-Bold.eot?#iefix") format("embedded-opentype"),
+            url("../..//dist/fonts/ClearSans-Bold.woff") format("woff"),
+            url("../..//dist/fonts/ClearSans-Bold.ttf") format("truetype"),
+            url("../..//dist/fonts/ClearSans-Bold.svg#Clear") format("svg");
 }
 
 @keyframes puppy {
@@ -392,7 +392,7 @@ header {
         position: relative;
 
         &::before {
-            content: url(/dist/img/corgi-2x.svg);
+            content: url(../../dist/img/corgi-2x.svg);
         }
 
         span {
@@ -535,7 +535,7 @@ blockquote {
 
 #about-me figure {
     align-self: stretch;
-    background: $accent url('/dist/img/crazyeyes.jpg') no-repeat;
+    background: $accent url('../../dist/img/crazyeyes.jpg') no-repeat;
     background-position: center;
     background-size: cover;
     background-blend-mode: multiply;
@@ -603,7 +603,7 @@ blockquote {
 
 @media all and (max-width: 650px) {
     header figure::before {
-        content: url(/dist/img/corgi.svg);
+        content: url(../../dist/img/corgi.svg);
     }
 
     section {

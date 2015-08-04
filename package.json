@@ -3,22 +3,13 @@
   "description": "Source for yaycmyk.com",
   "version": "1.0.0",
   "private": true,
-  "contributors": [
-    {
-      "name": "Evan Jacobs",
-      "email": "evan@yaycmyk.com"
-    }
-  ],
+  "author": "Evan Jacobs <evan@yaycmyk.com>",
   "devDependencies": {
-    "autoprefixer-core": "^5.1.5",
-    "grunt": "*",
-    "grunt-contrib-connect": "*",
-    "grunt-contrib-jshint": "^0.11.0",
-    "grunt-contrib-sass": "*",
-    "grunt-contrib-uglify": "*",
-    "grunt-contrib-watch": "*",
-    "grunt-open": "*",
-    "grunt-postcss": "^0.3.0",
-    "time-grunt": "^1.0.0"
+    "pleeease": "^3.4.0",
+    "pleeease-cli": "^3.2.8"
+  },
+  "scripts": {
+    "build": "pleeease-compile",
+    "start": "pleeease-watch"
   }
 }

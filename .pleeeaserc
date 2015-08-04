@@ -1,0 +1,11 @@
+{
+  "in": ["./src/scss/**/*.scss"],
+  "out": "dist/css/style.css",
+  "browsers": ["> 1% in US"],
+  "sass": true,
+  "sourcemaps": {
+    "map": {
+        "inline": false
+    }
+  }
+}
