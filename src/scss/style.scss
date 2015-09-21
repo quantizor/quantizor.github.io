@@ -378,6 +378,7 @@ header {
     justify-content: center;
     min-height: 100%;
     overflow: hidden;
+    position: relative;
 
     figure {
         position: relative;
@@ -509,6 +510,15 @@ blockquote {
     text-align: center;
 }
 
+#background {
+    height: calc(100vw * 0.5625);
+    width: 100vw;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+}
+
 #logo {
     animation: puppy 1s linear 0s infinite;
     backface-visibility: hidden;
@@ -588,6 +598,17 @@ blockquote {
                 transform: rotate(90deg);
             }
         }
+    }
+}
+
+// non 16:9 useful resolution
+@media all and (max-aspect-ratio: 2/1) {
+    #background {
+        height: 100vh;
+        width: calc(100vh * 1.778);
+        left: auto;
+        margin-right: calc(100vh * 1.778 * -0.5);
+        right: 50%;
     }
 }
 
