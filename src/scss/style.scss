@@ -511,12 +511,28 @@ blockquote {
 }
 
 #background {
-    height: calc(100vw * 0.5625);
-    width: 100vw;
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     pointer-events: none;
+    width: 100%;
+    height: 100%;
+}
+
+@media (min-aspect-ratio: 16/9) {
+    #background {
+        top: -100%;
+        height: 300%;
+        width: 100%;
+    }
+}
+
+@media (max-aspect-ratio: 16/9) {
+    #background {
+        height: 100%;
+        width: 300%;
+        left: -100%;
+    }
 }
 
 #logo {
@@ -598,17 +614,6 @@ blockquote {
                 transform: rotate(90deg);
             }
         }
-    }
-}
-
-// non 16:9 useful resolution
-@media all and (max-aspect-ratio: 2/1) {
-    #background {
-        height: 100vh;
-        width: calc(100vh * 1.778);
-        left: auto;
-        margin-right: calc(100vh * 1.778 * -0.5);
-        right: 50%;
     }
 }
 
