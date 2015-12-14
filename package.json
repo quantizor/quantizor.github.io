@@ -5,7 +5,7 @@
   "private": true,
   "author": "Evan Jacobs <evan@yaycmyk.com>",
   "devDependencies": {
-    "pleeease": "git+ssh://git@github.com:yaycmyk/pleeease.git#fix-source-string-error",
+    "pleeease": "^4.0.0",
     "pleeease-cli": "git+https://github.com/yaycmyk/pleeease-cli.git#fix-ignore"
   },
   "scripts": {
