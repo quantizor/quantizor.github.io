@@ -5,11 +5,15 @@
   "private": true,
   "author": "Evan Jacobs <evan@yaycmyk.com>",
   "devDependencies": {
-    "pleeease": "^4.0.0",
-    "pleeease-cli": "git+https://github.com/yaycmyk/pleeease-cli.git#fix-ignore"
+    "autoprefixer-stylus": "^0.9.2",
+    "budo": "^8.1.0",
+    "parallelshell": "^2.0.0",
+    "stylus": "^0.54.2"
   },
   "scripts": {
-    "build": "pleeease-compile",
-    "start": "pleeease-watch"
+    "css:build": "stylus -c -u autoprefixer-stylus style.styl -o dist/css/style.css",
+    "css:watch": "npm run css:build -s -- -w",
+    "start": "parallelshell 'npm run css:watch' 'budo -l -o -H 0.0.0.0'",
+    "release": "npm run css:build"
   }
 }

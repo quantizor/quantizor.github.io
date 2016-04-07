@@ -1,14 +1,27 @@
 // Variables
 
-$bg: #1d1d1d;
-$accent: #FBB829;
-$text: #FFF;
+bg = #1d1d1d
+accent = #FBB829
+text = #FFF
 
-$fa-font-path: "/dist/fonts";
-$fa-li-width: 3.5em;
-$font-stack: Clear, Helvetica, sans-serif;
+fa-font-path = "/dist/fonts"
+fa-li-width = 3.5em
+font-stack = Clear, Helvetica, sans-serif
 
-$section-y-padding: 5em;
+section-y-padding = 5em
+
+::-webkit-scrollbar {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: lighten(bg, 20%);
+    cursor: move;
+}
+
+::selection {
+    background-color: rgba(accent, 0.3);
+}
 
 //! normalize.css v2.1.3 | MIT License | git.io/normalize
 
@@ -57,8 +70,8 @@ template {
 // 2. Prevent iOS text size adjust after orientation change, without disabling user zoom.
 
 html {
-    background-color: $bg;
-    font-family: $font-stack;
+    background-color: bg;
+    font-family: font-stack;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
 }
@@ -73,7 +86,7 @@ body {
 
 a {
     background: transparent;
-    color: $accent;
+    color: accent;
 }
 
 // Address `outline` inconsistency between Chrome and other browsers.
@@ -360,7 +373,7 @@ table {
 
 html,
 body {
-    color: darken($text, 25%);
+    color: darken(text, 20%);
     line-height: 1.3;
     height: 100%;
 
@@ -392,7 +405,7 @@ header {
             font-weight: 700;
 
             &:last-of-type {
-                color: $accent;
+                color: accent;
                 font-size: 1.1em;
             }
         }
@@ -406,25 +419,25 @@ section {
     flex-wrap: nowrap;
 
     > * {
-        flex: 1 0 33vw;
-        padding: $section-y-padding 5%;
+        flex: 1 1 33vw;
+        padding: section-y-padding 5%;
     }
 
-    @for $i from 1 through 4 {
-        &:nth-of-type(#{$i}) {
-            background: lighten($bg, $i * 2%);
-
-            .match-bg {
-                color: lighten($bg, $i * 2%);
-            }
+    for i in (1..5) {
+        &:nth-of-type({i}) {
+            background: lighten(bg, i * 2%);
         }
+    }
+
+    section {
+        background: inherit !important;
     }
 
     a {
         transition: color 300ms ease;
 
         &:hover {
-            color: $text;
+            color: text;
         }
 
         &:last-of-type {
@@ -433,7 +446,7 @@ section {
     }
 
     h2 {
-        color: darken($text, 70%);
+        color: darken(text, 60%);
         flex-basis: auto;
         margin: 0 0 1em;
         padding: 0 5%;
@@ -450,7 +463,7 @@ section {
             position: relative;
 
             &::after {
-                background: $accent;
+                background: accent;
                 content: '';
                 height: 1px;
                 width: 30px;
@@ -475,12 +488,15 @@ section {
     }
 }
 
+article,
 blockquote {
-    margin: 0;
-    align-self: stretch;
+    max-width: 800px;
+    margin: 0 auto;
+}
 
+blockquote {
     cite {
-        color: $text;
+        color: text;
         font-style: normal;
         margin-right: 0.5em;
     }
@@ -489,11 +505,17 @@ blockquote {
         text-decoration: none;
     }
 
-    @for $i from 0 through 4 {
-        &:nth-child(#{$i+1}) {
-            background: rgba($accent, $i * 0.075);
+    for i in (0..4) {
+        &:nth-child({i+1}) {
+            background: rgba(accent, i * 0.075);
         }
     }
+}
+
+code {
+    background: lighten(bg, 25%);
+    color: #FFF;
+    padding: 0 0.25rem;
 }
 
 // Global classes + helpers
@@ -503,7 +525,7 @@ blockquote {
 }
 
 .accent {
-    color: $accent;
+    color: accent;
 }
 
 .centered {
@@ -545,27 +567,64 @@ blockquote {
     align-items: flex-start;
 
     i {
-        color: $text;
+        color: text;
     }
 }
 
 #about-me figure {
     align-self: stretch;
-    background: $accent url('../../dist/img/crazyeyes.jpg') no-repeat;
+    background: accent url('../../dist/img/face.jpg') no-repeat;
     background-position: center;
     background-size: cover;
     background-blend-mode: multiply;
 }
 
-#testimonials h2 i {
-    color: $text;
-    display: none;
-    padding-top: 40px;
+list-spacing = 3em
+
+#projects {
+    padding: 0;
+
+    article {
+        display: flex;
+        align-content: flex-start;
+        flex-wrap: wrap;
+        max-width: 1200px;
+        padding: section-y-padding 0 section-y-padding - (list-spacing);
+    }
+
+    h3 {
+        margin-top: 0;
+    }
+
+    dl {
+        align-self: flex-start;
+        flex: 0 1 auto;
+        margin: 0;
+        padding: 0 5% list-spacing;
+        width: 33%;
+    }
+
+    dt {
+        color: darken(text, 50%);
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin: 0 0 1em;
+
+        a {
+            font-size: 1.25rem;
+            margin-right: 0.25rem;
+        }
+    }
+
+    dd {
+        margin: 0;
+    }
 }
 
 // Social Icons (last pane)
 
-.socializing {
+#contact {
     a,
     h2 {
         display: inline-block;
@@ -580,42 +639,11 @@ blockquote {
     }
 }
 
-.flow-x {
-    overflow-x: auto;
-}
-
 .fs-5x {
     font-size: 500%;
 }
 
 // Media queries
-
-@media all and (max-width: 900px) {
-    .flow-x {
-        > * {
-            flex-basis: 50vw;
-        }
-    }
-
-    .socializing {
-        display: block;
-
-        > * {
-            display: block;
-            text-align: center;
-        }
-
-        h2 {
-            white-space: normal;
-
-            i {
-                display: block;
-                margin-top: 0.5em;
-                transform: rotate(90deg);
-            }
-        }
-    }
-}
 
 @media all and (max-width: 750px) {
     header figure::before {
@@ -651,18 +679,35 @@ blockquote {
 
         article {
             padding-top: 10%;
+            padding-left: 10%;
+            padding-right: 10%;
         }
     }
 
-    #testimonials h2 i {
-        display: block;
+    #testimonials {
+        blockquote {
+            padding-left: 10%;
+            padding-right: 10%;
+        }
     }
 
-    .flow-x {
-        flex-direction: row;
+    #projects {
+        dl {
+            width: 100%;
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+    }
 
-        > * {
-            flex-basis: 100vw;
+    #contact {
+        article {
+            display: flex;
+            flex-wrap: wrap;
+            padding-bottom: calc(10% - 2rem);
+
+            > * {
+                padding: 0 1.5rem 2rem;
+            }
         }
     }
 }
