@@ -3,7 +3,7 @@
   "description": "Source for yaycmyk.com",
   "version": "1.0.0",
   "private": true,
-  "author": "Evan Jacobs <evan@yaycmyk.com>",
+  "author": "Evan Scott <glitterbyte@gmail.com>",
   "devDependencies": {
     "autoprefixer-stylus": "^0.9.2",
     "budo": "^8.1.0",
