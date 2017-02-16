@@ -1,10 +1,14 @@
 // Variables
 
 bg = #1d1d1d
-accent = #FBB829
+accent-yellow = #fbb829
+accent-cyan = rgb(67, 244, 253)
+accent-magenta = rgb(253, 65, 195)
 text = #FFF
-font-stack = 'Droid Sans Mono', Consolas, monospace;
+font-stack = "Droid Sans Mono", Monaco, Consolas, monospace;
 padding = 75px;
+
+accent ?= accent-cyan
 
 ::selection {
     background-color: rgba(accent, 0.3);
@@ -46,11 +50,9 @@ a {
     color: accent;
 }
 
-// Address style set to `bolder` in Firefox 4+, Safari 5, and Chrome.
-
-b,
-strong {
-    font-weight: 900;
+em {
+    color: #FFF;
+    font-style: normal;
 }
 
 // Address styling not present in IE 8/9.
@@ -64,7 +66,7 @@ mark {
 
 code,
 pre {
-    font-family: monospace, serif;
+    font-family: inherit;
     font-size: 1em;
 }
 
@@ -90,7 +92,6 @@ body {
 
 a {
     border-bottom: 1px dotted currentColor;
-    font-weight: 700;
     text-decoration: none;
     transition: border-color 300ms ease;
 
@@ -123,6 +124,7 @@ a.fa {
 h2 {
     color: darken(text, 60%);
     font-size: 18px;
+    font-weight: 400;
     flex-basis: auto;
     margin: 0 0 2rem;
     padding: 0;
@@ -163,13 +165,19 @@ header {
     position: relative;
 
     &::after {
-        background: rgba(#000, 0.6);
+        background: linear-gradient(
+            to right,
+            rgba(#000, 0.8) 0%,
+            rgba(#000, 0.6) 50%,
+            transparent 100%
+        );
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
+        z-index: 0;
     }
 
     > * {
@@ -178,32 +186,41 @@ header {
     }
 
     footer {
-        font-weight: 700;
         margin-top: auto;
-        margin-bottom: padding;
-    }
-
-    h1 {
-        font-size: 5vw;
-        line-height: 1;
-        margin-bottom: 0.5rem;
+        margin-bottom: "calc(%s - 1rem)" % padding;
     }
 
     pre {
         max-width: 60vw;
+
+        code {
+            color: darken(#FFF, 55%);
+        }
     }
 }
 
-body > section {
+section {
+    outline: 1px solid;
     outline-offset: ceil(padding / 2) * -1;
     padding: padding;
+    position: relative;
 
-    for i in (1..2) {
-        &:nth-of-type({i}) {
-            bg = lighten(bg, i * 2%);
+    h2 {
+        line-height: 1;
+        position: absolute;
+        top: "calc(%s - 0.5em)" % ceil(padding / 2);
+        left: padding;
+        z-index: 1;
 
+        &::after {
             background: bg;
-            outline: 1px solid lighten(bg, 10%);
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -1em;
+            bottom: 0;
+            right: -1em;
+            z-index: -1;
         }
     }
 }
@@ -211,7 +228,6 @@ body > section {
 code {
     background: rgba(#FFF, 0.15);
     color: #FFF;
-    font-family: "Droid Sans Mono", monospace;
     padding: 0 0.25rem;
 }
 
@@ -222,6 +238,7 @@ pre {
 
 pre code {
     background: 0;
+    padding: 0;
 }
 
 // Global classes + helpers
@@ -234,10 +251,19 @@ list-spacing = 3em
 
 #projects {
     display: block;
+    outline-color: accent-magenta;
 
-    h2 {
-        .fa {
-            margin-right: 0.25em;
+    ::selection {
+        background-color: rgba(accent-magenta, 0.3);
+    }
+
+    a {
+        color: accent-magenta;
+
+        &.fa {
+            &:hover {
+                border-color: accent-magenta;
+            }
         }
     }
 
@@ -265,7 +291,6 @@ list-spacing = 3em
     dt {
         color: darken(text, 50%);
         display: block;
-        font-weight: 700;
         margin: 0 0 1em;
 
         a {
@@ -276,9 +301,33 @@ list-spacing = 3em
     dd {
         margin: 0;
     }
+
+    h2 {
+        color: accent-magenta;
+    }
 }
 
 #writing {
+    outline-color: accent-yellow;
+
+    ::selection {
+        background-color: rgba(accent-yellow, 0.3);
+    }
+
+    a {
+        color: accent-yellow;
+
+        &.fa {
+            &:hover {
+                border-color: accent-yellow;
+            }
+        }
+    }
+
+    h2 {
+        color: accent-yellow;
+    }
+
     ul {
         list-style-type: none;
         margin-top: 0;
@@ -286,7 +335,7 @@ list-spacing = 3em
     }
 
     ul + a {
-        margin-left: 8.25em;
+        margin-left: 8.85em;
     }
 
     li a {
@@ -317,11 +366,24 @@ list-spacing = 3em
         display: none;
     }
 
+    a {
+        border: none !important;
+    }
+
     header {
         background-position: top right;
         font-size: 14px;
         min-height: 0;
         padding: 10vw;
+
+        &::after {
+            background: linear-gradient(
+                to right,
+                rgba(#000, 0.9) 0%,
+                rgba(#000, 0.5) 70%,
+                transparent 100%
+            );
+        }
 
         footer {
             margin-bottom: 0;
@@ -332,15 +394,11 @@ list-spacing = 3em
         }
     }
 
-    a {
-        border: none !important;
-    }
-
-    body > section {
+    section {
         display: flex;
         flex-direction: column;
         outline-offset: -5vw;
-        padding: 10vw;
+        padding: 15vw 10vw;
 
         > * {
             flex-basis: auto;
@@ -357,7 +415,15 @@ list-spacing = 3em
 
         h2 {
             flex-basis: auto !important;
+            font-size: 1rem;
             padding: 0 !important;
+            left: 10vw;
+            top: calc(5vw - 0.5em);
+
+            &::after {
+                left: -0.75em;
+                right: -0.75em;
+            }
         }
     }
 
