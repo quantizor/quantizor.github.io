@@ -1,12 +1,12 @@
 {
-  "name": "yaycmyk(dot)com",
-  "description": "Source for yaycmyk.com",
+  "name": "probablyup.com",
+  "description": "Source for probablyup.com",
   "version": "1.0.0",
   "private": true,
   "author": "Evan Scott <glitterbyte@gmail.com>",
   "devDependencies": {
-    "autoprefixer-stylus": "^0.9.2",
-    "budo": "^8.1.0",
+    "autoprefixer-stylus": "^0.14.0",
+    "budo": "^11.3.0",
     "parallelshell": "^3.0.0",
     "stylus": "^0.54.2"
   },

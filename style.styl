@@ -5,7 +5,7 @@ accent-yellow = #fbb829
 accent-cyan = rgb(67, 244, 253)
 accent-magenta = rgb(253, 65, 195)
 text = #FFF
-font-stack = "Droid Sans Mono", Monaco, Consolas, monospace;
+font-stack = "Overpass Mono", Monaco, Consolas, monospace;
 padding = 75px;
 
 accent ?= accent-cyan
@@ -158,9 +158,9 @@ header {
     display: flex;
     flex-direction: column;
     font-size: 18px;
-    min-height: 98vh;
+    min-height: 90vh;
     overflow: hidden;
-    padding-top: padding;
+    padding-top: 3rem;
     padding-left: padding;
     position: relative;
 
@@ -187,7 +187,7 @@ header {
 
     footer {
         margin-top: auto;
-        margin-bottom: "calc(%s - 1rem)" % padding;
+        margin-bottom: 2rem;
     }
 
     pre {
@@ -195,6 +195,10 @@ header {
 
         code {
             color: darken(#FFF, 55%);
+
+            a:not(:hover) {
+                border: 0;
+            }
         }
     }
 }
