@@ -3,7 +3,7 @@
   "description": "Source for probablyup.com",
   "version": "1.0.0",
   "private": true,
-  "author": "Evan Scott <glitterbyte@gmail.com>",
+  "author": "Evan Jacobs <probablyup@gmail.com>",
   "devDependencies": {
     "autoprefixer-stylus": "^0.14.0",
     "budo": "^11.3.0",
