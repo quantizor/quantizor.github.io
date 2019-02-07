@@ -6,14 +6,14 @@
   "author": "Evan Jacobs <probablyup@gmail.com>",
   "devDependencies": {
     "autoprefixer-stylus": "^0.14.0",
-    "budo": "^11.3.0",
-    "parallelshell": "^3.0.0",
+    "budo": "^11.6.0",
+    "concurrently": "^4.1.0",
     "stylus": "^0.54.2"
   },
   "scripts": {
     "css:build": "stylus -c -u autoprefixer-stylus style.styl -o dist/css/style.css",
     "css:watch": "yarn css:build -s -- -w",
-    "start": "parallelshell 'yarn css:watch' 'budo -l -o -H 0.0.0.0'",
+    "start": "concurrently 'yarn css:watch' 'budo -l -o -H 0.0.0.0'",
     "release": "yarn css:build"
   }
 }
