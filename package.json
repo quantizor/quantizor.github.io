@@ -5,9 +5,9 @@
   "private": true,
   "author": "Evan Jacobs <probablyup@gmail.com>",
   "devDependencies": {
-    "autoprefixer-stylus": "^0.14.0",
+    "autoprefixer-stylus": "^1.0.0",
     "budo": "^11.6.0",
-    "concurrently": "^4.1.0",
+    "concurrently": "^6.0.0",
     "stylus": "^0.54.2"
   },
   "scripts": {
