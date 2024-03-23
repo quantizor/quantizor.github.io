@@ -1,9 +1,7 @@
 {
-  "name": "probablyup.com",
-  "description": "Source for probablyup.com",
-  "version": "1.0.0",
+  "name": "quantizor.com",
   "private": true,
-  "author": "Evan Jacobs <probablyup@gmail.com>",
+  "author": "Evan Jacobs <yo@quantizor.com>",
   "devDependencies": {
     "autoprefixer-stylus": "^1.0.0",
     "budo": "^11.6.0",
