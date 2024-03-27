@@ -1,33 +1,31 @@
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: [$default-branch]
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: 'pages'
+  cancel-in-progress: false
 
 jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v4
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
+      - run: bun install --frozen-lockfile
       - name: build
-        run: bun run build
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        run: bun run -b build
+      - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: .output/public
     # <Not provided for brevity>
     # At a minimum this job should upload artifacts using actions/upload-pages-artifact
 
@@ -49,7 +47,6 @@ jobs:
     # Specify runner + deployment step
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
 
