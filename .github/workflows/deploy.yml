@@ -1,7 +1,10 @@
 on:
+  # Runs on pushes targeting the default branch
   push:
-    branches:
-      - main
+    branches: [$default-branch]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -12,11 +15,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
       - name: build
         run: bun run build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
     # <Not provided for brevity>
     # At a minimum this job should upload artifacts using actions/upload-pages-artifact
 
