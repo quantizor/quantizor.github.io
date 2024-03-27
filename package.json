@@ -2,16 +2,23 @@
   "name": "quantizor.com",
   "private": true,
   "author": "Evan Jacobs <yo@quantizor.com>",
-  "devDependencies": {
-    "autoprefixer-stylus": "^1.0.0",
-    "budo": "^11.6.0",
-    "concurrently": "^6.0.0",
-    "stylus": "^0.54.2"
-  },
+  "type": "module",
   "scripts": {
-    "css:build": "stylus -c -u autoprefixer-stylus style.styl -o dist/css/style.css",
-    "css:watch": "yarn css:build -s -- -w",
-    "start": "concurrently 'yarn css:watch' 'budo -l -o -H 0.0.0.0'",
-    "release": "yarn css:build"
+    "dev": "vinxi dev",
+    "build": "vinxi build",
+    "start": "vinxi start"
+  },
+  "dependencies": {
+    "@solidjs/meta": "^0.29.3",
+    "@solidjs/router": "^0.13.1",
+    "@solidjs/start": "^1.0.0-rc.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.26",
+    "solid-js": "^1.8.16",
+    "tailwindcss": "^3.3.3",
+    "vinxi": "^0.3.10"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

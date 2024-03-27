@@ -1,0 +1,5 @@
+{
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": "file:///Users/b34r/code/quantizor.github.io/.github/workflows/deploy.yml"
+  }
+}
