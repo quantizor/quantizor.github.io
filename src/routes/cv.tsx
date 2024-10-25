@@ -1,8 +1,6 @@
 import SiteTitle from '@/components/Title';
 import data from '@/resume.json';
-import GithubIcon from 'simple-icons/icons/github.svg';
-import LinkedInIcon from 'simple-icons/icons/linkedin.svg';
-import XIcon from 'simple-icons/icons/x.svg';
+import { AiFillGithub as GithubIcon, AiFillLinkedin as LinkedInIcon } from 'solid-icons/ai';
 import { For } from 'solid-js';
 
 export default function CV() {
@@ -13,15 +11,17 @@ export default function CV() {
       <main class="text-zinc-100 flex flex-col gap-12 mx-auto lg:max-w-[50vw] px-8 md:px-16 py-10">
         <header class="flex">
           <h1 class="opacity-60 text-xl">{data.personalInfo.name}</h1>
-          <p class="flex gap-4 align-middle justify-end ml-auto">
-            <a href={data.profiles.x} target="_blank" rel="noopener noreferrer">
-              <img aria-label="X" class="h-6 w-6 invert hue-rotate-90 hover:opacity-70" src={XIcon} />
+          <p class="flex gap-4 items-center justify-end ml-auto">
+            <a class="opacity-50 hover:opacity-100" href={data.profiles.x} target="_blank" rel="noopener noreferrer">
+              <span aria-label="Quantizor on X, the Everything App" class="text-[24px]">
+                𝕏
+              </span>
             </a>
             <a href={data.profiles.github} target="_blank" rel="noopener noreferrer">
-              <img aria-label="GitHub" class="h-6 w-6 invert hover:opacity-70" src={GithubIcon} />
+              <GithubIcon aria-label="GitHub" class="h-5 w-5  opacity-50 hover:opacity-100" />
             </a>
             <a href={data.profiles.linkedIn} target="_blank" rel="noopener noreferrer">
-              <img aria-label="LinkedIn" src={LinkedInIcon} class="h-6 w-6 invert hover:opacity-70" />
+              <LinkedInIcon aria-label="LinkedIn" class="h-5 w-5  opacity-50 hover:opacity-100" />
             </a>
           </p>
         </header>
@@ -78,6 +78,8 @@ export default function CV() {
             </For>
           </ul>
         </section>
+
+        <p>Thanks for reading, I look forward to hearing from you.</p>
       </main>
     </>
   );

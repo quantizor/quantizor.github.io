@@ -16,6 +16,7 @@
     "@tsparticles/solid": "^3.0.0",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.26",
+    "solid-icons": "^1.1.0",
     "solid-js": "^1.8.16",
     "tailwindcss": "^3.3.3",
     "tsparticles": "^3.5.0",

@@ -1,6 +1,8 @@
 import { createEffect, createSignal } from 'solid-js';
+import { FaBrandsGithub, FaBrandsTwitter } from 'solid-icons/fa';
 
 import SiteTitle from '@/components/Title';
+import { profiles } from '@/resume.json';
 
 export default function Home() {
   const [handle, setHandle] = createSignal<null | number>(null);
@@ -23,6 +25,7 @@ export default function Home() {
   return (
     <>
       <SiteTitle />
+
       <main class="flex grow justify-center items-center max-h-screen text-center mx-auto p-4">
         <pre
           class="text-[1.5vw] absolute max-w-full md:text-xs"
@@ -33,11 +36,21 @@ export default function Home() {
         </pre>
       </main>
 
-      <footer class="inline-flex gap-5 justify-center text-center self-center absolute top-3/4 left-1/2 translate-x-[-50%] translate-y-[-50%]">
-        <a class="border-current border-[1px] py-1 px-3 rounded" href="/cv">
+      <footer class="flex gap-5 justify-center text-center self-center absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <a class="border-current border-[1px] inline-flex py-1 px-3 rounded" href="/cv">
           CV
         </a>
       </footer>
+
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-5 items-center">
+        <a title="GitHub" href={profiles.github}>
+          <FaBrandsGithub height={24} />
+        </a>
+
+        <a title="X/Twitter" href={profiles.x}>
+          <span class="text-[20px]">𝕏</span>
+        </a>
+      </div>
     </>
   );
 }
