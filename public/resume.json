@@ -9,7 +9,7 @@
       "url": "https://aurorasolar.com/",
       "icon": "https://aurorasolar.com/wp-content/themes/aurora-solar/assets/img/favicon.svg",
       "title": "Principal Software Engineer",
-      "period": "August 2021 - Present",
+      "period": "8/2021 - Present",
       "description": "Architected and executed a design system and high-automation localization platform for 12+ engineering pods. Now on the Developer Productivity pod improving the authoring experience and cycle time for our core monorepo.",
       "responsibilities": [
         "Education and mentorship of other engineers through pairing, educational videos, office hours, etc",
@@ -25,7 +25,7 @@
       "title": "Software Architect",
       "url": "https://www.butcherbox.com/",
       "icon": "https://cdn.shopify.com/oxygen-v2/26785/11795/24115/1039474/build/_assets/bb-favicon-32x32-3B2HSKDY.png",
-      "period": "March 2020 - January 2021",
+      "period": "3/2020 - 1/2021",
       "description": "Architected and implemented a brand new e-commerce frontend for the company, including: a design system, full browser testing suite, and robust telemetry schema for our data scientists.",
       "responsibilities": [
         "Co-developed data contracts with the backend team to enable a new set of APIs with consistent payloads and behaviors (RESTful pattern using OpenAPI standard)",
@@ -39,7 +39,7 @@
       "title": "Front End Architect",
       "url": "https://sesamecare.com/",
       "icon": "https://sesamecare.com/assets/sesame-favicon.png",
-      "period": "August 2018 - October 2019",
+      "period": "8/2018 - 10/2019",
       "description": "Working in tandem with a backend engineering team in Berlin, I architected and executed a constellation of web app experiences to support a two-sided health marketplace. As a senior member of the team, I was present during the entire product development process and bridged product, design, and backend engineering.",
       "responsibilities": [
         "Designed and implemented four next.js-backed React web apps focusing on different aspects of the marketplace with diverse browser support requirements",
@@ -52,7 +52,7 @@
       "title": "Front End Architect",
       "url": "https://www.zocdoc.com/",
       "icon": "https://www.zocdoc.com/favicon_large.png",
-      "period": "February 2017 - June 2018",
+      "period": "2/2017 - 6/2018",
       "description": "I architected and implemented a white-label solution that enabled rapid, synchronized deployment of enterprise client web products, derived from a battle-tested, homogenous core used by zocdoc.com itself (custom streaming SSR framework + design system based on React.)"
     },
     {
@@ -60,7 +60,7 @@
       "title": "Technical Lead",
       "url": "https://www.enigma.com/",
       "icon": "https://cdn.prod.website-files.com/64de662ff5e68c57571c3503/64de70ca01d66a5e42c92bf4_enigma-favicon-32x32px.png",
-      "period": "June 2015 - January 2017",
+      "period": "6/2015 - 1/2017",
       "description": "Principal front-end architecture development and implementation of the flagship product: Abstract (now \"Enigma Public\".) My responsibilities also extended to mentoring of other FE engineers, setting internal company standards for FE engineering, and project estimation."
     },
     {
@@ -68,7 +68,7 @@
       "title": "Software Engineer",
       "url": "https://www.yahoo.com/",
       "icon": "https://www.svgrepo.com/show/349573/yahoo.svg",
-      "period": "May 2014 - May 2015",
+      "period": "5/2014 - 5/2015",
       "description": "Lead UI engineer in a team of 30+ front-enders on Yahoo! Mail. Developed a new implementation of search in the Mail product using React. Represented the Mail team in a company-wide redesign initiative."
     },
     {
@@ -76,7 +76,7 @@
       "title": "Senior Software Engineer",
       "url": "https://mergeworld.com/",
       "icon": "https://mergeworld.com/favicon.ico",
-      "period": "June 2013 - May 2014",
+      "period": "6/2013 - 5/2014",
       "description": "Lead front-end engineer in a team of six. Wrote the majority of the HTML, CSS and JS (Angular & jQuery) in use on the new MINIUSA.com. Regularly mentored junior and mid-level developers and held info sessions on rising technologies and JS best practices. Built a data visualization tool in Angular and Express to interpret both online and offline marketing data and plot the critical paths customers took to arrive at the company's desired goals."
     }
   ],
