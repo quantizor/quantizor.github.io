@@ -11,7 +11,14 @@ export default function App() {
       <Router
         root={(props) => (
           <>
-            <Suspense>{props.children}</Suspense>
+            <Suspense>
+              {props.location.pathname !== '/' && (
+                <a class="absolute top-4 left-4 leading-none text-2xl" title="Back to index" href="/">
+                  ↰
+                </a>
+              )}
+              {props.children}
+            </Suspense>
           </>
         )}
       >

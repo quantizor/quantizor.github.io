@@ -1,6 +1,6 @@
 import { createEffect, createSignal } from 'solid-js';
 
-import SiteTitle from '~/components/Title';
+import SiteTitle from '@/components/Title';
 
 export default function Home() {
   const [handle, setHandle] = createSignal<null | number>(null);
@@ -32,8 +32,11 @@ export default function Home() {
           {view()}
         </pre>
       </main>
-      <footer class="border-current border-[1px] py-1 px-3 inline-flex gap-5 justify-center text-center text-lime-100 rounded self-center absolute top-3/4 left-1/2 translate-x-[-50%] translate-y-[-50%]">
-        Coming soon
+
+      <footer class="inline-flex gap-5 justify-center text-center self-center absolute top-3/4 left-1/2 translate-x-[-50%] translate-y-[-50%]">
+        <a class="border-current border-[1px] py-1 px-3 rounded" href="/cv">
+          CV
+        </a>
       </footer>
     </>
   );
@@ -63,7 +66,7 @@ const views = [
   ▒██▓  ██▒ ██  ▓██▒▒████▄     ██ ▀█   █ ▓  ██▒ ▓▒▓██▒▒ ▒ ▒ ▄▀░▒██▒  ██▒▓██ ▒ ██▒
   ▒██▒  ██░▓██  ▒██░▒██  ▀█▄  ▓██  ▀█ ██▒▒ ▓██░ ▒░▒██▒░ ▒ ▄▀▒░ ▒██░  ██▒▓██ ░▄█ ▒
  ░██  █▀ ░▓▓█  ░██░░██▄▄▄▄██ ▓██▒  ▐▌██▒░ ▓██▓ ░ ░██░  ▄▀▒   ░▒██   ██░▒██▀▀█▄
-  ░▒███▒█▄ ▒▒█████▓  ▓█   ▓██▒▒██░   ▓██░  ▒██▒ ░ ░██░▒███████▒░ ████▓▒░░██▓ ▒██▒
+  ░▒███▒█▄ ▒█████▓  ▓█   ▓██▒▒██░   ▓██░  ▒██▒ ░ ░██░▒███████▒░ ████▓▒░░██▓ ▒██▒
    ░░ ▒▒░ ▒ ░▒▓▒ ▒ ▒  ▒▒   ▓▒█░░ ▒░   ▒ ▒   ▒ ░░   ░▓  ░▒▒ ▓░▒░▒░ ▒░▒░▒░ ░ ▒▓ ░▒▓░
    ░ ▒░  ░ ░░▒░ ░ ░   ▒   ▒▒ ░░ ░░   ░ ▒░    ░     ▒ ░░░▒ ▒ ░ ▒  ░ ▒ ▒░   ░▒ ░ ▒░
     ░   ░  ░░░ ░ ░   ░   ▒      ░   ░ ░   ░       ▒ ░░ ░ ░ ░ ░░ ░ ░ ▒    ░░   ░

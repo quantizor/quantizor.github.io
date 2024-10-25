@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+    @apply bg-zinc-900 text-orange-400 font-mono h-screen selection:text-orange-200
+}
+
+body {
+    @apply h-screen
+}
+
+#app {
+    @apply h-screen flex flex-col
+}
+
+a {
+    @apply text-orange-400 hover:text-orange-500 active:text-orange-600
+}
+
+ul {
+    @apply flex flex-col gap-3 list-disc ml-4 text-zinc-500
+}
