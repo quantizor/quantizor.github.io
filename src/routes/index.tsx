@@ -28,7 +28,7 @@ export default function Home() {
 
       <main class="flex grow justify-center items-center max-h-screen text-center mx-auto p-4">
         <pre
-          class="text-[1.5vw] absolute max-w-full md:text-xs"
+          class="text-[1.5vw] absolute max-w-full md:text-xs text-orange-400"
           onPointerOut={() => setPaused(false)}
           onPointerOver={() => setPaused(true)}
         >

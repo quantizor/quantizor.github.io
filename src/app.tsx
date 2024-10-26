@@ -13,7 +13,7 @@ export default function App() {
           <>
             <Suspense>
               {props.location.pathname !== '/' && (
-                <a class="absolute top-4 left-4 leading-none text-2xl" title="Back to index" href="/">
+                <a class="md:absolute top-4 left-4 leading-none text-2xl" title="Back to index" href="/">
                   ↰
                 </a>
               )}

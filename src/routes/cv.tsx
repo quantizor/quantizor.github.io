@@ -8,7 +8,7 @@ export default function CV() {
     <>
       <SiteTitle>CV</SiteTitle>
 
-      <main class="text-zinc-100 flex flex-col gap-12 mx-auto lg:max-w-[50vw] px-8 md:px-16 py-10">
+      <main>
         <header class="flex">
           <h1 class="opacity-60 text-xl">{data.personalInfo.name}</h1>
           <p class="flex gap-4 items-center justify-end ml-auto">
@@ -64,9 +64,9 @@ export default function CV() {
             <h2 class="opacity-60">Open Source</h2>
           </header>
 
-          <p class="pl-7 text-zinc-300">{data.openSource.description}</p>
+          <p class="md:pl-7 text-zinc-300">{data.openSource.description}</p>
 
-          <ul class="pl-7">
+          <ul class="md:pl-7">
             <For each={data.openSource.projects}>
               {(project) => (
                 <li>

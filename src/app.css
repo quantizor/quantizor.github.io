@@ -11,11 +11,16 @@ body {
 }
 
 #app {
-    @apply h-screen flex flex-col
+    @apply h-screen flex flex-col text-zinc-100 gap-10 mx-auto lg:max-w-[50vw] px-8 md:px-16 py-10
 }
 
+main {
+    @apply flex flex-col gap-10 pb-10
+}
+
+
 a {
-    @apply text-orange-500 hover:text-orange-500 active:text-orange-600
+    @apply text-orange-500 hover:text-orange-600 active:text-orange-700
 }
 
 ul {
