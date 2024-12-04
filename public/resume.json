@@ -2,7 +2,7 @@
   "personalInfo": {
     "name": "Evan Jacobs"
   },
-  "summary": "Seasoned TypeScript engineer with curiosity toward other languages. I build highly-productive codebases, including: design systems, internal libraries, documentation, etc. My specialty is frontend, but I am happy to work throughout the stack. Supplemental skills include: UX design, marketing, and product management.",
+  "summary": "Seasoned TypeScript engineer and problem solver. I build highly-productive codebases, including: design systems, internal libraries, documentation, etc. My specialty is frontend, but I am happy to work throughout the stack. Supplemental skills include: UX design, marketing, and product management.",
   "workExperience": [
     {
       "company": "Aurora Solar",
@@ -10,14 +10,14 @@
       "icon": "https://aurorasolar.com/wp-content/themes/aurora-solar/assets/img/favicon.svg",
       "title": "Principal Software Engineer",
       "period": "8/2021 - Present",
-      "description": "Architected and executed a design system and high-automation localization platform for 12+ engineering pods. Now on the Developer Productivity pod improving the authoring experience and cycle time for our core monorepo.",
+      "description": "Architected and executed a design system and high-automation localization platform for 12+ engineering pods. Saved the company $200k annually on compute costs related to CI/CD. Currently aiding with long overdue maintenance for the monorepo.",
       "responsibilities": [
-        "Education and mentorship of other engineers through pairing, educational videos, office hours, etc",
-        "Built all components, patterns, and technical writings listed on ds.auslr.io",
+        "Concepted and executed the tooling for the company's engineering localization strategy leveraging the CrowdIn TMS, DeepL translation engine, and a lightweight internal library leveraging web platform primitives like _Intl_",
+        "Migrated an expensive and complex self-hosted GitHub Actions runner stack to use ARM architecture, resulting in a 40% reduction in overall cost; refactored all workflows for additional performance benefit, cost saving, and consistent stability",
+        "Built all components, patterns, and technical writings listed on [ds.auslr.io](https://ds.auslr.io)",
         "Shaped UX processes on the design team and regularly engage in designer-requested review and feasibility sessions of upcoming work across the organization",
-        "Concepted and executed the tooling for the company's engineering localization strategy leveraging the CrowdIn TMS, DeepL translation engine, and a lightweight internal library leveraging web platform primitives like Intl",
         "Maintenance assistance for relevant open source libraries, like: formik, styled-components, xstyled",
-        "Implemented ARM architecture across our fleet of Docker containers and saved the company >$200k annually on compute for a very expensive e2e test suite"
+        "Education and mentorship of other engineers through pairing, educational videos, office hours, etc"
       ]
     },
     {

@@ -3,26 +3,25 @@
 @tailwind utilities;
 
 html {
-    @apply bg-zinc-900 text-orange-400 font-mono h-screen selection:text-orange-200
+  @apply bg-zinc-900 text-orange-400 font-mono h-screen selection:text-orange-200;
 }
 
 body {
-    @apply h-screen
+  @apply h-screen;
 }
 
 #app {
-    @apply h-screen flex flex-col text-zinc-100 gap-10 mx-auto lg:max-w-[50vw] px-8 md:px-16 py-10
+  @apply h-screen flex flex-col text-zinc-100 gap-10 mx-auto md:max-w-[100ch] px-8 md:px-16 py-10;
 }
 
 main {
-    @apply flex flex-col gap-10 pb-10
+  @apply flex flex-col gap-10 pb-10;
 }
 
-
 a {
-    @apply text-orange-500 hover:text-orange-600 active:text-orange-700
+  @apply text-orange-500 hover:text-orange-600 active:text-orange-700;
 }
 
 ul {
-    @apply flex flex-col gap-3 list-disc ml-4 text-zinc-500
+  @apply flex flex-col gap-3 list-disc ml-4 text-zinc-500;
 }

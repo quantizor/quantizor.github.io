@@ -1,7 +1,9 @@
 import SiteTitle from '@/components/Title';
 import data from '@/resume.json';
+import { compiler, type MarkdownToJSX } from 'markdown-to-jsx';
 import { AiFillGithub as GithubIcon, AiFillLinkedin as LinkedInIcon } from 'solid-icons/ai';
-import { For } from 'solid-js';
+import { For, Component, JSX } from 'solid-js';
+import h from 'solid-js/h';
 
 export default function CV() {
   return (
@@ -9,7 +11,7 @@ export default function CV() {
       <SiteTitle>CV</SiteTitle>
 
       <main>
-        <header class="flex">
+        <header class="items-center flex">
           <h1 class="opacity-60 text-xl">{data.personalInfo.name}</h1>
           <p class="flex gap-4 items-center justify-end ml-auto">
             <a class="opacity-50 hover:opacity-100" href={data.profiles.x} target="_blank" rel="noopener noreferrer">
@@ -51,7 +53,13 @@ export default function CV() {
                   <p class="text-zinc-300">{job.description}</p>
 
                   <ul>
-                    <For each={job.responsibilities}>{(role) => <li class="text-zinc-500">{role}</li>}</For>
+                    <For each={job.responsibilities}>
+                      {(role) => (
+                        <li class="text-zinc-500">
+                          <MD>{role}</MD>
+                        </li>
+                      )}
+                    </For>
                   </ul>
                 </header>
               </article>
@@ -84,3 +92,17 @@ export default function CV() {
     </>
   );
 }
+
+/**
+ * A simple HOC for easy React use. Feed the markdown content as a direct child
+ * and the rest is taken care of automatically.
+ */
+const MD: Component<{ children?: string }> = ({ children = '' }) => {
+  if (process.env.NODE_ENV !== 'production' && typeof children !== 'string') {
+    console.error('markdown-to-jsx: <Markdown> component only accepts a single string as a child, received:', children);
+  }
+
+  return compiler(children, {
+    createElement: h as unknown as NonNullable<MarkdownToJSX.Options['createElement']>,
+  }) as unknown as JSX.Element;
+};
