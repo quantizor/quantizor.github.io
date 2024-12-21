@@ -1,5 +1,5 @@
+import { FaBrandsGithub } from 'solid-icons/fa';
 import { createEffect, createSignal } from 'solid-js';
-import { FaBrandsGithub, FaBrandsTwitter } from 'solid-icons/fa';
 
 import SiteTitle from '@/components/Title';
 import { profiles } from '@/resume.json';
@@ -28,7 +28,7 @@ export default function Home() {
 
       <main class="flex grow justify-center items-center max-h-screen text-center mx-auto p-4">
         <pre
-          class="text-[1.5vw] absolute max-w-full md:text-xs text-orange-400"
+          class="text-[1.5vw] absolute max-w-full md:text-xs text-blue-300"
           onPointerOut={() => setPaused(false)}
           onPointerOver={() => setPaused(true)}
         >
@@ -39,6 +39,17 @@ export default function Home() {
       <footer class="flex gap-5 justify-center text-center self-center absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <a class="border-current border-[1px] inline-flex py-1 px-3 rounded" href="/cv">
           CV
+        </a>
+        <a class="border-current border-[1px] inline-flex py-1 px-3 rounded" href="/lab/id1">
+          ID1
+        </a>
+        <a
+          class="relative inline-flex py-1 px-3 rounded group rainbow-border"
+          href="/lab/id2"
+        >
+          <span class="rainbow-text">
+            Prismoku
+          </span>
         </a>
       </footer>
 
@@ -83,20 +94,17 @@ const views = [
    ░░ ▒▒░ ▒ ░▒▓▒ ▒ ▒  ▒▒   ▓▒█░░ ▒░   ▒ ▒   ▒ ░░   ░▓  ░▒▒ ▓░▒░▒░ ▒░▒░▒░ ░ ▒▓ ░▒▓░
    ░ ▒░  ░ ░░▒░ ░ ░   ▒   ▒▒ ░░ ░░   ░ ▒░    ░     ▒ ░░░▒ ▒ ░ ▒  ░ ▒ ▒░   ░▒ ░ ▒░
     ░   ░  ░░░ ░ ░   ░   ▒      ░   ░ ░   ░       ▒ ░░ ░ ░ ░ ░░ ░ ░ ▒    ░░   ░
-    ░       ░           ░  ░         ░           ░    ░ ░        ░ ░     ░
                                                      ░
  `,
   String.raw`
  ___           ___           ___           ___           ___                       ___           ___           ___
  /\  \         /\__\         /\  \         /\__\         /\  \          ___        /\  \         /\  \         /\  \
 /::\  \       /:/  /        /::\  \       /::|  |        \:\  \        /\  \       \:\  \       /::\  \       /::\  \
-/:/\:\  \     /:/  /        /:/\:\  \     /:|:|  |         \:\  \       \:\  \       \:\  \     /:/\:\  \     /:/\:\  \
-\:\~\:\  \   /:/  /  ___   /::\~\:\  \   /:/|:|  |__       /::\  \      /::\__\       \:\  \   /:/  \:\  \   /::\~\:\  \
-\:\ \:\__\ /:/__/  /\__\ /:/\:\ \:\__\ /:/ |:| /\__\     /:/\:\__\  __/:/\/__/ _______\:\__\ /:/__/ \:\__\ /:/\:\ \:\__\
- \:\/:/  / \:\  \ /:/  / \/__\:\/:/  / \/__|:|/:/  /    /:/  \/__/ /\/:/  /    \::::::::/__/ \:\  \ /:/  / \/_|::\/:/  /
-  \::/  /   \:\  /:/  /       \::/  /      |:/:/  /    /:/  /      \::/__/      \:\~~\~~      \:\  /:/  /     |:|::/  /
-  /:/  /     \:\/:/  /        /:/  /       |::/  /     \/__/        \:\__\       \:\  \        \:\/:/  /      |:|\/__/
- /:/  /       \::/  /        /:/  /        /:/  /                    \/__/        \:\__\        \::/  /       |:|  |
+/:/\:\  \     /:/  /  ___   /:/\:\  \     /:|:|  |__       /::\  \      /::\__\       \:\  \     /:/\:\  \     /:/\:\  \
+\:\~\:\  \   /:/__/  /\__\ /:/\:\  \   /:/ |:| /\__\     /:/\:\__\  __/:/\/__/ _______\:\__\   /:/  \:\  \   /::\~\:\  \
+\:\ \:\__\ /:/  /  /:/  / \/__\:\/:/  / \/__|:|/:/  /    /:/  \/__/ /\/:/  /    \::::::::/__/ \:\  \ /:/  /   /:/\:\ \:\__\
+ \:\/:/  / \:\  /:/  /       \::/  /      |:/:/  /     \/__/        \::/__/      \:\~~\~~      \:\  /:/  /    \/_|::\/:/  /
+ /:/  /     \:\  /:/  /        /:/  /       |::/  /                    \/__/        \:\  \        \:\/:/  /       |:|::/  /
  \/__/         \/__/         \/__/         \/__/                                   \/__/         \/__/         \|__|
  `,
   String.raw`

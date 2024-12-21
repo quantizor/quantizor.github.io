@@ -12,6 +12,7 @@ const GlassSphereScene: Component = () => {
   let isDragging = false;
   let previousMousePosition = { x: 0, y: 0 };
   let clock = new THREE.Clock();
+  let animationFrameId: number;
 
   // Physics state
   let sphereVelocity = new THREE.Vector3();
@@ -404,7 +405,7 @@ const GlassSphereScene: Component = () => {
 
     // Update animation loop
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
 
       const time = clock.getElapsedTime();
 
@@ -563,13 +564,33 @@ const GlassSphereScene: Component = () => {
 
     // Cleanup event listeners
     onCleanup(() => {
+      // Stop animation loop
+      cancelAnimationFrame(animationFrameId);
+
+      // Remove event listeners
       renderer?.domElement.removeEventListener('mousedown', onMouseDown);
       renderer?.domElement.removeEventListener('mousemove', onMouseMove);
       renderer?.domElement.removeEventListener('mouseup', onMouseUp);
       renderer?.domElement.removeEventListener('touchstart', onTouchStart);
       renderer?.domElement.removeEventListener('touchmove', onTouchMove);
       renderer?.domElement.removeEventListener('touchend', onTouchEnd);
+
+      // Dispose of THREE.js objects
+      sphere?.geometry.dispose();
+      if (sphere?.material instanceof THREE.ShaderMaterial) {
+        sphere.material.dispose();
+      }
+      renderTarget?.dispose();
+      prevRenderTarget?.dispose();
+
+      // Dispose of controls
+      controls?.dispose();
+
+      // Dispose of renderer
       renderer?.dispose();
+      
+      // Remove canvas from DOM
+      containerRef?.removeChild(renderer?.domElement);
     });
   };
 
