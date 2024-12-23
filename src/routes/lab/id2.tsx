@@ -1,4 +1,5 @@
 import SiteTitle from '@/components/Title';
+import { Meta } from '@solidjs/meta';
 import { Component, createEffect, createMemo, createSignal, For, onMount, Show } from 'solid-js';
 
 // Game colors in order
@@ -476,6 +477,9 @@ const Prismoku: Component = () => {
   return (
     <div class="flex flex-col items-center min-h-screen text-white p-4 sm:p-8 gap-7" onClick={handleClickAway}>
       <SiteTitle>Prismoku!</SiteTitle>
+
+      <Meta name="og:description" content="A colorful twist on the classic Sudoku puzzle." />
+      <Meta name="og:image" content="/images/prismoku.png" />
 
       <div class="flex justify-between gap-2 w-full">
         <div class="relative">
