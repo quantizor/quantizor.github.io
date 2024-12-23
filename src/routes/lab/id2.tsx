@@ -1,4 +1,5 @@
-import { Component, createEffect, createSignal, For, onMount, Show } from 'solid-js';
+import SiteTitle from '@/components/Title';
+import { Component, createEffect, createMemo, createSignal, For, onMount, Show } from 'solid-js';
 
 // Game colors in order
 const COLORS = [
@@ -116,7 +117,7 @@ const Prismoku: Component = () => {
   );
 
   const [selectedCell, setSelectedCell] = createSignal<{ row: number; col: number } | null>(null);
-  const [pickerPosition, setPickerPosition] = createSignal<{ anchor: HTMLElement; x: number; y: number } | null>(null);
+  const [pickerPosition, setPickerPosition] = createSignal<{ anchor: HTMLElement; x: number; y: number; size: number } | null>(null);
   const [difficulty, setDifficulty] = createSignal<'easy' | 'medium' | 'hard'>('easy');
   const [isComplete, setIsComplete] = createSignal(false);
   const [palette, setPalette] = createSignal<number[]>(Array.from({ length: COLORS[0].colors.length }, (_, i) => i));
@@ -124,40 +125,41 @@ const Prismoku: Component = () => {
   const [isNewGame, setIsNewGame] = createSignal(false);
 
   const [showPalettePicker, setShowPalettePicker] = createSignal(false);
+  const [showDifficultyMenu, setShowDifficultyMenu] = createSignal(false);
 
   // Helper function to convert between color hex and index
-const [currentPaletteIndex, setCurrentPaletteIndex] = createSignal<number>(
-  parseInt(sessionStorage.getItem('sudokuPaletteIndex') || '0')
-);
-const getColorHex = (index: number) => COLORS[currentPaletteIndex()].colors[index];
-
-// Check if a color can be placed at the given position
-const isValidPlacement = (board: BoardState, row: number, col: number, colorIndex: number) => {
-  // Get only the fixed cells (initial state)
-  const fixedBoard = board.map((r, i) =>
-    r.map((cell, j) => fixedCells()[i][j] ? cell : null)
+  const [currentPaletteIndex, setCurrentPaletteIndex] = createSignal<number>(
+    parseInt(sessionStorage.getItem('sudokuPaletteIndex') || '0')
   );
+  const getColorHex = (index: number) => COLORS[currentPaletteIndex()].colors[index];
 
-  // Check row - only consider fixed cells
-  for (let x = 0; x < 9; x++) {
-    if (fixedBoard[row][x] === colorIndex) return false;
-  }
+  // Check if a color can be placed at the given position
+  const isValidPlacement = (board: BoardState, row: number, col: number, colorIndex: number) => {
+    // Get only the fixed cells (initial state)
+    const fixedBoard = board.map((r, i) =>
+      r.map((cell, j) => fixedCells()[i][j] ? cell : null)
+    );
 
-  // Check column - only consider fixed cells
-  for (let y = 0; y < 9; y++) {
-    if (fixedBoard[y][col] === colorIndex) return false;
-  }
-
-  // Check 3x3 box - only consider fixed cells
-  const boxRow = Math.floor(row / 3) * 3;
-  const boxCol = Math.floor(col / 3) * 3;
-  for (let y = boxRow; y < boxRow + 3; y++) {
-    for (let x = boxCol; x < boxCol + 3; x++) {
-      if (fixedBoard[y][x] === colorIndex) return false;
+    // Check row - only consider fixed cells
+    for (let x = 0; x < 9; x++) {
+      if (fixedBoard[row][x] === colorIndex) return false;
     }
-  }
-  return true;
-};
+
+    // Check column - only consider fixed cells
+    for (let y = 0; y < 9; y++) {
+      if (fixedBoard[y][col] === colorIndex) return false;
+    }
+
+    // Check 3x3 box - only consider fixed cells
+    const boxRow = Math.floor(row / 3) * 3;
+    const boxCol = Math.floor(col / 3) * 3;
+    for (let y = boxRow; y < boxRow + 3; y++) {
+      for (let x = boxCol; x < boxCol + 3; x++) {
+        if (fixedBoard[y][x] === colorIndex) return false;
+      }
+    }
+    return true;
+  };
 
   // Create effect to save state changes to session storage
   createEffect(() => {
@@ -182,13 +184,13 @@ const isValidPlacement = (board: BoardState, row: number, col: number, colorInde
 
     switch (difficulty) {
       case 'easy':
-        cellsToRemove = 53; // Remove about 65%
+        cellsToRemove = 36; // Remove about 65%
         break;
       case 'medium':
-        cellsToRemove = 58; // Remove about 72%
+        cellsToRemove = 44; // Remove about 72%
         break;
       case 'hard':
-        cellsToRemove = 65; // Remove about 80%
+        cellsToRemove = 50; // Remove about 80%
         break;
       default:
         cellsToRemove = 53;
@@ -324,7 +326,13 @@ const isValidPlacement = (board: BoardState, row: number, col: number, colorInde
     if (fixedCells()[row][col]) return;
 
     const newBoard = board().map(row => [...row]);
-    newBoard[row][col] = colorIndex;
+
+    if (newBoard[row][col] === colorIndex) {
+      newBoard[row][col] = null;
+    } else {
+      newBoard[row][col] = colorIndex;
+    }
+
     setBoard(newBoard);
 
     // Check if puzzle is complete
@@ -370,6 +378,7 @@ const isValidPlacement = (board: BoardState, row: number, col: number, colorInde
   const updatePickerPosition = (cell: HTMLElement) => {
     setPickerPosition({
       anchor: cell,
+      size: cell.clientWidth,
       x: cell.offsetLeft,
       y: cell.offsetTop,
     });
@@ -399,6 +408,9 @@ const isValidPlacement = (board: BoardState, row: number, col: number, colorInde
     if (pickerPosition() && !target.closest('.color-menu') && !target.closest('.sudoku-cell')) {
       setSelectedCell(null);
       setPickerPosition(null);
+    }
+    if (!target.closest('.difficulty-menu')) {
+      setShowDifficultyMenu(false);
     }
   };
 
@@ -451,9 +463,89 @@ const isValidPlacement = (board: BoardState, row: number, col: number, colorInde
     };
   });
 
+  const offset = createMemo(() => {
+    const size = pickerPosition()?.size ?? 0;
+
+    return 0.00130381 * Math.pow(size, 3) - 0.144633 * Math.pow(
+      size, 2) + 5.55451
+      * size - 76.1437
+  })
+
+  const gap = 12
+
   return (
-    <div class="flex flex-col items-center min-h-screen text-white p-4 sm:p-8 gap-6" onClick={handleClickAway}>
-      <h1 class="text-3xl sm:text-4xl font-bold mb-4 flex">
+    <div class="flex flex-col items-center min-h-screen text-white p-4 sm:p-8 gap-7" onClick={handleClickAway}>
+      <SiteTitle>Prismoku!</SiteTitle>
+
+      <div class="flex justify-between gap-2 w-full">
+        <div class="relative">
+          <button
+            class="px-4 py-2 bg-white/10 hover:bg-white/20 transition-colors flex items-center gap-2"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowDifficultyMenu(!showDifficultyMenu());
+            }}
+          >
+            {difficulty().charAt(0).toUpperCase() + difficulty().slice(1)}
+            <svg
+              class={`w-4 h-4 transition-transform ${showDifficultyMenu() ? 'rotate-180' : ''}`}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <Show when={showDifficultyMenu()}>
+            <div class="absolute top-full left-0 mt-1 bg-zinc-900/85 backdrop-blur-sm rounded shadow-xl z-50 min-w-[120px] overflow-hidden difficulty-menu">
+              <button
+                class="w-full px-4 py-2 text-left hover:bg-white/10 transition-colors"
+                onClick={() => {
+                  generatePuzzle('easy');
+                  setShowDifficultyMenu(false);
+                }}
+              >
+                Easy
+              </button>
+              <button
+                class="w-full px-4 py-2 text-left hover:bg-white/10 transition-colors"
+                onClick={() => {
+                  generatePuzzle('medium');
+                  setShowDifficultyMenu(false);
+                }}
+              >
+                Medium
+              </button>
+              <button
+                class="w-full px-4 py-2 text-left hover:bg-white/10 transition-colors"
+                onClick={() => {
+                  generatePuzzle('hard');
+                  setShowDifficultyMenu(false);
+                }}
+              >
+                Hard
+              </button>
+            </div>
+          </Show>
+        </div>
+
+        <button
+          class="px-4 py-2 bg-white/10 hover:bg-white/20 transition-colors ml-auto"
+          onClick={handleReset}
+        >
+          Reset
+        </button>
+
+        <button
+          class="px-4 py-2 bg-white/10 hover:bg-white/20 transition-colors"
+          onClick={handleReset}
+        >
+          New Game
+        </button>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl font-bold flex mt-5">
         <span style={{ color: COLORS[currentPaletteIndex()].colors[0] }}>P</span>
         <span style={{ color: COLORS[currentPaletteIndex()].colors[1] }}>r</span>
         <span style={{ color: COLORS[currentPaletteIndex()].colors[2] }}>i</span>
@@ -462,55 +554,30 @@ const isValidPlacement = (board: BoardState, row: number, col: number, colorInde
         <span style={{ color: COLORS[currentPaletteIndex()].colors[5] }}>o</span>
         <span style={{ color: COLORS[currentPaletteIndex()].colors[6] }}>k</span>
         <span style={{ color: COLORS[currentPaletteIndex()].colors[7] }}>u</span>
+        <span style={{ color: COLORS[currentPaletteIndex()].colors[8] }}>!</span>
       </h1>
-
-      <div class="flex flex-col items-center gap-4">
-        <div class="flex gap-2">
-          <button
-            class="px-4 py-2 bg-white/10 hover:bg-white/20 transition-colors"
-            onClick={() => generatePuzzle('easy')}
-          >
-            Easy
-          </button>
-          <button
-            class="px-4 py-2 bg-white/10 hover:bg-white/20 transition-colors"
-            onClick={() => generatePuzzle('medium')}
-          >
-            Medium
-          </button>
-          <button
-            class="px-4 py-2 bg-white/10 hover:bg-white/20 transition-colors"
-            onClick={() => generatePuzzle('hard')}
-          >
-            Hard
-          </button>
-          <button
-            class="px-4 py-2 bg-white/10 hover:bg-white/20 transition-colors ml-10"
-            onClick={handleReset}
-          >
-            Reset
-          </button>
-        </div>
-      </div>
 
       <div
         class="w-full max-w-[min(90vw,500px)] aspect-square rounded-lg p-2 sm:p-4"
       >
-        <div class="grid grid-cols-9 gap-0 w-full h-full">
+        <div class="grid gap-0 w-full h-full" style={{
+          "grid-template-columns": `1fr 1fr 1fr ${gap}px 1fr 1fr 1fr ${gap}px 1fr 1fr 1fr`,
+          "grid-template-rows": `1fr 1fr 1fr ${gap}px 1fr 1fr 1fr ${gap}px 1fr 1fr 1fr`,
+        }}>
           <For each={board()}>
             {(row, rowIndex) => (
               <For each={row}>
                 {(cell, colIndex) => {
                   const delay = Math.random() * 0.5;
-                  return (
+                  return [
+                    rowIndex() > 0 && rowIndex() % 3 === 0 && colIndex() === 0 && <div class="col-span-full" />,
                     <div
                       data-row={rowIndex()}
                       data-col={colIndex()}
-                      class={`sudoku-cell w-full aspect-square transition-all duration-200
+                      class={`sudoku-cell w-full aspect-square transition-all duration-200 inline-flex items-center justify-center text-2xl font-bold text-zinc-900
+                        ${isComplete() ? 'animate-fade-out' : ''}
                         ${(initialLoad() || isNewGame()) ? 'animate-fade-in' : ''}
                         ${fixedCells()[rowIndex()][colIndex()] ? 'opacity-100 cursor-default pointer-events-none' : 'cursor-pointer hover:bg-white/10'}
-                        ${colIndex() % 3 === 2 && colIndex() < 8 ? 'border-r border-white/10' : ''}
-                        ${rowIndex() % 3 === 2 && rowIndex() < 8 ? 'border-b border-white/10' : ''}
                         ${selectedCell()?.row === rowIndex() && selectedCell()?.col === colIndex() ? 'anchor' : ''}
                         ${selectedCell()?.row === rowIndex() && selectedCell()?.col === colIndex() ? 'bg-white/20' : ''}
                       `}
@@ -519,8 +586,9 @@ const isValidPlacement = (board: BoardState, row: number, col: number, colorInde
                         '--delay': `${delay}s`,
                       }}
                       onClick={handleCellClick}
-                    />
-                  );
+                    >{fixedCells()[rowIndex()][colIndex()] === false && cell !== null ? '*': ''}</div>,
+                    colIndex() < 8 && Number.isInteger((colIndex() + 1) / 3) && <div />,
+                  ];
                 }}
               </For>
             )}
@@ -534,6 +602,9 @@ const isValidPlacement = (board: BoardState, row: number, col: number, colorInde
           style={{
             top: `${pickerPosition()?.y ?? 0}px`,
             left: `${pickerPosition()?.x ?? 0}px`,
+            height: `${pickerPosition()?.size ?? 0}px`,
+            width: `${pickerPosition()?.size ?? 0}px`,
+            transform: `translate(${offset()}px, ${offset()}px)`,
           }}
         >
           {COLORS[currentPaletteIndex()].colors.map((_, colorIndex) => {
@@ -558,7 +629,7 @@ const isValidPlacement = (board: BoardState, row: number, col: number, colorInde
                   onClick={(e) => {
                     e.stopPropagation();
 
-                    if (isValid) {
+                    if (difficulty() !== 'easy' || isValid) {
                       handleColorSelect(colorIndex);
                     }
                   }}
@@ -593,12 +664,20 @@ const isValidPlacement = (board: BoardState, row: number, col: number, colorInde
                 )}
               </For>
             </div>
-            <span class="opacity-60">▲</span>
+            <svg
+                class={`w-4 h-4 transition-transform ${showPalettePicker() ? 'rotate-0' : 'rotate-180'}`}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M19 9l-7 7-7-7" />
+              </svg>
           </div>
         </button>
 
         <Show when={showPalettePicker()}>
-          <div class="absolute bottom-full mb-2 bg-black/90 rounded-lg shadow-xl p-2 z-50 w-48">
+          <div class="absolute bottom-full mb-2 p-2 z-50 w-48 bg-zinc-900/85 backdrop-blur-sm rounded shadow-xl">
             <For each={COLORS}>
               {(palette, index) => (
                 <button
@@ -660,7 +739,6 @@ const isValidPlacement = (board: BoardState, row: number, col: number, colorInde
           }
           .color-menu {
             position: absolute;
-            transform: translate(4px, 4px);
             position-anchor: --tile;
             left: anchor(center);
             top: anchor(center);
