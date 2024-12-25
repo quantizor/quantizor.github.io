@@ -543,7 +543,9 @@ const Prismoku: Component = () => {
 
         <button
           class="px-4 py-2 bg-white/10 hover:bg-white/20 transition-colors"
-          onClick={handleReset}
+          onClick={() => {
+            generatePuzzle(difficulty());
+          }}
         >
           New Game
         </button>
