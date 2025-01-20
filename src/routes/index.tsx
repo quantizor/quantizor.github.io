@@ -26,9 +26,9 @@ export default function Home() {
     <>
       <SiteTitle />
 
-      <main class="flex grow justify-center items-center max-h-screen text-center mx-auto p-4">
+      <main class="flex grow md:justify-center items-center max-h-screen text-center mx-auto p-4">
         <pre
-          class="text-[1.5vw] absolute max-w-full md:text-xs text-blue-300"
+          class="text-[1.5vw] absolute max-w-full md:text-xs text-amber-400"
           onPointerOut={() => setPaused(false)}
           onPointerOver={() => setPaused(true)}
         >
@@ -36,15 +36,15 @@ export default function Home() {
         </pre>
       </main>
 
-      <footer class="flex gap-5 justify-center text-center self-center absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <a class="border-current border-[1px] inline-flex py-1 px-3 rounded" href="/cv">
+      <footer class="flex gap-5 justify-center text-center self-center absolute top-[60vw] md:top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <a class="button" href="/cv">
           CV
         </a>
-        <a class="border-current border-[1px] inline-flex py-1 px-3 rounded" href="/lab/id1">
+        <a class="button" href="/lab/id1">
           ID1
         </a>
         <a
-          class="relative inline-flex py-1 px-3 rounded group rainbow-border"
+          class="button rainbow-border"
           href="/lab/id2"
         >
           <span class="rainbow-text">

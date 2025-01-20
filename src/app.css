@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html {
-  @apply bg-zinc-900 text-blue-300 font-mono h-screen selection:text-blue-200;
+  @apply bg-zinc-900 text-amber-200 caret-amber-300 font-mono h-screen selection:text-amber-200;
 }
 
 body {
@@ -19,22 +19,26 @@ main {
 }
 
 a {
-  @apply text-blue-400 hover:text-blue-500 active:text-blue-600;
+  @apply text-amber-400 hover:text-amber-500 active:text-amber-600;
 }
 
 ul {
   @apply flex flex-col gap-3 list-disc ml-4 text-zinc-500;
 }
 
+.button {
+  @apply relative border-current border-[1px] inline-flex py-1 px-3 rounded
+}
+
 .rainbow-text {
-  background-image: linear-gradient(to right, #FF0000, #FFA500, #FFFF00, #008000, #0000FF, #4B0082, #8F00FF);
+  background-image: linear-gradient(to right, #FF0000 0%, #FF0000 14.28%, #FFA500 14.28%, #FFA500 28.57%, #FFFF00 28.57%, #FFFF00 42.85%, #008000 42.85%, #008000 57.14%, #0000FF 57.14%, #0000FF 71.42%, #4B0082 71.42%, #4B0082 85.71%, #8F00FF 85.71%, #8F00FF 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .rainbow-border {
-  background: linear-gradient(rgb(4 24 27), rgb(4 24 27)) padding-box,
-    linear-gradient(to right, #FF0000, #FFA500, #FFFF00, #008000, #0000FF, #4B0082, #8F00FF) border-box;
+  background: linear-gradient(theme('colors.zinc.900'), theme('colors.zinc.900')) padding-box,
+    linear-gradient(to right, #FF0000 0%, #FF0000 14.28%, #FFA500 14.28%, #FFA500 28.57%, #FFFF00 28.57%, #FFFF00 42.85%, #008000 42.85%, #008000 57.14%, #0000FF 57.14%, #0000FF 71.42%, #4B0082 71.42%, #4B0082 85.71%, #8F00FF 85.71%, #8F00FF 100%) border-box;
   border: 1px solid transparent;
 }
