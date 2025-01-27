@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barriecito&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -27,7 +35,7 @@ ul {
 }
 
 .button {
-  @apply relative border-current border-[1px] inline-flex py-1 px-3 rounded
+  @apply relative border-current border-[1px] inline-flex py-1 px-3 rounded justify-center
 }
 
 .rainbow-text {
@@ -41,4 +49,192 @@ ul {
   background: linear-gradient(theme('colors.zinc.900'), theme('colors.zinc.900')) padding-box,
     linear-gradient(to right, #FF0000 0%, #FF0000 14.28%, #FFA500 14.28%, #FFA500 28.57%, #FFFF00 28.57%, #FFFF00 42.85%, #008000 42.85%, #008000 57.14%, #0000FF 57.14%, #0000FF 71.42%, #4B0082 71.42%, #4B0082 85.71%, #8F00FF 85.71%, #8F00FF 100%) border-box;
   border: 1px solid transparent;
+}
+
+.huenigma-border {
+  position: relative;
+  background: theme('colors.zinc.900');
+  border: 1px solid currentColor;
+  z-index: 1;
+}
+
+.huenigma-border::before {
+  content: "?";
+  position: absolute;
+  font-size: 10px;
+  width: 10px;
+  height: 10px;
+  top: -7px;
+  left: 50%;
+  transform-origin: 50% calc(100% + 6px);
+  animation: orbit 8s linear infinite;
+  text-shadow: 0 0 2px rgba(0,0,0,0.5);
+  pointer-events: none;
+}
+
+.huenigma-border::after {
+  content: "?";
+  position: absolute;
+  font-size: 10px;
+  width: 10px;
+  height: 10px;
+  top: -6px;
+  left: 50%;
+  transform-origin: 50% calc(100% + 6px);
+  animation: orbit 8s linear infinite 2s, colorChange 4s linear infinite;
+  pointer-events: none;
+}
+
+.huenigma-border > span {
+  position: relative;
+  z-index: 2;
+}
+
+.huenigma-border > span::before,
+.huenigma-border > span::after {
+  content: "?";
+  position: absolute;
+  font-size: 10px;
+  width: 10px;
+  height: 10px;
+  top: -6px;
+  left: 50%;
+  transform-origin: 50% calc(100% + 6px);
+  pointer-events: none;
+}
+
+.huenigma-border > span::before {
+  animation: orbit 8s linear infinite 4s, colorChange 4s linear infinite 1s;
+}
+
+.huenigma-border > span::after {
+  animation: orbit 8s linear infinite 6s, colorChange 4s linear infinite 2s;
+}
+
+.text-outline {
+  -webkit-text-stroke: 1px black;
+  text-stroke: 1px black;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+@keyframes orbit {
+  from {
+    transform: rotate(0deg) translateX(-50%);
+  }
+  to {
+    transform: rotate(360deg) translateX(-50%);
+  }
+}
+
+@keyframes colorChange {
+  0%, 100% { color: #FF0000; }
+  16.66% { color: #FFA500; }
+  33.33% { color: #FFFF00; }
+  50% { color: #008000; }
+  66.66% { color: #0000FF; }
+  83.33% { color: #8F00FF; }
+}
+
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 20px;
+  top: -20px;
+  left: var(--x);
+  transform: rotate(var(--rotation));
+  animation: fall 4s linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(105vh) rotate(calc(var(--rotation) + 360deg));
+  }
+}
+
+/* Slider thumb styles */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid rgb(39 39 42); /* zinc-800 */
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid rgb(39 39 42); /* zinc-800 */
+  cursor: pointer;
+}
+
+/* Color-specific thumb styles */
+input[type="range"].accent-red-500::-webkit-slider-thumb {
+  background: rgb(239 68 68); /* red-500 */
+}
+input[type="range"].accent-green-500::-webkit-slider-thumb {
+  background: rgb(34 197 94); /* green-500 */
+}
+input[type="range"].accent-blue-500::-webkit-slider-thumb {
+  background: rgb(59 130 246); /* blue-500 */
+}
+input[type="range"].accent-cyan-500::-webkit-slider-thumb {
+  background: rgb(6 182 212); /* cyan-500 */
+}
+input[type="range"].accent-fuchsia-500::-webkit-slider-thumb {
+  background: rgb(217 70 239); /* fuchsia-500 */
+}
+input[type="range"].accent-yellow-500::-webkit-slider-thumb {
+  background: rgb(234 179 8); /* yellow-500 */
+}
+input[type="range"].accent-zinc-500::-webkit-slider-thumb {
+  background: rgb(113 113 122); /* zinc-500 */
+}
+
+input[type="range"].accent-red-500::-moz-range-thumb {
+  background: rgb(239 68 68); /* red-500 */
+}
+input[type="range"].accent-green-500::-moz-range-thumb {
+  background: rgb(34 197 94); /* green-500 */
+}
+input[type="range"].accent-blue-500::-moz-range-thumb {
+  background: rgb(59 130 246); /* blue-500 */
+}
+input[type="range"].accent-cyan-500::-moz-range-thumb {
+  background: rgb(6 182 212); /* cyan-500 */
+}
+input[type="range"].accent-fuchsia-500::-moz-range-thumb {
+  background: rgb(217 70 239); /* fuchsia-500 */
+}
+input[type="range"].accent-yellow-500::-moz-range-thumb {
+  background: rgb(234 179 8); /* yellow-500 */
+}
+input[type="range"].accent-zinc-500::-moz-range-thumb {
+  background: rgb(113 113 122); /* zinc-500 */
 }

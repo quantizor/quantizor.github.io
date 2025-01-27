@@ -1,8 +1,8 @@
-import { FaBrandsGithub } from 'solid-icons/fa';
-import { createEffect, createSignal } from 'solid-js';
+import { FaBrandsGithub } from "solid-icons/fa";
+import { createEffect, createSignal } from "solid-js";
 
-import SiteTitle from '@/components/Title';
-import { profiles } from '@/resume.json';
+import SiteTitle from "@/components/Title";
+import { profiles } from "@/resume.json";
 
 export default function Home() {
   const [handle, setHandle] = createSignal<null | number>(null);
@@ -36,20 +36,18 @@ export default function Home() {
         </pre>
       </main>
 
-      <footer class="flex gap-5 justify-center text-center self-center absolute top-[60vw] md:top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <footer class="flex flex-wrap gap-5 justify-center text-center self-center absolute top-[40vh] md:top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <a class="button" href="/cv">
           CV
         </a>
         <a class="button" href="/lab/id1">
           ID1
         </a>
-        <a
-          class="button rainbow-border"
-          href="/lab/id2"
-        >
-          <span class="rainbow-text">
-            Prismoku
-          </span>
+        <a class="button rainbow-border" href="/lab/id2">
+          <span class="rainbow-text">Prismoku</span>
+        </a>
+        <a class="button huenigma-border" href="/lab/id4">
+          <span>Huenigma</span>
         </a>
       </footer>
 
