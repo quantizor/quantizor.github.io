@@ -6,6 +6,7 @@ import {
   createMemo,
   createSignal,
   onMount,
+  onCleanup,
   Show,
 } from "solid-js";
 
@@ -22,6 +23,10 @@ const ColorMatcher: Component = () => {
   const [hintTimer, setHintTimer] = createSignal<ReturnType<
     typeof window.setTimeout
   > | null>(null);
+  const [elapsedTime, setElapsedTime] = createSignal(0);
+  const [timerInterval, setTimerInterval] = createSignal<
+    ReturnType<typeof window.setInterval> | undefined
+  >(undefined);
 
   // Color conversion functions
   const rgbToCmyk = (rgb: RGB): CMYK => {
@@ -94,8 +99,9 @@ const ColorMatcher: Component = () => {
 
   const generateNewColor = () => {
     setTargetColor(generateRandomColor());
-    setUserColor({ r: 0, g: 0, b: 0 }); // Start from black instead of mid-gray
+    setUserColor({ r: 0, g: 0, b: 0 });
     setHasWon(false);
+    startTimer();
   };
 
   const createConfetti = () => {
@@ -143,17 +149,10 @@ const ColorMatcher: Component = () => {
 
     // Check if colors match within a small tolerance
     const tolerance = 5;
-    const isMatch =
-      rDiff <= tolerance && gDiff <= tolerance && bDiff <= tolerance;
-
-    // Only trigger win if all values have been intentionally set
-    const hasInteracted = user.r !== 0 || user.g !== 0 || user.b !== 0;
-
-    if (isMatch && hasInteracted && !hasWon()) {
+    if (rDiff <= tolerance && gDiff <= tolerance && bDiff <= tolerance) {
       setHasWon(true);
+      stopTimer();
       createConfetti();
-    } else if (!isMatch && hasWon()) {
-      setHasWon(false);
     }
   };
 
@@ -213,19 +212,59 @@ const ColorMatcher: Component = () => {
     setHintTimer(timer);
   };
 
+  const formatTime = (ms: number) => {
+    const seconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  };
+
+  const startTimer = () => {
+    // Clear any existing timer
+    if (timerInterval()) {
+      clearInterval(timerInterval());
+    }
+
+    setElapsedTime(0);
+    const startTime = Date.now();
+
+    const interval = setInterval(() => {
+      setElapsedTime(Date.now() - startTime);
+    }, 100);
+
+    setTimerInterval(interval);
+  };
+
+  const stopTimer = () => {
+    if (timerInterval()) {
+      clearInterval(timerInterval());
+      setTimerInterval();
+    }
+  };
+
   onMount(() => {
     generateNewColor();
+  });
+
+  onCleanup(() => {
+    stopTimer();
   });
 
   return (
     <>
       <Meta
-        name="description"
-        content="Huenigma - A color matching puzzle game"
+        name="theme-color"
+        content={`rgb(${targetColor().r}, ${targetColor().g}, ${
+          targetColor().b
+        })`}
       />
       <SiteTitle />
 
       <main class="flex flex-col items-center min-h-screen gap-8 pb-8 text-white">
+        <div class="absolute top-4 right-4 font-mono text-xl text-white/70">
+          {formatTime(elapsedTime())}
+        </div>
+
         <div class="flex flex-col items-center gap-8">
           <h1
             class="text-5xl font-normal relative px-4 py-2 font-barriecito lowercase"
