@@ -51,64 +51,40 @@ ul {
   border: 1px solid transparent;
 }
 
-.huenigma-border {
+.huetiful-border {
   position: relative;
-  background: theme('colors.zinc.900');
-  border: 1px solid currentColor;
-  z-index: 1;
+  color: #fff;
+  background: linear-gradient(0deg, #000, #272727);
 }
 
-.huenigma-border::before {
-  content: "?";
+.huetiful-border:before,
+.huetiful-border:after {
+  content: "";
   position: absolute;
-  font-size: 10px;
-  width: 10px;
-  height: 10px;
-  top: -7px;
-  left: 50%;
-  transform-origin: 50% calc(100% + 6px);
-  animation: orbit 8s linear infinite;
-  text-shadow: 0 0 2px rgba(0,0,0,0.5);
-  pointer-events: none;
+  left: -2px;
+  top: -2px;
+  background: linear-gradient(
+    45deg,
+    #fb0094,
+    #0000ff,
+    #00ff00,
+    #ffff00,
+    #ff0000,
+    #fb0094,
+    #0000ff,
+    #00ff00,
+    #ffff00,
+    #ff0000
+  );
+  background-size: 400%;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  z-index: -1;
+  animation: steam 20s linear infinite;
 }
 
-.huenigma-border::after {
-  content: "?";
-  position: absolute;
-  font-size: 10px;
-  width: 10px;
-  height: 10px;
-  top: -6px;
-  left: 50%;
-  transform-origin: 50% calc(100% + 6px);
-  animation: orbit 8s linear infinite 2s, colorChange 4s linear infinite;
-  pointer-events: none;
-}
-
-.huenigma-border > span {
-  position: relative;
-  z-index: 2;
-}
-
-.huenigma-border > span::before,
-.huenigma-border > span::after {
-  content: "?";
-  position: absolute;
-  font-size: 10px;
-  width: 10px;
-  height: 10px;
-  top: -6px;
-  left: 50%;
-  transform-origin: 50% calc(100% + 6px);
-  pointer-events: none;
-}
-
-.huenigma-border > span::before {
-  animation: orbit 8s linear infinite 4s, colorChange 4s linear infinite 1s;
-}
-
-.huenigma-border > span::after {
-  animation: orbit 8s linear infinite 6s, colorChange 4s linear infinite 2s;
+.huetiful-border:after {
+  filter: blur(50px);
 }
 
 .text-outline {

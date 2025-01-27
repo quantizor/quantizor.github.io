@@ -2,11 +2,10 @@ import SiteTitle from "@/components/Title";
 import { Meta } from "@solidjs/meta";
 import {
   Component,
-  createEffect,
   createMemo,
   createSignal,
-  onMount,
   onCleanup,
+  onMount,
   Show,
 } from "solid-js";
 
@@ -258,7 +257,11 @@ const ColorMatcher: Component = () => {
           targetColor().b
         })`}
       />
-      <SiteTitle />
+      <Meta
+        name="description"
+        content="huetiful - A color matching puzzle game"
+      />
+      <SiteTitle>huetiful</SiteTitle>
 
       <main class="flex flex-col items-center min-h-screen gap-8 pb-8 text-white">
         <div class="absolute top-4 right-4 font-mono text-xl text-white/70">
@@ -274,7 +277,7 @@ const ColorMatcher: Component = () => {
               })`,
             }}
           >
-            <span>huenigma</span>
+            <span>huetiful</span>
           </h1>
 
           <Show when={hasWon()}>

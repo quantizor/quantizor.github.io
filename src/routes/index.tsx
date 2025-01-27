@@ -46,8 +46,8 @@ export default function Home() {
         <a class="button rainbow-border" href="/lab/id2">
           <span class="rainbow-text">Prismoku</span>
         </a>
-        <a class="button huenigma-border" href="/lab/id4">
-          <span>Huenigma</span>
+        <a class="button huetiful-border" href="/lab/id4">
+          <span>huetiful</span>
         </a>
       </footer>
 
