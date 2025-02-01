@@ -1,4 +1,4 @@
-import { onCleanup, onMount, createSignal } from "solid-js";
+import { onCleanup, onMount, createSignal, Show } from "solid-js";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { EXRLoader } from "three/examples/jsm/loaders/EXRLoader";
@@ -8,9 +8,9 @@ const GlassSphereScene = () => {
   let container: HTMLDivElement | undefined;
   let canvasRef: HTMLCanvasElement | undefined;
   const [loading, setLoading] = createSignal(true);
-  const [loadingText, setLoadingText] = createSignal("Initializing scene...");
+  const [loadingProgress, setLoadingProgress] = createSignal(0);
   const [loadedTextures, setLoadedTextures] = createSignal(0);
-  const totalTextures = 6; // Total number of textures to load
+  const totalTextures = 7; // 6 textures + 1 skybox
 
   onMount(() => {
     if (!container) return;
@@ -46,12 +46,15 @@ const GlassSphereScene = () => {
     renderer.toneMappingExposure = 1.0;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-    // Load skybox
-    const pmremGenerator = new THREE.PMREMGenerator(renderer);
-    pmremGenerator.compileEquirectangularShader();
-
+    // Initialize texture loaders
+    const textureLoader = new WorkerTextureLoader();
     const exrLoader = new EXRLoader();
+
+    // Load skybox first
     exrLoader.load("/images/skybox.exr", (texture) => {
+      const pmremGenerator = new THREE.PMREMGenerator(renderer);
+      pmremGenerator.compileEquirectangularShader();
+
       const envMap = pmremGenerator.fromEquirectangular(texture).texture;
       scene.environment = envMap;
       scene.background = envMap;
@@ -62,7 +65,7 @@ const GlassSphereScene = () => {
         metalness: 0.0,
         roughness: 0.0,
         transmission: 0.99,
-        thickness: 2.0, // Increased for larger sphere
+        thickness: 2.0,
         envMapIntensity: 1.5,
         clearcoat: 1.0,
         clearcoatRoughness: 0.0,
@@ -75,6 +78,88 @@ const GlassSphereScene = () => {
 
       texture.dispose();
       pmremGenerator.dispose();
+
+      updateLoadingProgress();
+
+      // Now load the rest of the textures
+      Promise.all([
+        loadAndApplyTexture(
+          "/images/slate2-tiled-albedo2.png",
+          (texture, mat) => {
+            if (mat === materials[2]) {
+              const topTexture = texture.clone();
+              topTexture.repeat.set(1, 1);
+              mat.map = topTexture;
+            } else {
+              texture.repeat.set(1, 5);
+              mat.map = texture;
+            }
+          }
+        ),
+        loadAndApplyTexture(
+          "/images/slate2-tiled-height.png",
+          (texture, mat) => {
+            if (mat === materials[2]) {
+              const topTexture = texture.clone();
+              topTexture.repeat.set(1, 1);
+              mat.displacementMap = topTexture;
+            } else {
+              texture.repeat.set(1, 5);
+              mat.displacementMap = texture;
+            }
+          }
+        ),
+        loadAndApplyTexture(
+          "/images/slate2-tiled-metalness.png",
+          (texture, mat) => {
+            if (mat === materials[2]) {
+              const topTexture = texture.clone();
+              topTexture.repeat.set(1, 1);
+              mat.metalnessMap = topTexture;
+            } else {
+              texture.repeat.set(1, 5);
+              mat.metalnessMap = texture;
+            }
+          }
+        ),
+        loadAndApplyTexture(
+          "/images/slate2-tiled-rough.png",
+          (texture, mat) => {
+            if (mat === materials[2]) {
+              const topTexture = texture.clone();
+              topTexture.repeat.set(1, 1);
+              mat.roughnessMap = topTexture;
+            } else {
+              texture.repeat.set(1, 5);
+              mat.roughnessMap = texture;
+            }
+          }
+        ),
+        loadAndApplyTexture("/images/slate2-tiled-ao.png", (texture, mat) => {
+          if (mat === materials[2]) {
+            const topTexture = texture.clone();
+            topTexture.repeat.set(1, 1);
+            mat.aoMap = topTexture;
+          } else {
+            texture.repeat.set(1, 5);
+            mat.aoMap = texture;
+          }
+          mat.aoMapIntensity = 1.0;
+        }),
+        loadAndApplyTexture("/images/slate2-tiled-ogl.png", (texture, mat) => {
+          if (mat === materials[2]) {
+            const topTexture = texture.clone();
+            topTexture.repeat.set(1, 1);
+            mat.normalMap = topTexture;
+          } else {
+            texture.repeat.set(1, 5);
+            mat.normalMap = texture;
+          }
+          mat.normalScale.set(1, 1);
+        }),
+      ]).catch((error) => {
+        console.error("Error loading textures:", error);
+      });
     });
 
     // Ground Plane (Slate Column)
@@ -140,105 +225,20 @@ const GlassSphereScene = () => {
     plane.position.y = -26.5;
     scene.add(plane);
 
-    // Create loading overlay
-    const loadingOverlay = document.createElement("div");
-    loadingOverlay.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.8);
-      z-index: 10;
-      transition: opacity 0.5s ease-out;
-    `;
-
-    const flagLoader = document.createElement("div");
-    flagLoader.style.cssText = `
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 4px;
-      width: 40px;
-      height: 40px;
-    `;
-
-    // Create squares
-    const squares = Array.from({ length: 4 }, () => {
-      const square = document.createElement("div");
-      square.style.cssText = `
-        background-color: #ffbf00;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        transition: opacity 0.1s ease-in-out;
-      `;
-      return square;
-    });
-
-    squares.forEach((square) => flagLoader.appendChild(square));
-    loadingOverlay.appendChild(flagLoader);
-    document.body.appendChild(loadingOverlay);
-
-    // Add blur filter to canvas
-    canvasRef!.style.filter = "blur(10px)";
-    canvasRef!.style.transition = "filter 0.5s ease-out";
-
-    // Initial square state
-    squares[0].style.opacity = "1";
-    squares[3].style.opacity = "1";
-
-    // Track if we're in the fade out phase
-    let isFading = false;
-
-    // Animate squares
-    let animationFrame: number;
-    const animateLoader = () => {
-      if (loadingOverlay.parentNode === null) {
-        cancelAnimationFrame(animationFrame);
-        return;
-      }
-
-      const time = Date.now();
-      const phase = Math.floor(time / 200) % 2; // Switch every 200ms
-
-      if (phase === 0) {
-        squares[0].style.opacity = "1";
-        squares[1].style.opacity = "0";
-        squares[2].style.opacity = "0";
-        squares[3].style.opacity = "1";
-      } else {
-        squares[0].style.opacity = "0";
-        squares[1].style.opacity = "1";
-        squares[2].style.opacity = "1";
-        squares[3].style.opacity = "0";
-      }
-
-      animationFrame = requestAnimationFrame(animateLoader);
-    };
-    animateLoader();
-
     // Function to update loading progress
-    const updateLoadingProgress = (textureType: string) => {
+    const updateLoadingProgress = () => {
       const current = loadedTextures() + 1;
       setLoadedTextures(current);
+      const percentage = Math.round((current / totalTextures) * 100);
+      console.log(percentage);
+      setLoadingProgress(percentage);
 
-      if (current === totalTextures && !isFading) {
-        isFading = true;
+      if (current === totalTextures) {
         setTimeout(() => {
           setLoading(false);
-          loadingOverlay.style.opacity = "0";
-          canvasRef!.style.filter = "blur(0)";
-          setTimeout(() => loadingOverlay.remove(), 500);
         }, 500);
       }
     };
-
-    // Load textures
-    const textureLoader = new WorkerTextureLoader();
 
     // Helper function to load a texture and apply it to materials
     const loadAndApplyTexture = async (
@@ -254,97 +254,11 @@ const GlassSphereScene = () => {
           applyTexture(texture, mat as THREE.MeshStandardMaterial);
           mat.needsUpdate = true;
         });
-        updateLoadingProgress(url);
+        updateLoadingProgress();
       } catch (error) {
         console.error(`Error loading texture ${url}:`, error);
       }
     };
-
-    // Load all textures in parallel
-    Promise.all([
-      loadAndApplyTexture(
-        "/images/slate2-tiled-albedo2.png",
-        (texture, mat) => {
-          if (mat === materials[2]) {
-            // top face
-            const topTexture = texture.clone();
-            topTexture.repeat.set(1, 1);
-            mat.map = topTexture;
-          } else {
-            // sides
-            texture.repeat.set(1, 5);
-            mat.map = texture;
-          }
-        }
-      ),
-      loadAndApplyTexture("/images/slate2-tiled-height.png", (texture, mat) => {
-        if (mat === materials[2]) {
-          // top face
-          const topTexture = texture.clone();
-          topTexture.repeat.set(1, 1);
-          mat.displacementMap = topTexture;
-        } else {
-          // sides
-          texture.repeat.set(1, 5);
-          mat.displacementMap = texture;
-        }
-      }),
-      loadAndApplyTexture(
-        "/images/slate2-tiled-metalness.png",
-        (texture, mat) => {
-          if (mat === materials[2]) {
-            // top face
-            const topTexture = texture.clone();
-            topTexture.repeat.set(1, 1);
-            mat.metalnessMap = topTexture;
-          } else {
-            // sides
-            texture.repeat.set(1, 5);
-            mat.metalnessMap = texture;
-          }
-        }
-      ),
-      loadAndApplyTexture("/images/slate2-tiled-rough.png", (texture, mat) => {
-        if (mat === materials[2]) {
-          // top face
-          const topTexture = texture.clone();
-          topTexture.repeat.set(1, 1);
-          mat.roughnessMap = topTexture;
-        } else {
-          // sides
-          texture.repeat.set(1, 5);
-          mat.roughnessMap = texture;
-        }
-      }),
-      loadAndApplyTexture("/images/slate2-tiled-ao.png", (texture, mat) => {
-        if (mat === materials[2]) {
-          // top face
-          const topTexture = texture.clone();
-          topTexture.repeat.set(1, 1);
-          mat.aoMap = topTexture;
-        } else {
-          // sides
-          texture.repeat.set(1, 5);
-          mat.aoMap = texture;
-        }
-        mat.aoMapIntensity = 1.0;
-      }),
-      loadAndApplyTexture("/images/slate2-tiled-ogl.png", (texture, mat) => {
-        if (mat === materials[2]) {
-          // top face
-          const topTexture = texture.clone();
-          topTexture.repeat.set(1, 1);
-          mat.normalMap = topTexture;
-        } else {
-          // sides
-          texture.repeat.set(1, 5);
-          mat.normalMap = texture;
-        }
-        mat.normalScale.set(1, 1);
-      }),
-    ]).catch((error) => {
-      console.error("Error loading textures:", error);
-    });
 
     // Glass Sphere
     const sphereGeometry = new THREE.SphereGeometry(4, 64, 64);
@@ -419,14 +333,19 @@ const GlassSphereScene = () => {
 
     // Cleanup animation on unmount
     onCleanup(() => {
-      if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-      }
       window.removeEventListener("resize", handleResize);
       controls.dispose();
       renderer.dispose();
       textureLoader.dispose();
     });
+  });
+
+  const squareStyles = (index: number) => ({
+    "background-color": "#ffbf00",
+    width: "100%",
+    height: "100%",
+    animation: "loaderSquare 1s infinite linear",
+    "animation-delay": index === 1 || index === 2 ? "0.5s" : "0s",
   });
 
   return (
@@ -443,7 +362,65 @@ const GlassSphereScene = () => {
         overflow: "hidden",
       }}
     >
-      <canvas ref={canvasRef} />
+      <style>
+        {`
+          @keyframes loaderSquare {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+          }
+        `}
+      </style>
+      <canvas
+        ref={canvasRef}
+        style={{
+          filter: loading() ? "blur(10px)" : "blur(0px)",
+          transition: "filter 0.5s ease-out",
+        }}
+      />
+
+      <Show when={loading()}>
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            "flex-direction": "column",
+            "justify-content": "center",
+            "align-items": "center",
+            background: "rgba(0, 0, 0, 0.8)",
+            "z-index": 10,
+            transition: "opacity 0.5s ease-out",
+            opacity: loading() ? 1 : 0,
+          }}
+        >
+          <div
+            style={{
+              display: "grid",
+              "grid-template-columns": "repeat(2, 1fr)",
+              gap: "4px",
+              width: "40px",
+              height: "40px",
+            }}
+          >
+            {Array.from({ length: 4 }, (_, i) => (
+              <div style={squareStyles(i)} />
+            ))}
+          </div>
+          <div
+            style={{
+              "margin-top": "20px",
+              color: "#ffbf00",
+              "font-family": "sans-serif",
+              "font-size": "14px",
+            }}
+          >
+            {loadingProgress()}%
+          </div>
+        </div>
+      </Show>
     </div>
   );
 };
