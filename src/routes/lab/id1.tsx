@@ -50,116 +50,104 @@ const GlassSphereScene = () => {
     const textureLoader = new WorkerTextureLoader();
     const exrLoader = new EXRLoader();
 
-    // Load skybox first
-    exrLoader.load("/images/skybox.exr", (texture) => {
-      const pmremGenerator = new THREE.PMREMGenerator(renderer);
-      pmremGenerator.compileEquirectangularShader();
+    // Load all textures and skybox in parallel
+    const textureUrls = [
+      "/images/slate2-tiled-albedo2.png",
+      "/images/slate2-tiled-height.png",
+      "/images/slate2-tiled-metalness.png",
+      "/images/slate2-tiled-rough.png",
+      "/images/slate2-tiled-ao.png",
+      "/images/slate2-tiled-ogl.png"
+    ];
 
-      const envMap = pmremGenerator.fromEquirectangular(texture).texture;
-      scene.environment = envMap;
-      scene.background = envMap;
+    const applyTexture = (texture: THREE.Texture, material: THREE.MeshStandardMaterial, type: string) => {
+      const shouldCloneForTop = material === materials[2];
+      const finalTexture = shouldCloneForTop ? texture.clone() : texture;
+      
+      if (shouldCloneForTop) {
+        finalTexture.repeat.set(1, 1);
+      } else {
+        finalTexture.repeat.set(1, 5);
+      }
 
-      // Update materials to use environment map
-      const sphereMaterial = new THREE.MeshPhysicalMaterial({
-        color: 0xffffff,
-        metalness: 0.0,
-        roughness: 0.0,
-        transmission: 0.99,
-        thickness: 2.0,
-        envMapIntensity: 1.5,
-        clearcoat: 1.0,
-        clearcoatRoughness: 0.0,
-        ior: 1.5,
-        transparent: true,
-        opacity: 0.98,
-      });
-      sphereMaterial.envMap = envMap;
-      sphereMaterial.needsUpdate = true;
+      switch (type) {
+        case "albedo":
+          material.map = finalTexture;
+          break;
+        case "height":
+          material.displacementMap = finalTexture;
+          break;
+        case "metalness":
+          material.metalnessMap = finalTexture;
+          break;
+        case "rough":
+          material.roughnessMap = finalTexture;
+          break;
+        case "ao":
+          material.aoMap = finalTexture;
+          material.aoMapIntensity = 1.0;
+          break;
+        case "normal":
+          material.normalMap = finalTexture;
+          material.normalScale.set(1, 1);
+          break;
+      }
+      material.needsUpdate = true;
+    };
 
-      texture.dispose();
-      pmremGenerator.dispose();
+    const textureTypes = ["albedo", "height", "metalness", "rough", "ao", "normal"];
+    
+    Promise.all([
+      // Load regular textures
+      ...textureUrls.map((url, index) =>
+        textureLoader.loadTexture(url, { x: 1, y: 5 }).then(texture => {
+          materials.forEach(mat => {
+            applyTexture(texture, mat as THREE.MeshStandardMaterial, textureTypes[index]);
+          });
+          updateLoadingProgress();
+          return texture;
+        })
+      ),
+      // Load skybox
+      new Promise<void>((resolve, reject) => {
+        exrLoader.load("/images/skybox.exr", 
+          (texture) => {
+            const pmremGenerator = new THREE.PMREMGenerator(renderer);
+            pmremGenerator.compileEquirectangularShader();
 
-      updateLoadingProgress();
+            const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+            scene.environment = envMap;
+            scene.background = envMap;
 
-      // Now load the rest of the textures
-      Promise.all([
-        loadAndApplyTexture(
-          "/images/slate2-tiled-albedo2.png",
-          (texture, mat) => {
-            if (mat === materials[2]) {
-              const topTexture = texture.clone();
-              topTexture.repeat.set(1, 1);
-              mat.map = topTexture;
-            } else {
-              texture.repeat.set(1, 5);
-              mat.map = texture;
-            }
-          }
-        ),
-        loadAndApplyTexture(
-          "/images/slate2-tiled-height.png",
-          (texture, mat) => {
-            if (mat === materials[2]) {
-              const topTexture = texture.clone();
-              topTexture.repeat.set(1, 1);
-              mat.displacementMap = topTexture;
-            } else {
-              texture.repeat.set(1, 5);
-              mat.displacementMap = texture;
-            }
-          }
-        ),
-        loadAndApplyTexture(
-          "/images/slate2-tiled-metalness.png",
-          (texture, mat) => {
-            if (mat === materials[2]) {
-              const topTexture = texture.clone();
-              topTexture.repeat.set(1, 1);
-              mat.metalnessMap = topTexture;
-            } else {
-              texture.repeat.set(1, 5);
-              mat.metalnessMap = texture;
-            }
-          }
-        ),
-        loadAndApplyTexture(
-          "/images/slate2-tiled-rough.png",
-          (texture, mat) => {
-            if (mat === materials[2]) {
-              const topTexture = texture.clone();
-              topTexture.repeat.set(1, 1);
-              mat.roughnessMap = topTexture;
-            } else {
-              texture.repeat.set(1, 5);
-              mat.roughnessMap = texture;
-            }
-          }
-        ),
-        loadAndApplyTexture("/images/slate2-tiled-ao.png", (texture, mat) => {
-          if (mat === materials[2]) {
-            const topTexture = texture.clone();
-            topTexture.repeat.set(1, 1);
-            mat.aoMap = topTexture;
-          } else {
-            texture.repeat.set(1, 5);
-            mat.aoMap = texture;
-          }
-          mat.aoMapIntensity = 1.0;
-        }),
-        loadAndApplyTexture("/images/slate2-tiled-ogl.png", (texture, mat) => {
-          if (mat === materials[2]) {
-            const topTexture = texture.clone();
-            topTexture.repeat.set(1, 1);
-            mat.normalMap = topTexture;
-          } else {
-            texture.repeat.set(1, 5);
-            mat.normalMap = texture;
-          }
-          mat.normalScale.set(1, 1);
-        }),
-      ]).catch((error) => {
-        console.error("Error loading textures:", error);
-      });
+            // Update materials to use environment map
+            const sphereMaterial = new THREE.MeshPhysicalMaterial({
+              color: 0xffffff,
+              metalness: 0.0,
+              roughness: 0.0,
+              transmission: 0.99,
+              thickness: 2.0,
+              envMapIntensity: 1.5,
+              clearcoat: 1.0,
+              clearcoatRoughness: 0.0,
+              ior: 1.5,
+              transparent: true,
+              opacity: 0.98,
+            });
+            sphereMaterial.envMap = envMap;
+            sphereMaterial.needsUpdate = true;
+
+            texture.dispose();
+            pmremGenerator.dispose();
+
+            updateLoadingProgress();
+            resolve();
+          },
+          undefined,
+          reject
+        );
+      })
+    ]).catch((error) => {
+      console.error("Error loading textures:", error);
     });
 
     // Ground Plane (Slate Column)
@@ -237,26 +225,6 @@ const GlassSphereScene = () => {
         setTimeout(() => {
           setLoading(false);
         }, 500);
-      }
-    };
-
-    // Helper function to load a texture and apply it to materials
-    const loadAndApplyTexture = async (
-      url: string,
-      applyTexture: (
-        texture: THREE.Texture,
-        material: THREE.MeshStandardMaterial
-      ) => void
-    ) => {
-      try {
-        const texture = await textureLoader.loadTexture(url, { x: 1, y: 5 });
-        materials.forEach((mat) => {
-          applyTexture(texture, mat as THREE.MeshStandardMaterial);
-          mat.needsUpdate = true;
-        });
-        updateLoadingProgress();
-      } catch (error) {
-        console.error(`Error loading texture ${url}:`, error);
       }
     };
 
