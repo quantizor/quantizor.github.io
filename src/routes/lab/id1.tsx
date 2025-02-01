@@ -153,7 +153,7 @@ const GlassSphereScene = () => {
       justify-content: center;
       align-items: center;
       background: rgba(0, 0, 0, 0.8);
-      z-index: 1000;
+      z-index: 10;
       transition: opacity 0.5s ease-out;
     `;
 
@@ -441,7 +441,6 @@ const GlassSphereScene = () => {
         margin: 0,
         padding: 0,
         overflow: "hidden",
-        "z-index": -1,
       }}
     >
       <canvas ref={canvasRef} />

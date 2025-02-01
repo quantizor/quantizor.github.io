@@ -1,9 +1,9 @@
-import { MetaProvider } from '@solidjs/meta';
-import { Router } from '@solidjs/router';
-import { FileRoutes } from '@solidjs/start/router';
-import { Suspense } from 'solid-js';
+import { MetaProvider } from "@solidjs/meta";
+import { Router } from "@solidjs/router";
+import { FileRoutes } from "@solidjs/start/router";
+import { Suspense } from "solid-js";
 
-import './app.css';
+import "./app.css";
 
 export default function App() {
   return (
@@ -12,8 +12,12 @@ export default function App() {
         root={(props) => (
           <>
             <Suspense>
-              {props.location.pathname !== '/' && (
-                <a class="md:absolute top-4 left-4 leading-none text-2xl" title="Back to index" href="/">
+              {props.location.pathname !== "/" && (
+                <a
+                  class="relative md:absolute top-4 left-4 leading-none text-2xl z-20"
+                  title="Back to index"
+                  href="/"
+                >
                   ↰
                 </a>
               )}
