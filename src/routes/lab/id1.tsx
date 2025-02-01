@@ -2,6 +2,7 @@ import { onCleanup, onMount, createSignal } from "solid-js";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { EXRLoader } from "three/examples/jsm/loaders/EXRLoader";
+import { WorkerTextureLoader } from "@/utils/textureLoader";
 
 const GlassSphereScene = () => {
   let container: HTMLDivElement | undefined;
@@ -116,7 +117,7 @@ const GlassSphereScene = () => {
 
     const planeMaterial = new THREE.MeshStandardMaterial({
       color: 0xffffff,
-      displacementScale: 0.2, // Reduced to minimize gaps
+      displacementScale: 0.15, // Reduced to minimize gaps
       displacementBias: -0.1, // Adjusted to keep overall depth
       roughness: 1.0, // Let roughness map control this
       metalness: 1.0, // Let metalness map control this
@@ -126,12 +127,12 @@ const GlassSphereScene = () => {
 
     // Create materials for each face
     const materials = [
-      planeMaterial.clone(),
-      planeMaterial.clone(),
-      planeMaterial.clone(),
-      planeMaterial.clone(),
-      planeMaterial.clone(),
-      planeMaterial.clone(),
+      planeMaterial.clone(), // right
+      planeMaterial.clone(), // left
+      planeMaterial.clone(), // top - needs different repeat
+      planeMaterial.clone(), // bottom
+      planeMaterial.clone(), // front
+      planeMaterial.clone(), // back
     ];
 
     // Create and add mesh immediately
@@ -237,108 +238,113 @@ const GlassSphereScene = () => {
     };
 
     // Load textures
-    const textureLoader = new THREE.TextureLoader();
-    textureLoader.setCrossOrigin("anonymous");
+    const textureLoader = new WorkerTextureLoader();
 
-    // Helper function to set up texture properties
-    const setupTexture = (texture: THREE.Texture) => {
-      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-      texture.repeat.set(1, 5);
-      return texture;
+    // Helper function to load a texture and apply it to materials
+    const loadAndApplyTexture = async (
+      url: string,
+      applyTexture: (
+        texture: THREE.Texture,
+        material: THREE.MeshStandardMaterial
+      ) => void
+    ) => {
+      try {
+        const texture = await textureLoader.loadTexture(url, { x: 1, y: 5 });
+        materials.forEach((mat) => {
+          applyTexture(texture, mat as THREE.MeshStandardMaterial);
+          mat.needsUpdate = true;
+        });
+        updateLoadingProgress(url);
+      } catch (error) {
+        console.error(`Error loading texture ${url}:`, error);
+      }
     };
 
-    // Load albedo texture
-    setLoadingText((prev) => `${prev}\nLoading textures...`);
-    textureLoader.load(
-      "/images/slate2-tiled-albedo2.png",
-      (texture) => {
-        setupTexture(texture);
-        materials.forEach((mat) => {
-          mat.map = texture;
-          mat.needsUpdate = true;
-        });
-        updateLoadingProgress("albedo texture");
-      },
-      undefined,
-      (error) => console.error("Error loading albedo texture:", error)
-    );
-
-    // Load height map for displacement
-    textureLoader.load(
-      "/images/slate2-tiled-height.png",
-      (texture) => {
-        setupTexture(texture);
-        materials.forEach((mat) => {
+    // Load all textures in parallel
+    Promise.all([
+      loadAndApplyTexture(
+        "/images/slate2-tiled-albedo2.png",
+        (texture, mat) => {
+          if (mat === materials[2]) {
+            // top face
+            const topTexture = texture.clone();
+            topTexture.repeat.set(1, 1);
+            mat.map = topTexture;
+          } else {
+            // sides
+            texture.repeat.set(1, 5);
+            mat.map = texture;
+          }
+        }
+      ),
+      loadAndApplyTexture("/images/slate2-tiled-height.png", (texture, mat) => {
+        if (mat === materials[2]) {
+          // top face
+          const topTexture = texture.clone();
+          topTexture.repeat.set(1, 1);
+          mat.displacementMap = topTexture;
+        } else {
+          // sides
+          texture.repeat.set(1, 5);
           mat.displacementMap = texture;
-          mat.needsUpdate = true;
-        });
-        updateLoadingProgress("height map");
-      },
-      undefined,
-      (error) => console.error("Error loading height map:", error)
-    );
-
-    // Load metalness map
-    textureLoader.load(
-      "/images/slate2-tiled-metalness.png",
-      (texture) => {
-        setupTexture(texture);
-        materials.forEach((mat) => {
-          mat.metalnessMap = texture;
-          mat.needsUpdate = true;
-        });
-        updateLoadingProgress("metalness map");
-      },
-      undefined,
-      (error) => console.error("Error loading metalness map:", error)
-    );
-
-    // Load roughness map
-    textureLoader.load(
-      "/images/slate2-tiled-rough.png",
-      (texture) => {
-        setupTexture(texture);
-        materials.forEach((mat) => {
+        }
+      }),
+      loadAndApplyTexture(
+        "/images/slate2-tiled-metalness.png",
+        (texture, mat) => {
+          if (mat === materials[2]) {
+            // top face
+            const topTexture = texture.clone();
+            topTexture.repeat.set(1, 1);
+            mat.metalnessMap = topTexture;
+          } else {
+            // sides
+            texture.repeat.set(1, 5);
+            mat.metalnessMap = texture;
+          }
+        }
+      ),
+      loadAndApplyTexture("/images/slate2-tiled-rough.png", (texture, mat) => {
+        if (mat === materials[2]) {
+          // top face
+          const topTexture = texture.clone();
+          topTexture.repeat.set(1, 1);
+          mat.roughnessMap = topTexture;
+        } else {
+          // sides
+          texture.repeat.set(1, 5);
           mat.roughnessMap = texture;
-          mat.needsUpdate = true;
-        });
-        updateLoadingProgress("roughness map");
-      },
-      undefined,
-      (error) => console.error("Error loading roughness map:", error)
-    );
-
-    // Load ambient occlusion map
-    textureLoader.load(
-      "/images/slate2-tiled-ao.png",
-      (texture) => {
-        setupTexture(texture);
-        materials.forEach((mat) => {
+        }
+      }),
+      loadAndApplyTexture("/images/slate2-tiled-ao.png", (texture, mat) => {
+        if (mat === materials[2]) {
+          // top face
+          const topTexture = texture.clone();
+          topTexture.repeat.set(1, 1);
+          mat.aoMap = topTexture;
+        } else {
+          // sides
+          texture.repeat.set(1, 5);
           mat.aoMap = texture;
-          mat.aoMapIntensity = 1.0;
-          mat.needsUpdate = true;
-        });
-        updateLoadingProgress("ambient occlusion map");
-      },
-      undefined,
-      (error) => console.error("Error loading AO map:", error)
-    );
-
-    // Load normal map (OGL)
-    textureLoader.load(
-      "/images/slate2-tiled-ogl.png",
-      (texture) => {
-        setupTexture(texture);
-        materials.forEach((mat) => {
+        }
+        mat.aoMapIntensity = 1.0;
+      }),
+      loadAndApplyTexture("/images/slate2-tiled-ogl.png", (texture, mat) => {
+        if (mat === materials[2]) {
+          // top face
+          const topTexture = texture.clone();
+          topTexture.repeat.set(1, 1);
+          mat.normalMap = topTexture;
+        } else {
+          // sides
+          texture.repeat.set(1, 5);
           mat.normalMap = texture;
-          mat.normalScale.set(1, 1);
-          mat.needsUpdate = true;
-        });
-        updateLoadingProgress("normal map");
-      },
-      undefined,
-      (error) => console.error("Error loading normal map:", error)
-    );
+        }
+        mat.normalScale.set(1, 1);
+      }),
+    ]).catch((error) => {
+      console.error("Error loading textures:", error);
+    });
 
     // Glass Sphere
     const sphereGeometry = new THREE.SphereGeometry(4, 64, 64);
@@ -347,15 +353,15 @@ const GlassSphereScene = () => {
       metalness: 0.0,
       roughness: 0.0,
       transmission: 0.99,
-      thickness: 2.75,     // Reduced from 3.5
+      thickness: 2.75, // Reduced from 3.5
       envMapIntensity: 1.75, // Reduced from 2.0
       clearcoat: 1.0,
       clearcoatRoughness: 0.0,
-      ior: 1.75,          // Reduced from 2.0
+      ior: 1.75, // Reduced from 2.0
       transparent: true,
       opacity: 0.98,
       attenuationColor: new THREE.Color(0.97, 0.97, 1.0), // More subtle blue tint
-      attenuationDistance: 6.0  // Increased for less color absorption
+      attenuationDistance: 6.0, // Increased for less color absorption
     });
     const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     sphere.position.y = 0; // Adjusted position for larger sphere
@@ -375,7 +381,7 @@ const GlassSphereScene = () => {
     controls.autoRotateSpeed = 0.2;
     // Adjust vertical rotation limits for more dramatic upward angle
     controls.minPolarAngle = Math.PI / 2 - 1.0; // Allow even higher up view
-    controls.maxPolarAngle = Math.PI / 2; // Keep camera looking up more
+    controls.maxPolarAngle = Math.PI / 2 - 0.05; // Keep camera looking up more
     controls.target.set(0, 0, 0); // Orbit around center of sphere
 
     // Animation loop
@@ -419,6 +425,7 @@ const GlassSphereScene = () => {
       window.removeEventListener("resize", handleResize);
       controls.dispose();
       renderer.dispose();
+      textureLoader.dispose();
     });
   });
 
@@ -434,6 +441,7 @@ const GlassSphereScene = () => {
         margin: 0,
         padding: 0,
         overflow: "hidden",
+        "z-index": -1,
       }}
     >
       <canvas ref={canvasRef} />
