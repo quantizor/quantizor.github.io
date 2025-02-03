@@ -214,3 +214,26 @@ input[type="range"].accent-yellow-500::-moz-range-thumb {
 input[type="range"].accent-zinc-500::-moz-range-thumb {
   background: rgb(113 113 122); /* zinc-500 */
 }
+
+@media print {
+  @page {
+    margin-top: 0.75in;
+    margin-bottom: 0.75in;
+  }
+
+  #app {
+    @apply text-zinc-900 gap-6 text-[14px];
+  }
+
+  h1 {
+    @apply font-bold uppercase text-3xl;
+  }
+
+  h2 {
+    @apply font-bold;
+  }
+
+  a {
+    @apply text-blue-600;
+  }
+}

@@ -2,14 +2,14 @@
     "personalInfo": {
       "name": "Evan Jacobs"
     },
-    "summary": "Seasoned TypeScript engineer and problem solver. I build highly-productive codebases, including: design systems, internal libraries, documentation, etc. My specialty is frontend, but I am happy to work throughout the stack. Supplemental skills include: UX design, marketing, and product management.",
+    "summary": "Seasoned TypeScript engineer and problem solver. I build highly-productive codebases, including: web applications, design systems, internal libraries, documentation, etc. My specialty is frontend, but I am happy to work throughout the stack. Supplemental skills include: UX design, marketing, and product management.",
     "workExperience": [
       {
         "company": "Aurora Solar",
         "url": "https://aurorasolar.com/",
         "icon": "https://aurorasolar.com/wp-content/themes/aurora-solar/assets/img/favicon.svg",
         "title": "Principal Software Engineer",
-        "period": "8/2021 - Present",
+        "period": "8/2021 - 1/2025 (RIF)",
         "description": "Architected and executed a design system and high-automation localization platform for 12+ engineering pods. Saved the company $200k annually on compute costs related to CI/CD. Currently aiding with long overdue maintenance for the monorepo.",
         "responsibilities": [
           "Concepted and executed the tooling for the company's engineering localization strategy leveraging the CrowdIn TMS, DeepL translation engine, and a lightweight internal library leveraging web platform primitives like _Intl_",
