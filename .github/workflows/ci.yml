@@ -21,13 +21,12 @@ jobs:
         with:
           bun-version: latest
       - run: bun install --frozen-lockfile
-      - name: build
-        run: bun run -b build
-      - uses: actions/upload-pages-artifact@v3
+      - name: Build Next.js static site
+        run: bun run build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: .output/public
-    # <Not provided for brevity>
-    # At a minimum this job should upload artifacts using actions/upload-pages-artifact
+          path: out
 
   # Deploy job
   deploy:
@@ -47,6 +46,7 @@ jobs:
     # Specify runner + deployment step
     runs-on: ubuntu-latest
     steps:
-      - id: deployment
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
 
