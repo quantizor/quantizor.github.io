@@ -9,6 +9,10 @@
     "start": "next start"
   },
   "dependencies": {
+    "@mdx-js/loader": "^3.1.0",
+    "@mdx-js/react": "^3.1.0",
+    "@next/mdx": "^15.1.7",
+    "@types/mdx": "^2.0.13",
     "markdown-to-jsx": "^7.7.3",
     "next": "latest",
     "react": "latest",
@@ -20,13 +24,15 @@
     "node": ">=18"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.6",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@types/three": "^0.170.0",
-    "@tailwindcss/postcss": "^4.0.6",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.5.2",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4.0.6",
     "typescript": "latest"
   }

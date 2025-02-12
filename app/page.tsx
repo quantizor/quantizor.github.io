@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { FaGithub } from 'react-icons/fa';
 import { views } from './views';
 import SiteTitle from './components/Title';
+import Content from './content/index.mdx';
 
 export default function Home() {
   const [currentView, setCurrentView] = useState(views[0]);
@@ -25,17 +26,22 @@ export default function Home() {
   return (
     <>
       <SiteTitle />
-      <main className="flex grow md:justify-center items-center max-h-screen text-center mx-auto p-4">
+
+      <main className="prose prose-invert mx-auto px-4">
+        <Content />
+      </main>
+
+      <section className="flex grow md:justify-center items-center max-h-screen text-center mt-8 mx-auto p-4">
         <pre
-          className="text-[1.5vw] absolute max-w-full md:text-xs text-amber-400"
+          className="text-[1.5vw] absolute max-w-full md:text-xs"
           onPointerOut={() => setPaused(false)}
           onPointerOver={() => setPaused(true)}
         >
           {currentView}
         </pre>
-      </main>
+      </section>
 
-      <footer className="flex flex-wrap gap-5 justify-center text-center self-center absolute top-[40vh] md:top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <footer className="flex flex-wrap gap-5 justify-center text-center self-center mt-24">
         <a className="button" href="/cv">
           CV
         </a>
@@ -50,7 +56,7 @@ export default function Home() {
         </a>
       </footer>
 
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-5 items-center">
+      <div className="flex gap-5 items-center justify-center pb-10">
         <a title="GitHub" href="https://github.com/quantizor" target="_blank" rel="noopener noreferrer">
           <FaGithub size={24} />
         </a>

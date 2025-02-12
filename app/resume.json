@@ -3,7 +3,22 @@
     "name": "Evan Jacobs"
   },
   "summary": "Seasoned TypeScript engineer and problem solver. I build highly-productive codebases, including: web applications, design systems, internal libraries, documentation, etc. My specialty is frontend, but I am happy to work throughout the stack. Supplemental skills include: UX design, marketing, and product management.",
+  "currentWork": [
+    {
+      "company": "quantizor.dev",
+      "icon": "https://quantizor.dev/favicon.png",
+      "title": "Sand Weaver",
+      "description": "I work with clients to translate their ideas into useful and beautiful web experiences. I work best with designers and those with a strong visual sense.",
+      "responsibilities": [
+        "TypeScript expertise",
+        "All size projects",
+        "$150/hr normalized to 40-hour weeks, simple sprint invoicing via Stripe",
+        "[Book me](mailto:x@quantizor.dev) for a day, two weeks, a month, or longer."
+      ]
+    }
+  ],
   "workExperience": [
+
     {
       "company": "Aurora Solar",
       "url": "https://aurorasolar.com/",
@@ -81,21 +96,7 @@
     }
   ],
   "openSource": {
-    "description": "I am a prolific contributor to the open source community and maintain several personally-authored libraries, as well as stewardship of the styled-components constellation of libraries.",
-    "projects": [
-      {
-        "name": "markdown-to-jsx",
-        "url": "https://github.com/quantizor/markdown-to-jsx"
-      },
-      {
-        "name": "styled-components",
-        "url": "https://github.com/styled-components/styled-components"
-      },
-      {
-        "name": "twyx",
-        "url": "https://github.com/quantizor/twyx"
-      }
-    ]
+    "description": "I am a frequent contributor to open source projects and maintain a small collection of [javascript libraries](https://github.com/quantizor?tab=repositories&q=&type=source&language=&sort=) in my spare time."
   },
   "profiles": {
     "github": "https://github.com/quantizor",

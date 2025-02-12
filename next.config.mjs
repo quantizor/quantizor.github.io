@@ -1,5 +1,15 @@
+import createMDX from '@next/mdx';
+
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   output: 'export',
   images: {
     unoptimized: true, // Required for static export
@@ -8,4 +18,4 @@ const nextConfig = {
   trailingSlash: true,
 };
 
-export default nextConfig;
+export default withMDX(nextConfig);
