@@ -6,6 +6,13 @@ import { views } from './views';
 import SiteTitle from './components/Title';
 import Content from './content/index.mdx';
 
+import { Cedarville_Cursive } from 'next/font/google';
+
+const font = Cedarville_Cursive({
+  weight: '400',
+  subsets: ['latin'],
+});
+
 export default function Home() {
   const [currentView, setCurrentView] = useState(views[0]);
   const [paused, setPaused] = useState(false);
@@ -28,7 +35,7 @@ export default function Home() {
       <SiteTitle />
 
       <main className="prose prose-invert mx-auto px-4">
-        <Content />
+        <Content components={{h1: ({children}) => <h1 className={`text-4xl  ${font.className}`}>{children}</h1>}} />
       </main>
 
       <section className="flex grow md:justify-center items-center max-h-screen text-center mt-8 mx-auto p-4">

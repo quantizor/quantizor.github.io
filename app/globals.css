@@ -33,92 +33,115 @@
     @apply flex flex-col gap-3 list-disc ml-4 text-zinc-500;
   }
 
-  @layer components {
-    .button {
-      @apply relative border-current border-[1px] inline-flex py-1 px-3 rounded justify-center;
+  @media print {
+    @page {
+      margin-top: 0.75in;
+      margin-bottom: 0.75in;
     }
 
-    .rainbow-border {
-      @apply relative;
-      background: linear-gradient(theme('colors.zinc.900'), theme('colors.zinc.900')) padding-box,
-        linear-gradient(
-            to right,
-            #ff0000 0%,
-            #ff0000 14.28%,
-            #ffa500 14.28%,
-            #ffa500 28.57%,
-            #ffff00 28.57%,
-            #ffff00 42.85%,
-            #008000 42.85%,
-            #008000 57.14%,
-            #0000ff 57.14%,
-            #0000ff 71.42%,
-            #4b0082 71.42%,
-            #4b0082 85.71%,
-            #8f00ff 85.71%,
-            #8f00ff 100%
-          )
-          border-box;
-      border: 1px solid transparent;
+    body {
+      @apply text-zinc-900 gap-6 text-[14px];
     }
 
-    .rainbow-text {
-      @apply bg-clip-text text-transparent;
-      background-image: linear-gradient(
-        to right,
-        #ff0000 0%,
-        #ff0000 14.28%,
-        #ffa500 14.28%,
-        #ffa500 28.57%,
-        #ffff00 28.57%,
-        #ffff00 42.85%,
-        #008000 42.85%,
-        #008000 57.14%,
-        #0000ff 57.14%,
-        #0000ff 71.42%,
-        #4b0082 71.42%,
-        #4b0082 85.71%,
-        #8f00ff 85.71%,
-        #8f00ff 100%
-      );
-      animation: rainbow 10s ease infinite;
+    h1 {
+      @apply font-bold uppercase text-3xl;
     }
 
-    .huetiful-border {
-      position: relative;
-      color: #fff;
-      background: linear-gradient(0deg, #000, #272727);
+    h2 {
+      @apply font-bold;
     }
 
-    .huetiful-border:before,
-    .huetiful-border:after {
-      content: '';
-      position: absolute;
-      left: -2px;
-      top: -2px;
-      background: linear-gradient(
-        45deg,
-        #fb0094,
-        #0000ff,
-        #00ff00,
-        #ffff00,
-        #ff0000,
-        #fb0094,
-        #0000ff,
-        #00ff00,
-        #ffff00,
-        #ff0000
-      );
-      background-size: 400%;
-      width: calc(100% + 4px);
-      height: calc(100% + 4px);
-      z-index: -1;
-      animation: steam 20s linear infinite;
+    a {
+      @apply text-blue-600;
     }
+  }
+}
 
-    .huetiful-border:after {
-      filter: blur(50px);
-    }
+@layer components {
+  .button {
+    @apply relative border-current border-[1px] inline-flex py-1 px-3 rounded justify-center;
+  }
+
+  .rainbow-border {
+    @apply relative;
+    background: linear-gradient(theme('colors.zinc.900'), theme('colors.zinc.900')) padding-box,
+      linear-gradient(
+          to right,
+          #ff0000 0%,
+          #ff0000 14.28%,
+          #ffa500 14.28%,
+          #ffa500 28.57%,
+          #ffff00 28.57%,
+          #ffff00 42.85%,
+          #008000 42.85%,
+          #008000 57.14%,
+          #0000ff 57.14%,
+          #0000ff 71.42%,
+          #4b0082 71.42%,
+          #4b0082 85.71%,
+          #8f00ff 85.71%,
+          #8f00ff 100%
+        )
+        border-box;
+    border: 1px solid transparent;
+  }
+
+  .rainbow-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      to right,
+      #ff0000 0%,
+      #ff0000 14.28%,
+      #ffa500 14.28%,
+      #ffa500 28.57%,
+      #ffff00 28.57%,
+      #ffff00 42.85%,
+      #008000 42.85%,
+      #008000 57.14%,
+      #0000ff 57.14%,
+      #0000ff 71.42%,
+      #4b0082 71.42%,
+      #4b0082 85.71%,
+      #8f00ff 85.71%,
+      #8f00ff 100%
+    );
+    animation: rainbow 10s ease infinite;
+  }
+
+  .huetiful-border {
+    position: relative;
+    color: #fff;
+    background: linear-gradient(0deg, #000, #272727);
+  }
+
+  .huetiful-border:before,
+  .huetiful-border:after {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    background: linear-gradient(
+      45deg,
+      #fb0094,
+      #0000ff,
+      #00ff00,
+      #ffff00,
+      #ff0000,
+      #fb0094,
+      #0000ff,
+      #00ff00,
+      #ffff00,
+      #ff0000
+    );
+    background-size: 400%;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -1;
+    animation: steam 20s linear infinite;
+  }
+
+  .huetiful-border:after {
+    filter: blur(50px);
   }
 
   @keyframes rainbow {
@@ -340,28 +363,5 @@
   }
   input[type='range'].accent-zinc-500::-moz-range-thumb {
     background-color: rgb(113 113 122);
-  }
-
-  @media print {
-    @page {
-      margin-top: 0.75in;
-      margin-bottom: 0.75in;
-    }
-
-    body {
-      @apply text-zinc-900 gap-6 text-[14px];
-    }
-
-    h1 {
-      @apply font-bold uppercase text-3xl;
-    }
-
-    h2 {
-      @apply font-bold;
-    }
-
-    a {
-      @apply text-blue-600;
-    }
   }
 }

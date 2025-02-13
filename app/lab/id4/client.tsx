@@ -2,6 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import SiteTitle from '@/components/Title';
+import { Barriecito } from 'next/font/google';
+
+const barriecito = Barriecito({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-barriecito',
+});
 
 type RGB = {
   r: number;
@@ -255,10 +262,9 @@ export default function HuetifulGame() {
 
       <div className="flex flex-col items-center gap-8">
         <h1
-          className="text-5xl relative px-4 py-2 lowercase"
+          className={`${barriecito.className} text-5xl relative px-4 py-2 lowercase`}
           style={{
             color: `rgb(${targetColor.r}, ${targetColor.g}, ${targetColor.b})`,
-            fontFamily: 'barriecito',
           }}
         >
           <span>huetiful</span>
@@ -275,6 +281,16 @@ export default function HuetifulGame() {
                 backgroundColor: `rgb(${targetColor.r}, ${targetColor.g}, ${targetColor.b})`,
               }}
             />
+            {colorMode === 'cmyk' && (
+              <div className="text-xs text-white/50 mt-1">
+                C:{targetCmyk.c} M:{targetCmyk.m} Y:{targetCmyk.y} K:{targetCmyk.k}
+              </div>
+            )}
+            {colorMode === 'rgb' && (
+              <div className="text-xs text-white/50 mt-1">
+                R:{targetColor.r} G:{targetColor.g} B:{targetColor.b}
+              </div>
+            )}
           </div>
 
           <div className="flex flex-col items-center gap-2">

@@ -5,12 +5,19 @@ import Markdown from 'markdown-to-jsx';
 import resume from '@/resume.json';
 import SiteTitle from '@/components/Title';
 
+import { Cedarville_Cursive } from 'next/font/google';
+
+const font = Cedarville_Cursive({
+  weight: '400',
+  subsets: ['latin'],
+});
+
 export default function CV() {
   return (
     <main>
       <SiteTitle>CV</SiteTitle>
       <header className="items-center print:items-start flex">
-        <h1 className="print:opacity-100 bg-white font-bold text-zinc-900 py-1 px-3 text-xl">
+        <h1 className={`print:opacity-100  py-1 px-3 text-5xl ${font.className}`}>
           {resume.personalInfo.name}
         </h1>
         <p className="flex gap-4 items-center justify-end ml-auto print:hidden">
@@ -77,8 +84,8 @@ export default function CV() {
 
       <section className="flex flex-col gap-14 md:gap-10 print:gap-7 mt-8">
         <header className="">
-          <h2 className="inline-block text-sm">
-            Prior roles:
+          <h2 className={`inline-block text-3xl ${font.className}`}>
+            prior roles
           </h2>
         </header>
 
@@ -118,7 +125,7 @@ export default function CV() {
 
       <section className="flex flex-col gap-7 -mx-8 px-8 md:mx-[-64px] md:px-16  pt-2">
         <header>
-          <h2 className="inline-block text-sm">Open Source:</h2>
+          <h2 className={`inline-block text-3xl ${font.className}`}>open source</h2>
         </header>
 
         <p className="md:pl-7 print:pl-7 text-zinc-300 print:text-zinc-700">
@@ -127,21 +134,4 @@ export default function CV() {
       </section>
     </main>
   );
-}
-
-function convertToBinaryUsingCharacterCodes(input: string) {
-  let binaryResult = '';
-
-  for (let i = 0; i < input.length; i++) {
-      const charCode = input.charCodeAt(i);
-      let binaryValue = '';
-
-      for (let j = 7; j >= 0; j--) {
-          binaryValue += (charCode >> j) & 1;
-      }
-
-      binaryResult += binaryValue + ' ';
-  }
-
-  return binaryResult.trim();
 }
