@@ -10,6 +10,18 @@ export interface NDimensionalParams {
   sides: number; // Number of sides/divisions for deformation pattern
 }
 
+export interface SavedShape {
+  id: string;
+  name: string;
+  params: NDimensionalParams;
+  randomParams: {
+    radialAmplitudes: number[];
+    heightAmplitudes: number[];
+    phases: number[];
+  } | null;
+  createdAt: number;
+}
+
 export const GEOMETRY_TYPES: GeometryType[] = [
   {
     id: 'tetrahedron',

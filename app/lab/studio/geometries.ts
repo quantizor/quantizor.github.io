@@ -155,31 +155,135 @@ function generateRegularPolyhedronVertices(sides: number, scale: number): THREE.
   }
 
   // For non-Platonic numbers of faces, calculate optimal vertex configuration
-  const { vertices: numVertices, edgesPerFace } = calculateOptimalVertices(sides);
+  const { vertices: numVertices } = calculateOptimalVertices(sides);
 
   // Generate vertices using spherical fibonacci distribution
   const vertices: THREE.Vector3[] = [];
   const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // Golden angle in radians
+  const numPoints = Math.max(numVertices, sides * 2); // Ensure enough points for face count
 
-  for (let i = 0; i < numVertices; i++) {
+  for (let i = 0; i < numPoints; i++) {
     // Use spherical fibonacci distribution for optimal vertex spacing
-    const y = 1 - (i / (numVertices - 1)) * 2; // y goes from 1 to -1
-    const radius = Math.sqrt(1 - y * y); // radius at y
+    const t = i / (numPoints - 1);
+    const inclination = Math.acos(2 * t - 1) - Math.PI / 2;
+    const azimuth = goldenAngle * i;
 
-    // Adjust spacing based on preferred face type
-    const theta = goldenAngle * i * (edgesPerFace / 3); // Scale angle based on face type
-
-    const x = Math.cos(theta) * radius;
-    const z = Math.sin(theta) * radius;
+    // Convert spherical coordinates to Cartesian
+    const x = Math.cos(inclination) * Math.cos(azimuth);
+    const y = Math.cos(inclination) * Math.sin(azimuth);
+    const z = Math.sin(inclination);
 
     vertices.push(new THREE.Vector3(x * scale, y * scale, z * scale));
+  }
+
+  // Add some random jitter to vertices to create more interesting shapes for high face counts
+  if (sides > 20) {
+    const jitterAmount = 0.1; // 10% jitter
+    vertices.forEach(vertex => {
+      vertex.x += (Math.random() - 0.5) * jitterAmount * scale;
+      vertex.y += (Math.random() - 0.5) * jitterAmount * scale;
+      vertex.z += (Math.random() - 0.5) * jitterAmount * scale;
+    });
   }
 
   return vertices;
 }
 
-// Generate a polyhedron with the given number of vertices
-export function generatePolyhedron(params: NDimensionalParams): THREE.BufferGeometry {
+// Store the current random parameters for regeneration
+let currentRandomParams: {
+  radialAmplitudes: number[];
+  heightAmplitudes: number[];
+  phases: number[];
+} | null = null;
+
+// Export current params for saving
+export function getCurrentRandomParams() {
+  return currentRandomParams;
+}
+
+// Set specific random params
+export function setCurrentRandomParams(params: {
+  radialAmplitudes: number[];
+  heightAmplitudes: number[];
+  phases: number[];
+} | null) {
+  currentRandomParams = params;
+}
+
+function generateRandomParams(sides: number): {
+  radialAmplitudes: number[];
+  heightAmplitudes: number[];
+  phases: number[];
+} {
+  // Use 3 sets of sine waves for complexity
+  const numWaves = 3;
+  const radialAmplitudes = Array.from({ length: numWaves }, () => Math.random() * 0.5);
+  const heightAmplitudes = Array.from({ length: numWaves }, () => Math.random() * 0.5);
+  const phases = Array.from({ length: numWaves }, () => Math.random() * Math.PI * 2);
+
+  return {
+    radialAmplitudes,
+    heightAmplitudes,
+    phases
+  };
+}
+
+function generateSymmetricVertices(sides: number, scale: number, randomParams?: {
+  radialAmplitudes: number[];
+  heightAmplitudes: number[];
+  phases: number[];
+}): THREE.Vector3[] {
+  // Generate or use provided random parameters
+  const params = randomParams || generateRandomParams(sides);
+  currentRandomParams = params;
+
+  const vertices: THREE.Vector3[] = [];
+  const numRings = Math.max(2, Math.floor(sides / 8)); // At least 2 rings, more for higher face counts
+
+  // Generate vertices in rings
+  for (let ring = 0; ring <= numRings; ring++) {
+    const ringY = (ring / numRings) * 2 - 1; // -1 to 1
+    const ringRadius = Math.sqrt(1 - ringY * ringY); // Base radius follows sphere profile
+    const pointsInRing = ring === 0 || ring === numRings ? 1 : sides;
+
+    if (pointsInRing === 1) {
+      // Pole points
+      vertices.push(new THREE.Vector3(0, ringY * scale, 0));
+      continue;
+    }
+
+    for (let i = 0; i < pointsInRing; i++) {
+      const angle = (i / pointsInRing) * Math.PI * 2;
+
+      // Apply sine wave modifications
+      let radiusModifier = 1;
+      let heightModifier = 0;
+
+      params.radialAmplitudes.forEach((amp, idx) => {
+        const freq = idx + 1;
+        radiusModifier += amp * Math.sin(freq * angle + params.phases[idx]);
+      });
+
+      params.heightAmplitudes.forEach((amp, idx) => {
+        const freq = idx + 1;
+        heightModifier += amp * Math.sin(freq * angle + params.phases[idx]);
+      });
+
+      // Calculate final position
+      const radius = ringRadius * radiusModifier;
+      const x = Math.cos(angle) * radius * scale;
+      const y = (ringY + heightModifier * (1 - Math.abs(ringY))) * scale;
+      const z = Math.sin(angle) * radius * scale;
+
+      vertices.push(new THREE.Vector3(x, y, z));
+    }
+  }
+
+  return vertices;
+}
+
+// Update the generatePolyhedron function
+export function generatePolyhedron(params: NDimensionalParams, forceNewRandom: boolean = false): THREE.BufferGeometry {
   const { sides } = params;
   const FIXED_SCALE = 1.5;
 
@@ -206,9 +310,18 @@ export function generatePolyhedron(params: NDimensionalParams): THREE.BufferGeom
     ]);
   }
 
-  // Generate vertices based on the number of sides
-  const vertices = generateRegularPolyhedronVertices(sides, FIXED_SCALE);
+  // Use Platonic solids for specific face counts
+  if (!forceNewRandom && Object.values(PLATONIC_SOLIDS).includes(sides as any)) {
+    const vertices = generateRegularPolyhedronVertices(sides as any, FIXED_SCALE);
+    return new ConvexGeometry(vertices);
+  }
 
-  // Create convex hull from vertices
+  // For all other cases, generate symmetric random shape
+  const vertices = generateSymmetricVertices(
+    sides,
+    FIXED_SCALE,
+    forceNewRandom ? undefined : currentRandomParams || undefined
+  );
+
   return new ConvexGeometry(vertices);
 }
