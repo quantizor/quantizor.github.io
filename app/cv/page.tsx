@@ -1,11 +1,10 @@
-'use client';
-
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
-import Markdown from 'markdown-to-jsx';
 import resume from '@/resume.json';
-import SiteTitle from '@/components/Title';
+import { cn, generateMetadata } from '@/utils';
+import Markdown from 'markdown-to-jsx';
 
 import { Cedarville_Cursive } from 'next/font/google';
+
+export const metadata = generateMetadata('CV');
 
 const font = Cedarville_Cursive({
   weight: '400',
@@ -15,38 +14,13 @@ const font = Cedarville_Cursive({
 export default function CV() {
   return (
     <main>
-      <SiteTitle>CV</SiteTitle>
-      <header className="items-center print:items-start flex">
-        <h1 className={`print:opacity-100  py-1 px-3 text-5xl ${font.className}`}>
-          {resume.personalInfo.name}
-        </h1>
-        <p className="flex gap-4 items-center justify-end ml-auto print:hidden">
-          <a
-            className="no-underline opacity-50 print:opacity-100 hover:opacity-100"
-            href={resume.profiles.x}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span aria-label="quantizor on X, the Everything App" className="text-[24px]">
-              𝕏
-            </span>
-          </a>
-          <a href={resume.profiles.github} target="_blank" rel="noopener noreferrer">
-            <FaGithub aria-label="GitHub" className="h-5 w-5 print:opacity-100 opacity-50 hover:opacity-100" />
-          </a>
-          <a href={resume.profiles.linkedIn} target="_blank" rel="noopener noreferrer">
-            <FaLinkedin aria-label="LinkedIn" className="h-5 w-5 print:opacity-100 opacity-50 hover:opacity-100" />
-          </a>
-        </p>
-      </header>
+      <h1 className={cn(`text-5xl text-center md:text-left`, font.className)}>{resume.personalInfo.name}</h1>
 
-      <blockquote>{resume.summary}</blockquote>
+      <blockquote className="text-balance text-center md:text-left">{resume.summary}</blockquote>
 
       <section className="flex outline-1 outline-offset-14 md:outline-offset-20 flex-col gap-2 md:gap-4 mt-8 pb-1 md:pb-3">
         <header className="-mt-[28px] md:-mt-[34px]">
-          <h2 className="inline-block text-sm bg-zinc-900 px-3 -ml-3 relative z-10">
-            Current
-          </h2>
+          <h2 className="inline-block text-sm bg-zinc-900 px-3 -ml-3 relative z-10">Current</h2>
         </header>
 
         {resume.currentWork.map((job) => (
@@ -54,9 +28,7 @@ export default function CV() {
             <header className="flex flex-col gap-6 md:gap-4 print:gap-4">
               <div className="flex flex-col print:flex-row md:flex-row gap-[2px] md:gap-4 print:gap-4">
                 <h3 className="flex font-bold gap-3">
-                  <span className="text-current underline-offset-3">
-                    {job.company}
-                  </span>
+                  <span className="text-current underline-offset-3">{job.company}</span>
                   <img
                     src={job.icon}
                     alt={`${job.company} logo`}
@@ -66,12 +38,12 @@ export default function CV() {
                 <span className="italic text-zinc-200 print:text-zinc-800">{job.title}</span>
               </div>
 
-              <p className="text-zinc-300 print:text-zinc-700">{job.description}</p>
+              <p className="text-zinc-300 print:text-zinc-700 text-balance">{job.description}</p>
 
               {job.responsibilities && (
                 <ul>
                   {job.responsibilities.map((role, index) => (
-                    <li key={index} className="text-zinc-500">
+                    <li key={index} className="text-zinc-500 text-balance">
                       <Markdown>{role}</Markdown>
                     </li>
                   ))}
@@ -84,9 +56,7 @@ export default function CV() {
 
       <section className="flex flex-col gap-14 md:gap-10 print:gap-7 mt-8">
         <header className="">
-          <h2 className={`inline-block text-3xl ${font.className}`}>
-            prior roles
-          </h2>
+          <h2 className={`inline-block text-3xl ${font.className}`}>prior roles</h2>
         </header>
 
         {resume.workExperience.map((job) => (

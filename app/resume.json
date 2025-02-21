@@ -2,18 +2,18 @@
   "personalInfo": {
     "name": "evan jacobs"
   },
-  "summary": "Seasoned TypeScript engineer and problem solver. I build highly-productive codebases, including: web applications, design systems, internal libraries, documentation, etc. My specialty is frontend, but I am happy to work throughout the stack. Supplemental skills include: UX design, marketing, and product management.",
+  "summary": "Seasoned TypeScript engineer and problem solver. I build highly-productive codebases, including: web applications, design systems, internal libraries, and documentation. My specialty is frontend, but I am happy to work throughout the stack. Supplemental skills include: UX design, marketing, and product management.",
   "currentWork": [
     {
       "company": "quantizor.dev",
       "icon": "https://quantizor.dev/favicon.png",
       "title": "Sand Weaver",
-      "description": "I work with clients to translate their ideas into useful and beautiful web experiences. I work best with designers and those with a strong visual sense.",
+      "description": "I work with clients to translate their ideas into useful and beautiful software. I work best with designers and those with a strong visual sense.",
       "responsibilities": [
         "TypeScript expertise",
         "All size projects",
-        "$150/hr normalized to 40-hour weeks, simple sprint invoicing via Stripe",
-        "[Book me](mailto:x@quantizor.dev) for a day, two weeks, a month, or longer."
+        "Simple invoicing via Stripe: per-diem, weekly, or monthly",
+        "[Book a call](https://calendly.com/evanjacobs/15min), let's work together!"
       ]
     }
   ],
@@ -25,7 +25,7 @@
       "icon": "https://aurorasolar.com/wp-content/themes/aurora-solar/assets/img/favicon.svg",
       "title": "Principal Software Engineer",
       "period": "8/2021 - 1/2025 (RIF)",
-      "description": "Architected and executed a design system and high-automation localization platform for 12+ engineering pods. Saved the company $200k annually on compute costs related to CI/CD. Currently aiding with long overdue maintenance for the monorepo.",
+      "description": "Architected and executed a design system and high-automation localization platform for 12+ engineering pods. Saved the company $200k annually on compute costs related to CI/CD. Last aided with monorepo modernization and cycle time improvement.",
       "responsibilities": [
         "Concepted and executed the tooling for the company's engineering localization strategy leveraging the CrowdIn TMS, DeepL translation engine, and a lightweight internal library leveraging web platform primitives like _Intl_",
         "Migrated an expensive and complex self-hosted GitHub Actions runner stack to use ARM architecture, resulting in a 40% reduction in overall cost; refactored all workflows for additional performance benefit, cost saving, and consistent stability",
@@ -96,7 +96,7 @@
     }
   ],
   "openSource": {
-    "description": "I am a frequent contributor to open source projects and maintain a small collection of [javascript libraries](https://github.com/quantizor?tab=repositories&q=&type=source&language=&sort=) in my spare time."
+    "description": "I am a frequent contributor to open source projects and maintain a small collection of [software libraries](https://github.com/quantizor?tab=repositories&q=&type=source&language=&sort=) in my spare time."
   },
   "profiles": {
     "github": "https://github.com/quantizor",

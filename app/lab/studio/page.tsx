@@ -1,11 +1,11 @@
 'use client';
 
-import GeometryStudio from './NDimensionalGeometrySimulator';
+import GeometryStudio from './studio';
 
 export default function StudioPage() {
   return (
     <div className="fixed inset-0 bg-black">
-        <GeometryStudio />
+      <GeometryStudio />
     </div>
   );
 }

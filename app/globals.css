@@ -12,13 +12,13 @@
   }
 
   html {
-    @apply bg-zinc-900 text-zinc-100 h-screen selection:bg-white/70 selection:text-black;
-    font-family: 'SF Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
-      monospace;
+    @apply h-screen bg-zinc-900 text-zinc-100 selection:bg-white/70 selection:text-black;
+    font-family:
+      'SF Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   }
 
   body {
-    @apply h-screen flex flex-col text-zinc-100 gap-10 mx-auto md:max-w-[100ch] px-8 md:px-16 py-10;
+    @apply mx-auto flex h-screen flex-col px-9 pt-22 pb-10 text-zinc-100 md:max-w-[100ch] md:px-14;
   }
 
   main {
@@ -26,11 +26,11 @@
   }
 
   a {
-    @apply text-white active:text-zinc-400 not-[.button]:underline underline-offset-4 decoration-dotted hover:decoration-solid;
+    @apply text-white decoration-dotted underline-offset-4 not-[.button]:underline hover:decoration-solid active:text-zinc-400;
   }
 
   ul {
-    @apply flex flex-col gap-3 list-disc ml-4 text-zinc-500;
+    @apply ml-4 flex list-disc flex-col gap-3 text-zinc-500;
   }
 
   @media print {
@@ -40,11 +40,11 @@
     }
 
     body {
-      @apply text-zinc-900 gap-6 text-[14px];
+      @apply gap-6 text-[14px] text-zinc-900;
     }
 
     h1 {
-      @apply font-bold uppercase text-3xl;
+      @apply text-3xl font-bold uppercase;
     }
 
     h2 {
@@ -59,12 +59,13 @@
 
 @layer components {
   .button {
-    @apply relative border-current border-[1px] inline-flex py-1 px-3 rounded justify-center;
+    @apply relative inline-flex cursor-pointer justify-center rounded border-[1px] border-current px-3 py-1;
   }
 
   .rainbow-border {
     @apply relative;
-    background: linear-gradient(theme('colors.zinc.900'), theme('colors.zinc.900')) padding-box,
+    background:
+      linear-gradient(theme('colors.zinc.900'), theme('colors.zinc.900')) padding-box,
       linear-gradient(
           to right,
           #ff0000 0%,
