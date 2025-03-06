@@ -2,11 +2,11 @@
   "personalInfo": {
     "name": "evan jacobs"
   },
-  "summary": "Seasoned TypeScript engineer and problem solver. I build highly-productive codebases, including: web applications, design systems, internal libraries, and documentation. My specialty is frontend, but I am happy to work throughout the stack. Supplemental skills include: UX design, marketing, and product management.",
+  "summary": "Seasoned TypeScript engineer and problem solver. I build highly-productive codebases, including: web applications, design systems, internal libraries, and documentation.<br /><br />My specialty is frontend, but I am happy to work throughout the stack. Supplemental skills include: UX design, marketing, and product management.",
   "currentWork": [
     {
       "company": "quantizor.dev",
-      "icon": "https://quantizor.dev/favicon.png",
+      "icon": "https://quantizor.dev/images/quantizor.svg",
       "title": "Sand Weaver",
       "description": "I work with clients to translate their ideas into useful and beautiful software. I work best with designers and those with a strong visual sense.",
       "responsibilities": [
@@ -18,7 +18,6 @@
     }
   ],
   "workExperience": [
-
     {
       "company": "Aurora Solar",
       "url": "https://aurorasolar.com/",

@@ -16,10 +16,12 @@ export default function CV() {
     <main>
       <h1 className={cn(`text-5xl text-center md:text-left`, font.className)}>{resume.personalInfo.name}</h1>
 
-      <blockquote className="text-balance text-center md:text-left">{resume.summary}</blockquote>
+      <Markdown options={{ wrapper: 'blockquote' }} className="mb-5 md:mb-2 text-balance text-center md:text-left">
+        {resume.summary}
+      </Markdown>
 
-      <section className="flex outline-1 outline-offset-14 md:outline-offset-20 flex-col gap-2 md:gap-4 mt-8 pb-1 md:pb-3">
-        <header className="-mt-[28px] md:-mt-[34px]">
+      <section className="flex outline-1 outline-offset-34 md:outline-offset-20 flex-col gap-2 md:gap-4 mt-8 pb-1 md:pb-3">
+        <header className="-mt-[48px] md:-mt-[34px] mb-3 md:mb-0">
           <h2 className="inline-block text-sm bg-zinc-900 px-3 -ml-3 relative z-10">Current</h2>
         </header>
 
@@ -32,7 +34,7 @@ export default function CV() {
                   <img
                     src={job.icon}
                     alt={`${job.company} logo`}
-                    className="md:absolute print:absolute w-4 h-4 max-sm:translate-y-1 md:ml-[-28px] md:mt-1 print:ml-[-28px] print:mt-[1px]"
+                    className="md:absolute print:absolute size-6 max-sm:translate-y-[-1px] md:ml-[-28px] md:mt-1 print:ml-[-28px] print:mt-[1px]  hover:animate-bounce hover:scale-110 transition-transform ease-out duration-300"
                   />
                 </h3>
                 <span className="italic text-zinc-200 print:text-zinc-800">{job.title}</span>
@@ -70,7 +72,7 @@ export default function CV() {
                   <img
                     src={job.icon}
                     alt={`${job.company} logo`}
-                    className="md:absolute print:absolute w-4 h-4 max-sm:translate-y-1 md:ml-[-28px] md:mt-1 print:ml-[-28px] print:mt-[1px]"
+                    className="md:absolute print:absolute w-4 h-4 max-sm:translate-y-1 md:ml-[-28px] md:mt-1 print:ml-[-28px] print:mt-[1px] hover:animate-bounce hover:scale-110 transition-transform ease-out duration-300"
                   />
                 </h3>
                 <span className="italic text-zinc-200 print:text-zinc-800">{job.title}</span>

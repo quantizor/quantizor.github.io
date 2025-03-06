@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@adam.plesnik/tailwindcss-scroll-driven-animations": "^0.3.0",
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^15.2.1",
@@ -21,6 +22,7 @@
     "react-dom": "latest",
     "react-icons": "^5.5.0",
     "tailwind-merge": "^3.0.2",
+    "tailwindcss-animate": "^1.0.7",
     "three": "^0.171.0"
   },
   "engines": {
