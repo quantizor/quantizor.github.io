@@ -11,33 +11,33 @@
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
-    "@next/mdx": "^15.1.7",
+    "@next/mdx": "^15.2.1",
     "@phosphor-icons/react": "^2.1.7",
     "@types/mdx": "^2.0.13",
     "cannon": "^0.6.2",
-    "markdown-to-jsx": "^7.7.3",
+    "markdown-to-jsx": "^7.7.4",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-icons": "^5.5.0",
-    "tailwind-merge": "^3.0.1",
+    "tailwind-merge": "^3.0.2",
     "three": "^0.171.0"
   },
   "engines": {
     "node": ">=18"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.0.6",
+    "@tailwindcss/postcss": "^4.0.10",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@types/three": "^0.170.0",
     "autoprefixer": "^10.4.20",
-    "postcss": "^8.5.2",
+    "postcss": "^8.5.3",
     "prettier-plugin-organize-imports": "^4.1.0",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "tailwindcss": "^4.0.6",
+    "tailwindcss": "^4.0.10",
     "typescript": "latest"
   }
 }

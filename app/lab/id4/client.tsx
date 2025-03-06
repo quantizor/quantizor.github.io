@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import SiteTitle from '@/components/Title';
 import { Barriecito } from 'next/font/google';
+import { useEffect, useRef, useState } from 'react';
 
 const barriecito = Barriecito({
   weight: '400',
@@ -34,7 +33,13 @@ export default function HuetifulGame() {
   const [hint, setHint] = useState<string | null>(null);
   const [hintTimer, setHintTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
   const [elapsedTime, setElapsedTime] = useState(0);
-  const [timerInterval, setTimerInterval] = useState<ReturnType<typeof setInterval>>();
+  const [timerStarted, setTimerStarted] = useState(false);
+  const [isTutorial, setIsTutorial] = useState(false);
+  const [showTutorialInfo, setShowTutorialInfo] = useState(false);
+
+  // Use refs for interval IDs to prevent race conditions
+  const timerIntervalRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+  const tutorialIntervalRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
   // Color conversion functions
   const rgbToCmyk = (rgb: RGB): CMYK => {
@@ -73,6 +78,11 @@ export default function HuetifulGame() {
   const userCmyk = rgbToCmyk(userColor);
 
   const handleCmykChange = (channel: keyof CMYK, value: number) => {
+    // Start the timer on first interaction if not already started
+    if (!timerStarted) {
+      startTimer();
+    }
+
     const currentCmyk = userCmyk;
     const newCmyk = { ...currentCmyk, [channel]: value };
     setUserColor(cmykToRgb(newCmyk));
@@ -106,26 +116,36 @@ export default function HuetifulGame() {
   };
 
   const generateNewColor = () => {
+    // Reset all game state
     setTargetColor(generateRandomColor());
     setUserColor({ r: 0, g: 0, b: 0 });
     setHasWon(false);
     setHint(null);
+    setTimerStarted(false);
+    setElapsedTime(0);
+    setIsTutorial(false);
+
+    // Ensure timer is fully stopped
+    stopTimer();
+
+    // Clean up timers
     if (hintTimer) {
       clearTimeout(hintTimer);
       setHintTimer(null);
     }
-    startTimer();
 
-    // Clean up any existing confetti
-    const existingConfetti = document.querySelector('.confetti-container');
-    if (existingConfetti) {
-      document.body.removeChild(existingConfetti);
+    if (tutorialIntervalRef.current) {
+      clearInterval(tutorialIntervalRef.current);
+      tutorialIntervalRef.current = undefined;
     }
+
+    // Note: Intentionally not removing confetti to persist across page changes
   };
 
   const createConfetti = () => {
     const confetti = document.createElement('div');
     confetti.className = 'confetti-container';
+    confetti.style.pointerEvents = 'none';
     document.body.appendChild(confetti);
 
     // Create confetti pieces every 100ms
@@ -149,10 +169,8 @@ export default function HuetifulGame() {
 
     createPieces();
 
-    // Remove container after all animations
-    setTimeout(() => {
-      document.body.removeChild(confetti);
-    }, 20000); // Let it run longer
+    // Note: Intentionally not removing the confetti with a timeout
+    // to allow it to persist indefinitely
   };
 
   const checkWin = () => {
@@ -173,13 +191,14 @@ export default function HuetifulGame() {
     }
   };
 
-  const handleSliderChange = (channel: keyof RGB, value: number) => {
-    setUserColor((prev) => ({ ...prev, [channel]: value }));
-    checkWin();
-  };
+  const handleColorChange = (channel: keyof RGB, value: number | string) => {
+    const numValue = typeof value === 'string' ? Math.min(255, Math.max(0, parseInt(value) || 0)) : value;
 
-  const handleInputChange = (channel: keyof RGB, value: string) => {
-    const numValue = Math.min(255, Math.max(0, parseInt(value) || 0));
+    // Start the timer on first interaction if not already started
+    if (!timerStarted) {
+      startTimer();
+    }
+
     setUserColor((prev) => ({ ...prev, [channel]: numValue }));
     checkWin();
   };
@@ -224,42 +243,131 @@ export default function HuetifulGame() {
   };
 
   const startTimer = () => {
-    // Clear any existing timer
-    if (timerInterval) {
-      clearInterval(timerInterval);
+    // Clear any existing timer before starting a new one
+    if (timerIntervalRef.current) {
+      clearInterval(timerIntervalRef.current);
+      timerIntervalRef.current = undefined;
     }
 
     setElapsedTime(0);
+    setTimerStarted(true);
     const startTime = Date.now();
 
     const interval = setInterval(() => {
       setElapsedTime(Date.now() - startTime);
     }, 100);
 
-    setTimerInterval(interval);
+    timerIntervalRef.current = interval;
   };
 
   const stopTimer = () => {
-    if (timerInterval) {
-      clearInterval(timerInterval);
-      setTimerInterval(undefined);
+    // Stop the timer updates
+    setTimerStarted(false);
+
+    // Clear the interval
+    if (timerIntervalRef.current) {
+      clearInterval(timerIntervalRef.current);
+      timerIntervalRef.current = undefined;
     }
+  };
+
+  const handleTutorialClick = () => {
+    // Toggle tutorial info visibility
+    setShowTutorialInfo(!showTutorialInfo);
+
+    // Only run the tutorial if not already running
+    if (!isTutorial) {
+      runTutorial();
+    }
+  };
+
+  const runTutorial = () => {
+    // Don't run tutorial if game is already won
+    if (hasWon) return;
+
+    // Start the timer if it hasn't started yet
+    if (!timerStarted) {
+      startTimer();
+    }
+
+    // Clear any existing tutorial animation
+    if (tutorialIntervalRef.current) {
+      clearInterval(tutorialIntervalRef.current);
+    }
+
+    setIsTutorial(true);
+    setShowTutorialInfo(true); // Show tutorial info when running the tutorial
+
+    // Duration of the tween in ms
+    const duration = 2000;
+    const startTime = Date.now();
+    const startColor = { ...userColor };
+
+    // Clear existing interval if it exists
+    if (tutorialIntervalRef.current) {
+      clearInterval(tutorialIntervalRef.current);
+    }
+
+    // Create new interval for animation
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(1, elapsed / duration);
+
+      // Use easeInOutCubic easing function
+      const easeProgress = progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+      if (colorMode === 'rgb') {
+        // Tween RGB values directly
+        const newR = Math.round(startColor.r + (targetColor.r - startColor.r) * easeProgress);
+        const newG = Math.round(startColor.g + (targetColor.g - startColor.g) * easeProgress);
+        const newB = Math.round(startColor.b + (targetColor.b - startColor.b) * easeProgress);
+
+        setUserColor({ r: newR, g: newG, b: newB });
+      } else {
+        // Tween CMYK values
+        const startCmyk = rgbToCmyk(startColor);
+        const newC = Math.round(startCmyk.c + (targetCmyk.c - startCmyk.c) * easeProgress);
+        const newM = Math.round(startCmyk.m + (targetCmyk.m - startCmyk.m) * easeProgress);
+        const newY = Math.round(startCmyk.y + (targetCmyk.y - startCmyk.y) * easeProgress);
+        const newK = Math.round(startCmyk.k + (targetCmyk.k - startCmyk.k) * easeProgress);
+
+        setUserColor(cmykToRgb({ c: newC, m: newM, y: newY, k: newK }));
+      }
+
+      // End animation when complete
+      if (progress >= 1) {
+        // First stop the animation
+        clearInterval(interval);
+        tutorialIntervalRef.current = undefined;
+        setIsTutorial(false);
+
+        // Then ensure timer is fully stopped before setting win state
+        stopTimer();
+
+        // Set win state and trigger confetti
+        setHasWon(true);
+        createConfetti();
+      }
+    }, 16); // ~60fps
+
+    tutorialIntervalRef.current = interval;
   };
 
   useEffect(() => {
     generateNewColor();
+
+    // Cleanup function
     return () => {
-      stopTimer();
+      if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
       if (hintTimer) clearTimeout(hintTimer);
+      if (tutorialIntervalRef.current) clearInterval(tutorialIntervalRef.current);
+
+      // Note: Intentionally not removing confetti to persist across page changes
     };
   }, []);
 
   return (
-    <main className="flex flex-col items-center min-h-screen gap-8 pb-8 text-white">
-      <SiteTitle>huetiful</SiteTitle>
-
-      <div className="absolute top-4 right-4 font-mono text-xl text-white/70">{formatTime(elapsedTime)}</div>
-
+    <main className="flex flex-col my-auto items-center min-h-screen gap-12 pb-8 text-white">
       <div className="flex flex-col items-center gap-8">
         <h1
           className={`${barriecito.className} text-5xl relative px-4 py-2 lowercase`}
@@ -270,7 +378,46 @@ export default function HuetifulGame() {
           <span>huetiful</span>
         </h1>
 
-        {hasWon && <div className="text-xl text-green-500 font-bold animate-bounce">Perfect Match! 🎉</div>}
+        <div className="-mt-6 mb-4 flex gap-2 bg-zinc-800/50 p-1 rounded-lg">
+          <button
+            className={`px-2 py-1 rounded-md text-xs transition-colors ${
+              colorMode === 'rgb' ? 'text-white' : 'text-white/50 hover:text-white'
+            }`}
+            onClick={() => setColorMode('rgb')}
+            style={
+              colorMode === 'rgb'
+                ? {
+                    backgroundColor: `rgba(${targetColor.r}, ${targetColor.g}, ${targetColor.b}, 0.2)`,
+                  }
+                : undefined
+            }
+          >
+            RGB
+          </button>
+          <button
+            className={`px-2 py-1 rounded-md text-xs  transition-colors ${
+              colorMode === 'cmyk' ? 'text-white' : 'text-white/50 hover:text-white'
+            }`}
+            onClick={() => setColorMode('cmyk')}
+            style={
+              colorMode === 'cmyk'
+                ? {
+                    backgroundColor: `rgba(${targetColor.r}, ${targetColor.g}, ${targetColor.b}, 0.2)`,
+                  }
+                : undefined
+            }
+          >
+            CMYK
+          </button>
+        </div>
+
+        {hasWon && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-50">
+            <div className="text-3xl font-bold text-center py-4 px-8 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg shadow-lg transform animate-perfect-match">
+              Perfect Match! 🎉
+            </div>
+          </div>
+        )}
 
         <div className="flex gap-8">
           <div className="flex flex-col items-center gap-2">
@@ -281,16 +428,6 @@ export default function HuetifulGame() {
                 backgroundColor: `rgb(${targetColor.r}, ${targetColor.g}, ${targetColor.b})`,
               }}
             />
-            {colorMode === 'cmyk' && (
-              <div className="text-xs text-white/50 mt-1">
-                C:{targetCmyk.c} M:{targetCmyk.m} Y:{targetCmyk.y} K:{targetCmyk.k}
-              </div>
-            )}
-            {colorMode === 'rgb' && (
-              <div className="text-xs text-white/50 mt-1">
-                R:{targetColor.r} G:{targetColor.g} B:{targetColor.b}
-              </div>
-            )}
           </div>
 
           <div className="flex flex-col items-center gap-2">
@@ -313,7 +450,7 @@ export default function HuetifulGame() {
             min="0"
             max="255"
             value={userColor.r}
-            onChange={(e) => handleSliderChange('r', parseInt(e.target.value))}
+            onChange={(e) => handleColorChange('r', e.target.value)}
             className="h-3 bg-red-500/20 rounded-lg appearance-none cursor-pointer accent-red-500 self-center user-select-none"
             disabled={hasWon}
           />
@@ -322,7 +459,7 @@ export default function HuetifulGame() {
             min="0"
             max="255"
             value={userColor.r}
-            onChange={(e) => handleInputChange('r', e.target.value)}
+            onChange={(e) => handleColorChange('r', e.target.value)}
             className="px-2 py-1 bg-zinc-800 rounded text-center text-red-500 disabled:opacity-50 self-center"
             disabled={hasWon}
           />
@@ -333,7 +470,7 @@ export default function HuetifulGame() {
             min="0"
             max="255"
             value={userColor.g}
-            onChange={(e) => handleSliderChange('g', parseInt(e.target.value))}
+            onChange={(e) => handleColorChange('g', e.target.value)}
             className="h-3 bg-green-500/20 rounded-lg appearance-none cursor-pointer accent-green-500 self-center user-select-none"
             disabled={hasWon}
           />
@@ -342,7 +479,7 @@ export default function HuetifulGame() {
             min="0"
             max="255"
             value={userColor.g}
-            onChange={(e) => handleInputChange('g', e.target.value)}
+            onChange={(e) => handleColorChange('g', e.target.value)}
             className="px-2 py-1 bg-zinc-800 rounded text-center text-green-500 disabled:opacity-50 self-center"
             disabled={hasWon}
           />
@@ -353,7 +490,7 @@ export default function HuetifulGame() {
             min="0"
             max="255"
             value={userColor.b}
-            onChange={(e) => handleSliderChange('b', parseInt(e.target.value))}
+            onChange={(e) => handleColorChange('b', e.target.value)}
             className="h-3 bg-blue-500/20 rounded-lg appearance-none cursor-pointer accent-blue-500 self-center user-select-none"
             disabled={hasWon}
           />
@@ -362,7 +499,7 @@ export default function HuetifulGame() {
             min="0"
             max="255"
             value={userColor.b}
-            onChange={(e) => handleInputChange('b', e.target.value)}
+            onChange={(e) => handleColorChange('b', e.target.value)}
             className="px-2 py-1 bg-zinc-800 rounded text-center text-blue-500 disabled:opacity-50 self-center"
             disabled={hasWon}
           />
@@ -453,7 +590,7 @@ export default function HuetifulGame() {
         </div>
       )}
 
-      <div className="flex flex-col md:flex-row justify-between w-full max-w-md mt-8 gap-12 md:gap-4">
+      <div className="flex flex-col md:flex-row justify-between w-full max-w-md gap-12 md:gap-4">
         <button
           onClick={getHint}
           className={`button text-zinc-500 hover:text-zinc-400 active:text-zinc-600 text-center min-w-[140px] ${
@@ -461,39 +598,34 @@ export default function HuetifulGame() {
           }`}
           disabled={hasWon}
         >
-          {hint ?? 'Give me a hint'}
+          {hint ?? 'Hint'}
         </button>
+        <div className=" font-mono text-xl text-white/70">{formatTime(elapsedTime)}</div>
         <button
           onClick={generateNewColor}
           className="button text-red-500 hover:text-red-400 active:text-red-600 text-center"
+          disabled={isTutorial}
         >
           New game
         </button>
       </div>
 
-      <p className="text-xs text-white/50 mt-8 max-w-md text-center">
-        How to play: Use the RGB sliders to mix colors and match the target color shown above. Each slider controls the
-        amount of Red, Green, or Blue in your mix (0-255). Get all values right to win!
-      </p>
+      {/* Conditionally render the how-to-play paragraph with animation */}
+      {showTutorialInfo && (
+        <p className="text-xs text-white/50 mt-8 max-w-md text-center animate-fade-in">
+          How to play: Use the RGB sliders to mix colors and match the target color shown above. Each slider controls
+          the amount of Red, Green, or Blue in your mix (0-255). Get all values right to win!
+        </p>
+      )}
 
-      <div className="flex gap-2 bg-zinc-800 p-1 rounded-lg mt-4">
-        <button
-          className={`px-4 py-2 rounded-md transition-colors ${
-            colorMode === 'rgb' ? 'bg-zinc-700 text-white' : 'text-white/50 hover:text-white'
-          }`}
-          onClick={() => setColorMode('rgb')}
-        >
-          RGB
-        </button>
-        <button
-          className={`px-4 py-2 rounded-md transition-colors ${
-            colorMode === 'cmyk' ? 'bg-zinc-700 text-white' : 'text-white/50 hover:text-white'
-          }`}
-          onClick={() => setColorMode('cmyk')}
-        >
-          CMYK
-        </button>
-      </div>
+      {/* Tutorial tab docked at the bottom */}
+      <button
+        onClick={handleTutorialClick}
+        className="fixed bottom-0 left-1/2 -translate-x-1/2 px-4 py-1 text-sm bg-zinc-800 text-white/60 hover:text-white/80 rounded-t-md transition-colors z-10"
+        disabled={hasWon}
+      >
+        {isTutorial ? 'Solving...' : 'Tutorial'}
+      </button>
 
       {hint && (
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-zinc-800 text-white px-4 py-2 rounded-lg shadow-lg animate-fade-in">

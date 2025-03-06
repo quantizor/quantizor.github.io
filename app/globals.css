@@ -29,6 +29,10 @@
     @apply text-white decoration-dotted underline-offset-4 not-[.button]:underline hover:decoration-solid active:text-zinc-400;
   }
 
+  button {
+    @apply cursor-pointer;
+  }
+
   ul {
     @apply ml-4 flex list-disc flex-col gap-3 text-zinc-500;
   }
@@ -237,6 +241,36 @@
 
   .hint-pulse {
     animation: hint-pulse 1s ease-in-out infinite;
+  }
+
+  @keyframes perfect-match {
+    0% {
+      opacity: 0;
+      transform: translateX(-100%) scale(0.5);
+    }
+    25% {
+      opacity: 1;
+      transform: translateX(0) scale(1.2);
+    }
+    35% {
+      transform: translateX(0) scale(0.9);
+    }
+    45% {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+    85% {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(0) scale(0);
+    }
+  }
+
+  .animate-perfect-match {
+    animation: perfect-match 4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
   .confetti-container {
