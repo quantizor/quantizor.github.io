@@ -1,9 +1,7 @@
-import type { Metadata } from 'next';
-import Client from './client';
+import { generateMetadata } from '@/utils';
+import Client from './view';
 
-export const metadata: Metadata = {
-  title: "huetiful ← quantizor's lab",
-};
+export const metadata = generateMetadata('huetiful');
 
 export default function Page() {
   return <Client />;
